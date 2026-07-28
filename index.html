@@ -804,25 +804,29 @@ textarea.form-input{font-family:monospace;line-height:1.8;resize:vertical}
     <div><label class="form-label">طريقة التصحيح</label><select id="exam-grading-mode" class="form-input"><option value="ai">🤖 تلقائي بالذكاء الاصطناعي</option><option value="manual">👨‍🏫 تصحيح الأستاذ يدوياً</option></select></div>
     <div><label class="form-label">ملف الاختبار (PDF أو صورة) — يراه التلميذ</label><input type="file" id="exam-file-input" accept="image/*,.pdf" class="form-input"></div>
     <div class="p-3 rounded-xl bg-red-500/5 border border-red-500/20 space-y-3">
-      <label class="form-label">📕 التصحيح النموذجي وسلّم التنقيط (سرّي — لن يراه التلميذ أبداً)</label>
-      <textarea id="exam-correction" rows="6" placeholder="اكتب الحل النموذجي مع توزيع النقاط، أو اترك هذا فارغاً إن رفعت ملف PDF أدناه ويكفي وصفاً مختصراً هنا" class="form-input"></textarea>
+      <label class="form-label">📕 التصحيح النموذجي (سرّي — لن يراه التلميذ أبداً)</label>
       <div>
-        <label class="form-label">أو ارفع ملف تصحيح (PDF أو صورة)</label>
+        <label class="form-label">📎 ارفع ملف التصحيح (PDF أو صورة) — الطريقة المعتمدة</label>
         <input type="file" id="exam-correction-file" accept="application/pdf,image/*" class="form-input">
         <p class="text-xs text-gray-500 mt-1" id="exam-correction-file-status"></p>
       </div>
+      <details>
+        <summary class="text-xs text-gray-500 cursor-pointer">➕ ملاحظة نصية إضافية (نادراً ما تُستعمل، اختياري)</summary>
+        <textarea id="exam-correction" rows="3" placeholder="ملاحظة قصيرة إضافية إن لزم، بجانب الملف" class="form-input mt-2"></textarea>
+      </details>
       <div class="p-3 rounded-xl bg-blue-500/5 border border-blue-500/15">
         <div class="text-sm font-bold text-blue-300 mb-1">🤖 ناقش معايير التصحيح مع الذكاء الاصطناعي (مرة واحدة، قبل الحفظ)</div>
-        <p class="text-xs text-gray-500 mb-2">اشرح كيفاش تحب يوزع النقاط، حالات خاصة، هفوات شائعة تسامحها أو لا... النقاش هذا كيصقل الفهم قبل ما يبدا يصحح تلقائياً لكل التلاميذ بلا مراجعة يدوية بعدها</p>
+        <p class="text-xs text-gray-500 mb-2">بعد ما ترفع ملف التصحيح فوق، دوس الزر تحت — الذكاء الاصطناعي يقرا الملف ويعطيك تقريراً بفهمه، وبعدها تناقشو وتصححو له أي سوء فهم</p>
+        <button onclick="startRubricAnalysis()" class="btn btn-secondary btn-block mb-2" id="rubric-analyze-btn">🔍 اقرأ الملف وقدّم تقريراً</button>
         <div id="rubric-discuss-thread" class="space-y-2 max-h-48 overflow-y-auto mb-2"></div>
         <div class="flex gap-2">
           <input type="text" id="rubric-discuss-input" placeholder="مثال: إذا التلميذ نسا وحدات القياس، خصم كم نقطة؟" class="form-input flex-1" onkeydown="if(event.key==='Enter'){event.preventDefault();sendRubricDiscussMessage();}">
           <button onclick="sendRubricDiscussMessage()" class="btn btn-secondary" id="rubric-discuss-send-btn">إرسال</button>
         </div>
         <div id="rubric-discuss-apply-area" class="hidden mt-2 p-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
-          <p class="text-xs text-emerald-300 mb-2">💡 الذكاء الاصطناعي اقترح نص تصحيح محدّث أوضح:</p>
+          <p class="text-xs text-emerald-300 mb-2">💡 الذكاء الاصطناعي اقترح ملاحظة توضيحية يزيدها لملف التصحيح:</p>
           <div id="rubric-discuss-suggested-text" class="text-xs text-gray-300 mb-2 whitespace-pre-wrap"></div>
-          <button onclick="applyRubricSuggestion()" class="btn btn-secondary btn-sm">✅ استعمل هذا النص بدل الحالي</button>
+          <button onclick="applyRubricSuggestion()" class="btn btn-secondary btn-sm">✅ استعمل هذا النص</button>
         </div>
       </div>
     </div>
@@ -2064,6 +2068,9 @@ async function initAsyncData() {
             loadMyLessonsPage();
           }
         });
+      } else if (document.getElementById('page-admin') && !document.getElementById('page-admin').classList.contains('hidden')) {
+        // Same race, but for the teacher's admin overview (lesson count, unit cards, etc.)
+        loadAdmin();
       }
     }
   } catch (e) {
@@ -4335,6 +4342,8 @@ function removeFeedbackBandRow(i) {
 
 let rubricDiscussHistory = [];
 let rubricSuggestedText = '';
+let rubricFileBase64 = null;
+let rubricFileMime = null;
 
 function renderRubricDiscussThread() {
   const el = document.getElementById('rubric-discuss-thread');
@@ -4347,15 +4356,57 @@ function renderRubricDiscussThread() {
   el.scrollTop = el.scrollHeight;
 }
 
+function readFileAsBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result.split(',')[1]); // strip the data: prefix
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+async function startRubricAnalysis() {
+  const textVal = document.getElementById('exam-correction').value.trim();
+  const fileInput = document.getElementById('exam-correction-file');
+  const file = fileInput.files[0];
+  if (!file) { showToast('ارفع ملف التصحيح أولاً', 'error'); return; }
+
+  const btn = document.getElementById('rubric-analyze-btn');
+  btn.disabled = true;
+  btn.textContent = '⏳ جارِ القراءة...';
+
+  rubricFileBase64 = null;
+  rubricFileMime = null;
+  try {
+    rubricFileBase64 = await readFileAsBase64(file);
+    rubricFileMime = file.type || 'application/pdf';
+  } catch (e) {
+    showToast('فشلت قراءة الملف', 'error');
+    btn.disabled = false; btn.textContent = '🔍 اقرأ الملف وقدّم تقريراً';
+    return;
+  }
+
+  rubricDiscussHistory = [{ role: 'user', content: 'اقرأ ملف التصحيح النموذجي المرفق بعناية' + (textVal ? ` (مع الأخذ بعين الاعتبار هذه الملاحظة الإضافية: "${textVal}")` : '') + '، وقدّم لي تقريراً موجزاً بفهمك لطريقة التصحيح المطلوبة: الأسئلة، توزيع النقاط، وأي نقطة غامضة تحتاج توضيحاً مني.' }];
+  renderRubricDiscussThread();
+  await callRubricDiscuss();
+  btn.disabled = false;
+  btn.textContent = '🔍 أعد التحليل';
+}
+
 async function sendRubricDiscussMessage() {
   const input = document.getElementById('rubric-discuss-input');
   const message = input.value.trim();
   if (!message) return;
-  const sendBtn = document.getElementById('rubric-discuss-send-btn');
+  if (rubricDiscussHistory.length === 0) { showToast('دوس أولاً "اقرأ الحل وقدّم تقريراً"', 'error'); return; }
 
   rubricDiscussHistory.push({ role: 'user', content: message });
   renderRubricDiscussThread();
   input.value = '';
+  await callRubricDiscuss();
+}
+
+async function callRubricDiscuss() {
+  const sendBtn = document.getElementById('rubric-discuss-send-btn');
   sendBtn.disabled = true;
   rubricDiscussHistory.push({ role: 'model', content: '⏳ جارِ التفكير...' });
   renderRubricDiscussThread();
@@ -4368,7 +4419,7 @@ async function sendRubricDiscussMessage() {
 
   try {
     const { data, error } = await supabaseClient.functions.invoke('discuss-exam-rubric', {
-      body: { exam: examContext, messages: rubricDiscussHistory.slice(0, -1) }
+      body: { exam: examContext, messages: rubricDiscussHistory.slice(0, -1), file_base64: rubricFileBase64, file_mime: rubricFileMime }
     });
     rubricDiscussHistory.pop();
     if (error || !data || !data.ok) throw (error || new Error('فشل الرد'));
@@ -4397,8 +4448,9 @@ async function sendRubricDiscussMessage() {
 function applyRubricSuggestion() {
   if (!rubricSuggestedText) return;
   document.getElementById('exam-correction').value = rubricSuggestedText;
+  document.getElementById('exam-correction').closest('details')?.setAttribute('open', '');
   document.getElementById('rubric-discuss-apply-area').classList.add('hidden');
-  showToast('✅ تم تحديث نص التصحيح — راجعه ثم احفظ الاختبار', 'success');
+  showToast('✅ تم تحديث الملاحظة — راجعها ثم احفظ الاختبار', 'success');
 }
 
 function resetExamForm() {
@@ -4417,6 +4469,8 @@ function resetExamForm() {
   document.getElementById('exam-correction-file').value = '';
   document.getElementById('exam-correction-file-status').textContent = '';
   rubricDiscussHistory = [];
+  rubricFileBase64 = null;
+  rubricFileMime = null;
   const threadEl = document.getElementById('rubric-discuss-thread');
   if (threadEl) threadEl.innerHTML = '';
   const applyArea = document.getElementById('rubric-discuss-apply-area');
@@ -4462,7 +4516,7 @@ async function saveExam() {
   const resultEl = document.getElementById('exam-save-result');
 
   if (!title) { showToast('أدخل عنوان الاختبار', 'error'); return; }
-  if (!correctionText && !correctionFileInput.files[0] && !editId) { showToast('أدخل التصحيح نصاً أو ارفع ملف تصحيح', 'error'); return; }
+  if (!correctionFileInput.files[0] && !editId) { showToast('ارفع ملف التصحيح النموذجي', 'error'); return; }
   if (!editId && !fileInput.files[0]) { showToast('ارفع ملف الاختبار', 'error'); return; }
 
   resultEl.innerHTML = '<div class="flex items-center justify-center gap-2 text-gold-500 text-sm py-2"><div class="spinner" style="width:20px;height:20px;border-width:2px"></div> جارِ الحفظ...</div>';
