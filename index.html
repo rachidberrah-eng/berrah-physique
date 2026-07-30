@@ -976,7 +976,7 @@ textarea.form-input{font-family:monospace;line-height:1.8;resize:vertical}
   <div id="subscription-settings-result" class="mt-2"></div>
 </div></div></div>
 <div id="admin-lessons" class="hidden"><div class="flex flex-wrap items-center justify-between gap-3 mb-4"><h2 class="text-xl font-black text-white">📚 إدارة الدروس</h2><button onclick="showAddLessonForm()" class="btn btn-primary">➕ إضافة درس</button></div>
-<div id="add-lesson-form" class="hidden card p-6 mb-6"><h3 class="text-lg font-bold text-gold-500 mb-4">📝 درس جديد</h3><div class="grid sm:grid-cols-2 gap-3"><div class="sm:col-span-2"><label class="form-label">عنوان الدرس</label><input type="text" id="lesson-title" placeholder="مثال: الحركة والسرعة" class="form-input"></div><div><label class="form-label">المستوى</label><select id="lesson-level" class="form-input" onchange="loadUnitOptionsForForm()"><option value="1as">أولى ثانوي</option><option value="2as">ثانية ثانوي</option><option value="3as">ثالثة ثانوي</option></select></div><div><label class="form-label">الشعبة</label><select id="lesson-stream" class="form-input" onchange="loadUnitOptionsForForm()"><option value="all">الكل</option><option value="sciences">علوم تجريبية</option><option value="tech">تقني رياضي</option><option value="math_tech">رياضيات + تقني رياضي معاً</option><option value="math">رياضيات</option><option value="common_st">جذع مشترك علوم وتكنولوجيا</option></select></div><div class="sm:col-span-2"><label class="form-label">الوحدة</label><select id="lesson-unit" class="form-input"><option value="">اختر الوحدة</option></select></div><div class="sm:col-span-2"><label class="form-label">رابط YouTube (الصق الرابط كاملاً)</label><input type="text" id="lesson-youtube" placeholder="https://www.youtube.com/watch?v=..." class="form-input" dir="ltr"></div><div><label class="form-label">السعر (دج) - 0 = مجاني</label><input type="number" id="lesson-price" placeholder="100" value="0" class="form-input"></div><div><label class="form-label">الترتيب</label><input type="number" id="lesson-order" placeholder="1" value="1" class="form-input"></div><div class="sm:col-span-2">
+<div id="add-lesson-form" class="hidden card p-6 mb-6"><h3 class="text-lg font-bold text-gold-500 mb-4">📝 درس جديد</h3><div class="grid sm:grid-cols-2 gap-3"><div class="sm:col-span-2"><label class="form-label">عنوان الدرس</label><input type="text" id="lesson-title" placeholder="مثال: الحركة والسرعة" class="form-input"></div><div><label class="form-label">المستوى</label><select id="lesson-level" class="form-input" onchange="loadUnitOptionsForForm()"><option value="1as">أولى ثانوي</option><option value="2as">ثانية ثانوي</option><option value="3as">ثالثة ثانوي</option></select></div><div><label class="form-label">الشعبة</label><select id="lesson-stream" class="form-input" onchange="loadUnitOptionsForForm()"><option value="all">الكل</option><option value="sciences">علوم تجريبية</option><option value="tech">تقني رياضي</option><option value="math_tech">رياضيات + تقني رياضي معاً</option><option value="math">رياضيات</option><option value="common_st">جذع مشترك علوم وتكنولوجيا</option></select></div><div class="sm:col-span-2"><label class="form-label">الوحدة (اختر من القائمة أو اكتب اسماً جديداً/معدّلاً)</label><input type="text" id="lesson-unit" list="lesson-unit-options" placeholder="مثال: القوة والحركات المستقيمة" class="form-input"><datalist id="lesson-unit-options"></datalist></div><div class="sm:col-span-2"><label class="form-label">رابط YouTube (الصق الرابط كاملاً)</label><input type="text" id="lesson-youtube" placeholder="https://www.youtube.com/watch?v=..." class="form-input" dir="ltr"></div><div><label class="form-label">السعر (دج) - 0 = مجاني</label><input type="number" id="lesson-price" placeholder="100" value="0" class="form-input"></div><div><label class="form-label">الترتيب</label><input type="number" id="lesson-order" placeholder="1" value="1" class="form-input"></div><div class="sm:col-span-2">
   <label class="form-label">ملف PDF (اختياري)</label>
   <div class="flex gap-2 mb-2">
     <button type="button" id="pdf-mode-upload-btn" onclick="setPdfMode('upload')" class="tab-pill active" style="font-size:0.8rem;padding:6px 14px">📤 رفع ملف مباشرة</button>
@@ -5975,17 +5975,10 @@ function hideAddLessonForm() {
 function loadUnitOptionsForForm() {
   const level = document.getElementById('lesson-level').value;
   const stream = document.getElementById('lesson-stream').value;
-  const select = document.getElementById('lesson-unit');
+  const datalist = document.getElementById('lesson-unit-options');
   const units = new Set();
   allLessons.filter(l => l.level === level).filter(l => matchesStream(l.stream, stream)).forEach(l => units.add(l.unit));
-  let html = '<option value="">اختر الوحدة</option>';
-  if (units.size === 0) {
-    html += '<option value="__new__">+ وحدة جديدة</option>';
-  } else {
-    units.forEach(u => { html += `<option value="${u}">${u}</option>`; });
-    html += '<option value="__new__">+ وحدة جديدة</option>';
-  }
-  select.innerHTML = html;
+  datalist.innerHTML = [...units].map(u => `<option value="${u.replace(/"/g,'&quot;')}">`).join('');
 }
 
 async function addLesson() {
