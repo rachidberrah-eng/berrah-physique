@@ -5133,6 +5133,7 @@ function applyRubricSuggestion() {
 }
 
 function resetExamForm() {
+  window.__currentEditingExamFileUrl = '';
   document.getElementById('exam-edit-id').value = '';
   document.getElementById('exam-lesson-id').value = '';
   document.getElementById('exam-lesson-badge').classList.add('hidden');
@@ -5233,6 +5234,7 @@ async function saveExam() {
     };
     if (examFileUrl) row.exam_file_url = examFileUrl;
     else if (!editId) row.exam_file_url = '';
+    else row.exam_file_url = window.__currentEditingExamFileUrl || '';
     row.feedback_bands = examFeedbackBands.filter(b => b.message && b.message.trim());
 
     const { error } = await supabaseClient.from('exams').upsert([row]);
@@ -5278,6 +5280,7 @@ async function loadAdminExams() {
 async function editExam(examId) {
   const { data: exam } = await supabaseClient.from('exams').select(EXAM_COLUMNS).eq('id', examId).maybeSingle();
   if (!exam) { showToast('تعذّر تحميل الاختبار', 'error'); return; }
+  window.__currentEditingExamFileUrl = exam.exam_file_url || '';
   const { data: corrData, error: corrErr } = await supabaseClient.rpc('get_exam_correction', { p_exam_id: examId });
   document.getElementById('exam-edit-id').value = exam.id;
   document.getElementById('exam-title').value = exam.title;
