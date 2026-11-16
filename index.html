@@ -7209,12 +7209,15 @@ async function loadAdminCourses() {
 function renderAdminCoursesList(courses) {
   const box = document.getElementById('admin-courses-list');
   if (!courses.length) { box.innerHTML = '<div class="text-sm text-gray-500 text-center py-6">لا توجد دورات مضافة بعد</div>'; return; }
-  box.innerHTML = courses.map(c => `
+  const totalViews = courses.reduce((t, c) => t + (typeof c.views === 'number' ? c.views : 0), 0);
+  const hasViews = courses.some(c => typeof c.views === 'number');
+  box.innerHTML = (hasViews ? `<div class="text-sm text-gray-400 mb-2">👁 مجموع القراءات: <b class="text-gold-500">${totalViews}</b> (مرة واحدة لكل زائر في اليوم لكل درس)</div>` : '') + courses.map(c => `
     <div class="card p-4 flex items-start gap-3">
       <div class="flex-1 min-w-0">
         <div class="flex items-center gap-2 flex-wrap">
           <span class="font-bold text-white">${escHtml(c.title)}</span>
           ${c.is_active ? '<span class="badge badge-success">ظاهرة</span>' : '<span class="badge badge-locked">مخفية</span>'}
+          ${typeof c.views === 'number' ? `<span class="badge badge-info" title="عدد مرات فتح الملف">👁 ${c.views} قراءة</span>` : ''}
         </div>
         <div class="text-xs text-gray-500 mt-1">${escHtml(c.start_date||'')}${c.price ? ' • ' + escHtml(c.price) : ''}</div>
       </div>
@@ -7307,10 +7310,19 @@ function renderLibraryGrid() {
   grid.innerHTML = items.length ? items.map(libCardHtml).join('') : '<div class="lib-empty">لا توجد دروس في هذا القسم بعد — قريباً إن شاء الله</div>';
   document.querySelectorAll('#library-filters .lib-chip').forEach(b => b.classList.toggle('active', b.dataset.f === _libraryFilter));
 }
+// count one open per browser per lesson per day (needs SQL function increment_course_view)
+function countLessonView(id) {
+  try {
+    const key = 'bp_view_' + id + '_' + new Date().toISOString().slice(0, 10);
+    try { if (localStorage.getItem(key)) return; localStorage.setItem(key, '1'); } catch (e) {}
+    if (supabaseClient) supabaseClient.rpc('increment_course_view', { p_id: id }).then(() => {}, () => {});
+  } catch (e) {}
+}
 function setLibraryFilter(f) { _libraryFilter = f; renderLibraryGrid(); }
 function openLibViewer(id) {
   const c = _libraryItems.find(x => String(x.id) === String(id));
   if (!c) return;
+  countLessonView(c.id);
   document.getElementById('lib-viewer-title').textContent = libShortTitle(c);
   document.getElementById('lib-viewer-iframe').src = libPreviewUrl(c.registration_link);
   document.getElementById('lib-viewer').classList.add('open');
