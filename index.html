@@ -7264,7 +7264,7 @@ let _libraryItems = [];
 let _libraryFilter = 'all';
 function isLibraryItem(c) {
   const link = (c.registration_link || '');
-  return /drive\.google\.com\/file\//.test(link); // PDF lessons hosted on Drive
+  return /drive\.google\.com\/file\//.test(link) || /\/lessons\/[^?#]+\.pdf/i.test(link); // PDF lessons (site viewer or Drive)
 }
 function libSubject(c) { return /⚗|كيمي/.test((c.title || '') + ' ' + (c.description || '')) && !/فيزياء|حركة|سقوط|قذيفة/.test(c.title || '') ? 'chem' : 'phys'; }
 function libIcon(c) { const m = (c.title || '').match(/^\s*(\p{Extended_Pictographic}️?)/u); return m ? m[1] : (libSubject(c) === 'chem' ? '⚗️' : '📘'); }
@@ -7276,6 +7276,11 @@ function libShortTitle(c) {
 }
 function libLevel(c) { const m = (c.title || '').match(/(\d)\s*ثانوي/); return m ? m[1] + ' ثانوي' : ''; }
 function libPreviewUrl(link) {
+  const lp = (link || '').match(/(\/lessons\/[^?#]+\.pdf)/i);
+  if (lp) {
+    const wide = window.innerWidth >= 900;
+    return '/pdfjs/web/viewer.html?file=' + encodeURIComponent(lp[1]) + '#' + (wide ? 'pagemode=bookmarks&zoom=page-width' : 'zoom=page-width');
+  }
   const m = (link || '').match(/\/file\/d\/([^/?#]+)/);
   return m ? 'https://drive.google.com/file/d/' + m[1] + '/preview' : link;
 }
