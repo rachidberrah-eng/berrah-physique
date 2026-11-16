@@ -809,6 +809,44 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<style id="lib-style">
+.lib-section-head{display:flex;align-items:center;justify-content:space-between;gap:.75rem;flex-wrap:wrap;margin-bottom:1rem}
+.lib-section-title{font-weight:900;font-size:1.25rem;color:var(--text-primary);display:flex;align-items:center;gap:.5rem}
+.lib-count{font-size:.75rem;font-weight:700;color:var(--text-muted);background:var(--dark-elevated);border:1px solid var(--border);border-radius:9999px;padding:.1rem .6rem}
+.lib-filters{display:flex;gap:.4rem;flex-wrap:wrap}
+.lib-chip{font-family:'Cairo',sans-serif;font-size:.8rem;font-weight:700;padding:.35rem .9rem;border-radius:9999px;border:1px solid var(--border);background:var(--dark-card);color:var(--text-secondary);cursor:pointer;transition:all .2s}
+.lib-chip:hover{border-color:var(--border-hover);color:var(--gold)}
+.lib-chip.active{background:color-mix(in srgb,var(--gold) 15%,transparent);border-color:var(--gold);color:var(--gold)}
+.lib-grid{display:grid;grid-template-columns:1fr;gap:.85rem}
+@media(min-width:640px){.lib-grid{grid-template-columns:repeat(2,1fr);gap:1rem}}
+@media(min-width:1024px){.lib-grid.lib-grid-3{grid-template-columns:repeat(3,1fr)}}
+.lib-card{display:flex;gap:.9rem;align-items:stretch;background:var(--dark-card);border:1px solid var(--border);border-radius:16px;padding:.75rem;cursor:pointer;transition:border-color .2s,transform .2s,box-shadow .2s;text-align:right}
+.lib-card:hover{border-color:var(--border-hover);transform:translateY(-2px);box-shadow:var(--shadow-ambient)}
+.lib-cover{flex:0 0 84px;min-height:104px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.3rem;position:relative;overflow:hidden;background-size:cover;background-position:center}
+.lib-cover.phys{background-image:linear-gradient(150deg,color-mix(in srgb,var(--cyan) 55%,#0b1826),#0b1826)}
+.lib-cover.chem{background-image:linear-gradient(150deg,color-mix(in srgb,var(--gold) 60%,#0b1826),#0b1826)}
+.lib-cover::after{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.07) 1px,transparent 1px);background-size:12px 12px}
+.lib-cover .ico{font-size:2rem;position:relative;z-index:1;filter:drop-shadow(0 2px 6px rgba(0,0,0,.4))}
+.lib-cover .pdf{position:relative;z-index:1;font-size:.65rem;font-weight:900;letter-spacing:.08em;color:#fff;background:rgba(0,0,0,.35);border-radius:6px;padding:.05rem .4rem}
+.lib-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:.35rem}
+.lib-badges{display:flex;gap:.3rem;flex-wrap:wrap}
+.lib-badges .badge{font-size:.68rem;padding:.12rem .55rem}
+.lib-badges .lib-lvl{background:var(--dark-elevated);color:var(--text-secondary);border:1px solid var(--border)}
+.lib-title{font-weight:900;font-size:1rem;line-height:1.5;color:var(--text-primary);margin:0}
+.lib-sub{font-size:.78rem;color:var(--text-muted);margin:0}
+.lib-read{margin-top:auto;align-self:flex-start;font-family:'Cairo',sans-serif;font-weight:800;font-size:.8rem;color:var(--on-accent);background:var(--gradient-gold);border:none;border-radius:10px;padding:.4rem .9rem;cursor:pointer}
+.lib-empty{grid-column:1/-1;text-align:center;color:var(--text-muted);font-size:.9rem;padding:1.5rem}
+.lib-viewer{position:fixed;inset:0;z-index:200;background:rgba(5,12,20,.92);display:none;flex-direction:column}
+.lib-viewer.open{display:flex}
+.lib-viewer-bar{display:flex;align-items:center;gap:.75rem;padding:.6rem .9rem;background:var(--dark-card);border-bottom:1px solid var(--border)}
+.lib-viewer-bar .t{flex:1;min-width:0;font-weight:800;color:var(--text-primary);font-size:.95rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lib-viewer-bar button{width:38px;height:38px;border-radius:10px;border:1px solid var(--border);background:var(--dark-elevated);color:var(--text-primary);font-size:1rem;cursor:pointer}
+.lib-viewer-frame{flex:1;position:relative}
+.lib-viewer-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#fff}
+.lib-viewer-loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#93a9bd;font-weight:700}
+.lib-viewer-note{font-size:.72rem;color:var(--text-muted);text-align:center;padding:.35rem;background:var(--dark-card);border-top:1px solid var(--border)}
+@media(max-width:640px){.whatsapp-float{bottom:1rem;left:1rem;padding:.7rem;font-size:1.05rem;box-shadow:0 6px 18px rgba(37,211,102,.35)}}
+</style>
 </head>
 <body>
 <svg style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
@@ -903,6 +941,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 </section>
 <div id="bac-countdown-banner" class="bac-countdown hidden"><div class="max-w-4xl mx-auto px-4"><div class="bac-countdown-inner"><span class="ic">🎯</span><span>باقي <strong id="bac-days-left" class="font-mono">--</strong> يوماً على بكالوريا <strong>2027</strong></span></div></div></div>
 <section class="py-16 sm:py-20 px-4" id="free-section"><div class="max-w-6xl mx-auto"><div class="text-center mb-12"><div class="inline-block px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold mb-4">🎁 مجاني - جرّب بدون تسجيل</div><h2 class="font-black text-3xl sm:text-4xl lg:text-5xl mb-3">شاهد <span class="text-gradient-gold">مجاناً</span> الآن</h2><p class="text-gray-400 max-w-xl mx-auto">دروس مجانية بعرض كامل - اضغط لمشاهدتها فوراً!</p></div><div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6" id="free-lessons"></div></div></section>
+<section class="py-12 sm:py-16 px-4" id="home-library-section" style="display:none"><div class="max-w-5xl mx-auto"><div class="text-center mb-8"><div class="inline-block px-4 py-1.5 rounded-full bg-gold-500/10 border border-gold-500/20 text-gold-500 text-xs font-bold mb-4">📚 مكتبة مجانية — بدون تسجيل</div><h2 class="font-black text-3xl sm:text-4xl mb-3">ابدأ <span class="text-gradient-gold">مجاناً</span>: دروس كاملة مع الحلول</h2><p class="text-gray-400 max-w-xl mx-auto">دروس PDF مكتوبة بعناية مع التمارين وحلولها المفصّلة — اقرأها مباشرة داخل الموقع.</p></div><div id="home-library-grid" class="lib-grid"></div><div class="text-center mt-6"><button onclick="showPage('courses')" class="btn btn-secondary">تصفّح كل الدروس ←</button></div></div></section>
 <section class="py-16 sm:py-20 px-4"><div class="max-w-4xl mx-auto"><div class="card p-6 sm:p-10 text-center">
 <div>
   <div class="inline-block px-3 py-1 rounded-full bg-gold-500/10 border border-gold-500/20 text-gold-500 text-xs font-bold mb-3">عن الأستاذ</div>
@@ -936,8 +975,9 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
         <li class="flex items-start gap-2"><span class="text-emerald-400">✓</span> دخول مجاني للمنصة بلا رسوم اشتراك</li>
         <li class="flex items-start gap-2"><span class="text-emerald-400">✓</span> درس واحد جديد مجاناً كل يوم (يتجدد بعد منتصف الليل)</li>
         <li class="flex items-start gap-2"><span class="text-emerald-400">✓</span> الفيديو + الكويز الخاص بالدرس اليومي</li>
-        <li class="flex items-start gap-2 text-gray-500"><span class="text-red-400">✕</span> بدون تحميل ملفات ومرفقات الدروس (PDF)</li>
-        <li class="flex items-start gap-2 text-gray-500"><span class="text-red-400">✕</span> بدون سلسلة تمارين وحلولها</li>
+        <li class="flex items-start gap-2"><span class="text-emerald-400">✓</span> مكتبة دروس PDF مجانية مع التمارين والحلول (قراءة داخل الموقع)</li>
+        <li class="flex items-start gap-2 text-gray-500"><span class="text-red-400">✕</span> بدون تحميل مرفقات الدروس المسجّلة (PDF)</li>
+        <li class="flex items-start gap-2 text-gray-500"><span class="text-red-400">✕</span> بدون سلسلة التمارين التفاعلية وتصحيحها</li>
         <li class="flex items-start gap-2 text-gray-500"><span class="text-red-400">✕</span> بدون تقييم دوري من الأستاذ</li>
         <li class="flex items-start gap-2 text-gray-500"><span class="text-red-400">✕</span> بدون اختبارات وفروض الفصول</li>
         <li class="flex items-start gap-2 text-gray-500"><span class="text-red-400">✕</span> بدون حصص الزوم المباشرة</li>
@@ -977,13 +1017,25 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
     <div class="hero-glow-a"></div>
     <div class="hero-glow-b"></div>
     <div class="max-w-4xl mx-auto text-center relative z-10">
-      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gold-500/10 border border-gold-500/20 text-gold-500 text-sm font-semibold mb-6"><span class="w-2 h-2 bg-gold-500 rounded-full animate-pulse"></span>دورات في الفيزياء 🇩🇿</div>
-      <h1 class="font-black text-3xl sm:text-4xl lg:text-5xl mb-4 leading-tight">دورات <span class="text-gradient-gold">مكثّفة</span> في الفيزياء</h1>
-      <p class="text-base sm:text-lg text-gray-400 max-w-2xl mx-auto leading-relaxed">تفاصيل الدورات القادمة، مواعيدها، وطريقة التسجيل فيها — تجدها هنا فور الإعلان عنها.</p>
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gold-500/10 border border-gold-500/20 text-gold-500 text-sm font-semibold mb-6"><span class="w-2 h-2 bg-gold-500 rounded-full animate-pulse"></span>دروس ودورات في الفيزياء 🇩🇿</div>
+      <h1 class="font-black text-3xl sm:text-4xl lg:text-5xl mb-4 leading-tight">دروس <span class="text-gradient-gold">مجانية</span> ودورات مكثّفة</h1>
+      <p class="text-base sm:text-lg text-gray-400 max-w-2xl mx-auto leading-relaxed">دروس كاملة بصيغة PDF مع التمارين والحلول، مجاناً للجميع وبدون تسجيل — ومواعيد الدورات المكثّفة فور الإعلان عنها.</p>
     </div>
   </section>
   <section class="py-4 sm:py-8 px-4">
     <div class="max-w-5xl mx-auto">
+      <div id="library-block" style="display:none;margin-bottom:2.5rem">
+        <div class="lib-section-head">
+          <div class="lib-section-title">📚 مكتبة الدروس المجانية <span class="lib-count" id="library-count"></span></div>
+          <div class="lib-filters" id="library-filters">
+            <button class="lib-chip active" data-f="all" onclick="setLibraryFilter('all')">الكل</button>
+            <button class="lib-chip" data-f="phys" onclick="setLibraryFilter('phys')">فيزياء</button>
+            <button class="lib-chip" data-f="chem" onclick="setLibraryFilter('chem')">كيمياء</button>
+          </div>
+        </div>
+        <div id="library-grid" class="lib-grid lib-grid-3"></div>
+      </div>
+      <div class="lib-section-head" id="courses-block-head" style="display:none"><div class="lib-section-title">🎓 الدورات المكثّفة</div></div>
       <div id="courses-ads-container" class="grid sm:grid-cols-2 gap-4 sm:gap-6">
         <!-- 🔧 مكان إعلانات الدورات: أضف هنا بطاقة لكل دورة (صورة/تاريخ/سعر/رابط تسجيل) -->
         <div class="card p-6 sm:p-8 text-center col-span-2" id="courses-empty-state">
@@ -1350,6 +1402,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 </main>
 <footer class="app-footer"><div class="max-w-6xl mx-auto"><div class="flex items-center justify-center gap-2 mb-3"><div class="w-8 h-8 flex items-center justify-center"><div class="brand-logo-img" role="img" aria-label="BERRAH PHYSICS" style="width:18px;height:18px"></div></div><span class="text-lg font-black logo-text">BERRAH PHYSICS</span></div><p class="text-sm text-gray-400 mb-3">منصة الفيزياء الأولى في ولاية برج بوعريريج 🇩🇿</p><p class="text-xs text-gray-500 mb-3">الأستاذ براح • ولاية برج بوعريريج</p><div class="flex flex-wrap items-center justify-center gap-4 text-sm"><a href="tel:0770032735" dir="ltr" class="flex items-center gap-1.5 text-gray-400 hover:text-gold-500 transition">📞 0770 03 27 35</a><span class="text-gray-700">•</span><a href="https://instagram.com/berrah_phys_34" target="_blank" class="flex items-center gap-1.5 text-gray-400 hover:text-gold-500 transition"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></svg> @berrah_phys_34</a><span class="text-gray-700">•</span><a href="https://berrah-phys.netlify.app/" target="_blank" class="flex items-center gap-1.5 text-gray-400 hover:text-gold-500 transition">🏫 دروس الدعم الحضورية</a><span class="text-gray-700">•</span><a href="#" onclick="showPage('courses');return false;" class="flex items-center gap-1.5 text-gray-400 hover:text-gold-500 transition">📚 دورات في الفيزياء</a><span class="text-gray-700">•</span><a href="#" onclick="showModal('terms');return false;" class="flex items-center gap-1.5 text-gray-400 hover:text-gold-500 transition">📜 الشروط والأحكام</a></div><p class="text-xs text-gray-600 mt-4">© 2026 جميع الحقوق محفوظة للأستاذ براح</p></div></footer>
 <a href="https://wa.me/213770032735?text=السلام%20عليكم%20أستاذ%20براح،%0Aأرغب%20في%20الاستفسار%20عن%20منصة%20BERRAH%20PHYSICS" class="whatsapp-float" target="_blank" title="تواصل معنا عبر واتساب">💬<span>تواصل معنا</span></a>
+<div class="lib-viewer" id="lib-viewer" role="dialog" aria-modal="true"><div class="lib-viewer-bar"><button onclick="closeLibViewer()" title="إغلاق">✕</button><div class="t" id="lib-viewer-title"></div></div><div class="lib-viewer-frame"><div class="lib-viewer-loading">⏳ جارِ تحميل الدرس...</div><iframe id="lib-viewer-iframe" title="عرض الدرس" allow="autoplay"></iframe></div><div class="lib-viewer-note">© الأستاذ براح عبد الرشيد — للقراءة فقط</div></div>
 <div class="modal-backdrop" id="modal-login"><div class="modal-content p-6 sm:p-8"><button onclick="hideModal('login')" class="absolute top-4 left-4 w-9 h-9 flex items-center justify-center rounded-xl bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition">✕</button><div class="text-center mb-6"><div class="w-16 h-16 mx-auto flex items-center justify-center mb-4"><div class="brand-logo-img" role="img" aria-label="BERRAH PHYSICS" style="width:38px;height:38px"></div></div><h2 class="text-2xl font-black text-white mb-1">مرحباً بعودتك</h2><p class="text-sm text-gray-400">سجّل دخولك للوصول إلى حسابك</p></div><div id="login-error" class="mb-4"></div><div class="space-y-4"><div><label class="form-label">رقم الهاتف</label><input type="text" id="login-phone" placeholder="07xxxxxxxx" class="form-input" dir="ltr"></div><div><label class="form-label">الرقم السري</label><div class="pw-wrap"><input type="password" id="login-password" placeholder="••••••••" class="form-input"><button type="button" class="pw-toggle" onclick="togglePwVisibility('login-password', this)" tabindex="-1">👁</button></div></div><div class="text-left"><a href="#" onclick="hideModal('login');showModal('forgot-password');return false;" class="text-xs text-gold-500 hover:underline">نسيت كلمة السر؟</a></div><button onclick="doLogin()" id="login-submit-btn" class="btn btn-primary btn-block btn-lg">تسجيل الدخول</button></div><div class="mt-6 pt-6 border-t border-white/5 text-center"><p class="text-sm text-gray-400">ليس لديك حساب؟ <a href="#" onclick="hideModal('login');showModal('register'); return false;" class="text-gold-500 font-bold hover:underline">أنشئ حساباً جديداً</a></p></div></div></div>
 <div class="modal-backdrop" id="modal-forgot-password"><div class="modal-content p-6 sm:p-8">
   <button onclick="hideModal('forgot-password')" class="absolute top-4 left-4 w-9 h-9 flex items-center justify-center rounded-xl bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition">✕</button>
@@ -4364,6 +4417,7 @@ async function loadMyPaymentRequests() {
 // The old simple version is removed to prevent duplicate-definition bugs.
 
 function loadFreeLessons() {
+  try { loadHomeLibrary(); } catch (e) { console.warn('home library', e); }
   // Show lessons marked as isFreePreview OR price=0 (fallback)
   const freeLessons = allLessons.filter(l => !l.hidden && (l.isFreePreview || (l.isFreePreview === undefined && l.price === 0))).slice(0, 6);
   const section = document.getElementById('free-section');
@@ -7205,12 +7259,101 @@ async function deleteCourse(id) {
   loadAdminCourses();
 }
 
+// ---- Free PDF library helpers ----
+let _libraryItems = [];
+let _libraryFilter = 'all';
+function isLibraryItem(c) {
+  const link = (c.registration_link || '');
+  return /drive\.google\.com\/file\//.test(link); // PDF lessons hosted on Drive
+}
+function libSubject(c) { return /⚗|كيمي/.test((c.title || '') + ' ' + (c.description || '')) && !/فيزياء|حركة|سقوط|قذيفة/.test(c.title || '') ? 'chem' : 'phys'; }
+function libIcon(c) { const m = (c.title || '').match(/^\s*(\p{Extended_Pictographic}️?)/u); return m ? m[1] : (libSubject(c) === 'chem' ? '⚗️' : '📘'); }
+function libShortTitle(c) {
+  let s = (c.title || '').replace(/^\s*\p{Extended_Pictographic}️?\s*/u, '');
+  s = s.replace(/\s*[—-]\s*PDF\s*مجاني\s*$/, '').replace(/\s*\(\s*\d\s*ثانوي\s*\)\s*/g, ' ').replace(/\s*مع التمارين والحلول\s*/g, ' ');
+  s = s.replace(/^درس\s+/, '').replace(/\(الجزء الأول\)/, '— الجزء 1').replace(/\(الجزء الثاني\)/, '— الجزء 2');
+  return s.replace(/\s+/g, ' ').trim();
+}
+function libLevel(c) { const m = (c.title || '').match(/(\d)\s*ثانوي/); return m ? m[1] + ' ثانوي' : ''; }
+function libPreviewUrl(link) {
+  const m = (link || '').match(/\/file\/d\/([^/?#]+)/);
+  return m ? 'https://drive.google.com/file/d/' + m[1] + '/preview' : link;
+}
+function libCardHtml(c) {
+  const subj = libSubject(c);
+  const cover = c.image_url
+    ? `<div class="lib-cover" style="background-image:url('${escHtml(c.image_url)}')"></div>`
+    : `<div class="lib-cover ${subj}"><span class="ico">${libIcon(c)}</span><span class="pdf">PDF</span></div>`;
+  const lvl = libLevel(c);
+  return `<div class="lib-card" onclick="openLibViewer('${c.id}')" role="button" tabindex="0">
+    ${cover}
+    <div class="lib-body">
+      <div class="lib-badges"><span class="badge ${subj === 'chem' ? 'badge-gold' : 'badge-info'}">${subj === 'chem' ? 'كيمياء' : 'فيزياء'}</span>${lvl ? `<span class="badge lib-lvl">${lvl}</span>` : ''}<span class="badge badge-success">مجاني</span></div>
+      <h3 class="lib-title">${escHtml(libShortTitle(c))}</h3>
+      <p class="lib-sub">درس + تمارين + حلول مفصّلة</p>
+      <button class="lib-read" onclick="event.stopPropagation();openLibViewer('${c.id}')">📖 اقرأ الدرس</button>
+    </div>
+  </div>`;
+}
+function renderLibraryGrid() {
+  const grid = document.getElementById('library-grid');
+  if (!grid) return;
+  const items = _libraryItems.filter(c => _libraryFilter === 'all' || libSubject(c) === _libraryFilter);
+  grid.innerHTML = items.length ? items.map(libCardHtml).join('') : '<div class="lib-empty">لا توجد دروس في هذا القسم بعد — قريباً إن شاء الله</div>';
+  document.querySelectorAll('#library-filters .lib-chip').forEach(b => b.classList.toggle('active', b.dataset.f === _libraryFilter));
+}
+function setLibraryFilter(f) { _libraryFilter = f; renderLibraryGrid(); }
+function openLibViewer(id) {
+  const c = _libraryItems.find(x => String(x.id) === String(id));
+  if (!c) return;
+  document.getElementById('lib-viewer-title').textContent = libShortTitle(c);
+  document.getElementById('lib-viewer-iframe').src = libPreviewUrl(c.registration_link);
+  document.getElementById('lib-viewer').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeLibViewer() {
+  document.getElementById('lib-viewer').classList.remove('open');
+  document.getElementById('lib-viewer-iframe').src = 'about:blank';
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && document.getElementById('lib-viewer')?.classList.contains('open')) closeLibViewer(); });
+async function fetchActiveCourses() {
+  if (!supabaseClient) return null;
+  const { data, error } = await supabaseClient.from('courses').select('*').eq('is_active', true).order('created_at', { ascending: false });
+  if (error || !data) return null;
+  _libraryItems = data.filter(isLibraryItem);
+  return data;
+}
+async function loadHomeLibrary(retry) {
+  const sec = document.getElementById('home-library-section');
+  if (!sec) return;
+  if (!supabaseClient) { if (!retry) setTimeout(() => loadHomeLibrary(true), 1500); return; }
+  const data = await fetchActiveCourses();
+  if (!data || !_libraryItems.length) { sec.style.display = 'none'; return; }
+  document.getElementById('home-library-grid').innerHTML = _libraryItems.slice(0, 4).map(libCardHtml).join('');
+  sec.style.display = 'block';
+}
+
 async function loadPublicCourses() {
   const container = document.getElementById('courses-ads-container');
   if (!container || !supabaseClient) return;
-  const { data, error } = await supabaseClient.from('courses').select('*').eq('is_active', true).order('created_at', { ascending: false });
-  if (error || !data || !data.length) return; // keep the default "no courses" empty state
-  container.innerHTML = data.map(c => `
+  const data = await fetchActiveCourses();
+  if (!data) return; // keep the default "no courses" empty state
+  const libBlock = document.getElementById('library-block');
+  if (_libraryItems.length) {
+    libBlock.style.display = 'block';
+    document.getElementById('library-count').textContent = _libraryItems.length + ' دروس';
+    renderLibraryGrid();
+  } else { libBlock.style.display = 'none'; }
+  const courses = data.filter(c => !isLibraryItem(c));
+  const head = document.getElementById('courses-block-head');
+  if (!courses.length) {
+    head.style.display = 'flex';
+    container.innerHTML = `<div class="card p-6 text-center col-span-2"><div class="text-3xl mb-2">📢</div><p class="text-sm text-gray-400">لا توجد دورات مكثّفة معلنة حالياً — تابعنا لمعرفة موعد الدورة القادمة.</p></div>`;
+    return;
+  }
+  head.style.display = 'flex';
+  container.innerHTML = courses.map(c => `
     <div class="card p-5 sm:p-6">
       ${c.image_url ? `<img src="${escHtml(c.image_url)}" alt="${escHtml(c.title)}" style="width:100%;height:160px;object-fit:cover;border-radius:12px" class="mb-4">` : ''}
       <h3 class="text-lg font-black text-white mb-2">${escHtml(c.title)}</h3>
