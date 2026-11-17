@@ -8294,3 +8294,12 @@ dialog :link {
 }
 
 #printButton,#downloadButton,#secondaryPrint,#secondaryDownload,#secondaryOpenFile,#editorModeButtons,#editorModeSeparator,#viewBookmark,#viewBookmarkSeparator{display:none!important}
+
+/* berrah: back link when the viewer is opened as a full page on phones */
+.bp-back{display:none}
+@media (pointer:coarse),(max-width:899px){
+  html,body{touch-action:pan-x pan-y}
+  .bp-back{display:flex;align-items:center;position:fixed;bottom:16px;right:16px;z-index:100000;
+    background:#1a1650;color:#fff;font:700 15px/1 system-ui,sans-serif;padding:11px 16px;border-radius:999px;
+    text-decoration:none;box-shadow:0 4px 14px rgba(0,0,0,.35);direction:rtl}
+}
