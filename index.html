@@ -7400,8 +7400,15 @@ function openLibViewer(id) {
   if (!c) return;
   countLessonView(c.id);
   rememberLastLesson('pdf', c.id, libShortTitle(c));
+  const url = libPreviewUrl(c.registration_link);
+  // On phones the viewer opens as its own page: zooming inside an iframe on top of the
+  // heavy home page made mobile browsers run out of memory and crash the tab.
+  if (url.startsWith('/pdfjs/') && (window.matchMedia('(pointer:coarse)').matches || window.innerWidth < 900)) {
+    setTimeout(() => { window.location.href = url; }, 300);
+    return;
+  }
   document.getElementById('lib-viewer-title').textContent = libShortTitle(c);
-  document.getElementById('lib-viewer-iframe').src = libPreviewUrl(c.registration_link);
+  document.getElementById('lib-viewer-iframe').src = url;
   document.getElementById('lib-viewer').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
@@ -7427,6 +7434,7 @@ async function loadHomeLibrary(retry) {
   const fp = document.getElementById('stat-free-pdfs'); if (fp) fp.textContent = _libraryItems.length;
   document.getElementById('home-library-grid').innerHTML = _libraryItems.slice(0, 4).map(libCardHtml).join('');
   sec.style.display = 'block';
+  if (location.hash === '#home-library-section') setTimeout(() => sec.scrollIntoView({ block: 'start' }), 100);
 }
 
 async function loadPublicCourses() {

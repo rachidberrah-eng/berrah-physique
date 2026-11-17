@@ -23,7 +23,7 @@ See https://github.com/adobe-type-tools/cmap-resources
 <html dir="ltr" mozdisallowselectionprint>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
     <meta name="google" content="notranslate" />
     <title>PDF.js viewer</title>
 
@@ -36,12 +36,13 @@ See https://github.com/adobe-type-tools/cmap-resources
 <link rel="resource" type="application/l10n" href="locale/locale.json" />
 <script src="../build/pdf.mjs" type="module"></script>
 
-    <link rel="stylesheet" href="viewer.css" />
+    <link rel="stylesheet" href="viewer.css?v=3" />
 
-  <script src="viewer.mjs?v=2" type="module"></script>
+  <script src="viewer.mjs?v=3" type="module"></script>
   </head>
 
   <body tabindex="0">
+    <a id="bpBack" class="bp-back" href="/#home-library-section" target="_top">&rarr; رجوع للموقع</a>
     <div id="outerContainer">
       <span id="viewer-alert" class="visuallyHidden" role="alert"></span>
 
