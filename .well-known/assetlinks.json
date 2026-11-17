@@ -1,8 +1,11 @@
 [{
-      "relation": ["delegate_permission/common.handle_all_urls"],
-      "target": {
-        "namespace": "android_app",
-        "package_name": "app.berrah.twa",
-        "sha256_cert_fingerprints": ["84:3D:EB:24:58:50:58:0D:C1:AC:E0:F1:4E:F3:88:A1:DA:2D:0A:2D:DC:27:3A:6C:B4:C9:72:84:AC:CC:5F:D5"]
-      }
-    }]
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "app.berrah.twa",
+    "sha256_cert_fingerprints": [
+      "3C:63:A0:D3:98:7E:D7:FD:4B:D5:14:12:B2:DE:5A:73:A7:D8:FF:C9:29:4F:C7:B5:F3:68:F1:F7:C5:9F:CD:EF",
+      "84:3D:EB:24:58:50:58:0D:C1:AC:E0:F1:4E:F3:88:A1:DA:2D:0A:2D:DC:27:3A:6C:B4:C9:72:84:AC:CC:5F:D5"
+    ]
+  }
+}]
