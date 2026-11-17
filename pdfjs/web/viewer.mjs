@@ -29,7 +29,8 @@ const DEFAULT_SCALE_VALUE = "auto";
 const DEFAULT_SCALE = 1.0;
 const DEFAULT_SCALE_DELTA = 1.1;
 const MIN_SCALE = 0.1;
-const MAX_SCALE = 25.0;
+const __BP_MOBILE = typeof navigator !== "undefined" && (/Android|iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1));
+const MAX_SCALE = __BP_MOBILE ? 4.0 : 25.0;
 const UNKNOWN_SCALE = 0;
 const MAX_AUTO_SCALE = 1.25;
 const SCROLLBAR_PADDING = 40;
@@ -503,8 +504,10 @@ const calcRound = function () {
   } = navigator;
   const isAndroid = /Android/.test(userAgent);
   const isIOS = /\b(?:iPad|iPhone|iPod)(?=;)/.test(userAgent) || platform === "MacIntel" && maxTouchPoints > 1;
-  if (isIOS || isAndroid) {
-    compatParams.set("maxCanvasPixels", 5242880);
+  if (isIOS) {
+    compatParams.set("maxCanvasPixels", 2097152);
+  } else if (isAndroid) {
+    compatParams.set("maxCanvasPixels", 4194304);
   }
   if (isAndroid) {
     compatParams.set("useSystemFonts", false);
@@ -624,7 +627,7 @@ const defaultOptions = new Map([["allowedGlobalEvents", {
   value: false,
   kind: OptionKind.VIEWER + OptionKind.PREFERENCE
 }], ["enableDetailCanvas", {
-  value: true,
+  value: false,
   kind: OptionKind.VIEWER
 }], ...[], ["enableGuessAltText", {
   value: true,
@@ -14619,7 +14622,7 @@ class PDFPageView extends BasePDFPageView {
 
 
 
-const DEFAULT_CACHE_SIZE = 10;
+const DEFAULT_CACHE_SIZE = __BP_MOBILE ? 4 : 10;
 const PagesCountLimit = {
   FORCE_SCROLL_MODE_PAGE: 10000,
   FORCE_LAZY_PAGE_INIT: 5000,
@@ -15878,7 +15881,7 @@ class PDFViewer {
     if (numVisiblePages === 0) {
       return;
     }
-    const newCacheSize = Math.max(DEFAULT_CACHE_SIZE, 2 * numVisiblePages + 1);
+    const newCacheSize = Math.max(DEFAULT_CACHE_SIZE, (__BP_MOBILE ? 1 : 2) * numVisiblePages + 1);
     this.#buffer.resize(newCacheSize, visible.ids);
     for (const {
       view,
@@ -16336,7 +16339,7 @@ class PDFViewer {
         newScale = round((newScale * delta).toFixed(2) * 10) / 10;
       } while (--steps > 0);
     }
-    newScale = MathClamp(newScale, (/* inlined export .MIN_SCALE */0.1), (/* inlined export .MAX_SCALE */25));
+    newScale = MathClamp(newScale, (/* inlined export .MIN_SCALE */0.1), MAX_SCALE);
     this.#setScale(newScale, {
       noScroll: false,
       drawingDelay,
@@ -18480,7 +18483,7 @@ class Toolbar {
     opts.previous.disabled = pageNumber <= 1;
     opts.next.disabled = pageNumber >= pagesCount;
     opts.zoomOut.disabled = pageScale <= (/* inlined export .MIN_SCALE */0.1);
-    opts.zoomIn.disabled = pageScale >= (/* inlined export .MAX_SCALE */25);
+    opts.zoomIn.disabled = pageScale >= MAX_SCALE;
     let predefinedValueFound = false;
     for (const option of opts.scaleSelect.options) {
       if (option.value !== pageScaleValue) {
@@ -20559,7 +20562,7 @@ const PDFViewerApplication = {
     if (factor === 1) {
       return 1;
     }
-    const target = MathClamp(previousScale * factor * this[prop], (/* inlined export .MIN_SCALE */0.1), (/* inlined export .MAX_SCALE */25));
+    const target = MathClamp(previousScale * factor * this[prop], (/* inlined export .MIN_SCALE */0.1), MAX_SCALE);
     const newScale = Math.round(target * 100) / 100;
     this[prop] = target / newScale;
     return newScale / previousScale;
