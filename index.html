@@ -2,6 +2,14 @@
 <html lang="ar" dir="rtl" data-theme="dark">
 <head>
 <link rel="manifest" href="manifest.json">
+<script>
+// Android app (Trusted Web Activity) mode: hide payment UI to follow Google Play payments policy
+(function(){try{
+  var q=location.search, r=document.referrer||'';
+  if(/[?&]source=twa\b/.test(q) || r.indexOf('android-app://app.berrah.twa')===0) sessionStorage.setItem('bp_twa','1');
+  if(sessionStorage.getItem('bp_twa')==='1') document.documentElement.classList.add('twa');
+}catch(e){}})();
+</script>
 <meta name="theme-color" content="#0a0e1a">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
@@ -845,6 +853,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .lib-viewer-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#fff}
 .lib-viewer-loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#93a9bd;font-weight:700}
 .lib-viewer-note{font-size:.72rem;color:var(--text-muted);text-align:center;padding:.35rem;background:var(--dark-card);border-top:1px solid var(--border)}
+html.twa #pricing-compare-section,html.twa .pay-only,html.twa .balance-badge,html.twa [onclick*="goToSubscribe"],html.twa [onclick*="showDashTab('wallet')"],html.twa [onclick*="showDashTab('coupon')"]{display:none!important}
 @media(max-width:640px){.whatsapp-float{bottom:1rem;left:1rem;padding:.7rem;font-size:1.05rem;box-shadow:0 6px 18px rgba(37,211,102,.35)}}
 </style>
 </head>
@@ -956,7 +965,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 </div></div></section>
 <section class="py-16 sm:py-20 px-4"><div class="max-w-6xl mx-auto"><div class="text-center mb-12"><div class="inline-block px-4 py-1.5 rounded-full bg-gold-500/10 border border-gold-500/20 text-gold-500 text-xs font-bold mb-4">كيف تشترك؟</div><h2 class="font-black text-3xl sm:text-4xl lg:text-5xl mb-3">ثلاث خطوات <span class="text-gradient-gold">بسيطة</span></h2><p class="text-gray-400 max-w-xl mx-auto">انضم للمنصة في أقل من دقيقة</p></div><div class="grid sm:grid-cols-3 gap-4 sm:gap-6">
 <div class="card p-6 text-center"><div class="w-14 h-14 mx-auto rounded-2xl bg-gradient-to-br from-gold-500 to-gold-700 flex items-center justify-center text-2xl font-black text-dark-950 mb-4 shadow-lg shadow-gold-500/30">1</div><h3 class="text-lg font-bold mb-2 text-white">أنشئ حسابك</h3><p class="text-sm text-gray-400 leading-relaxed">سجّل اسمك ورقم هاتفك، واختر مستواك الدراسي وشعبتك</p></div>
-<div class="card p-6 text-center"><div class="w-14 h-14 mx-auto rounded-2xl bg-gradient-to-br from-gold-500 to-gold-700 flex items-center justify-center text-2xl font-black text-dark-950 mb-4 shadow-lg shadow-gold-500/30">2</div><h3 class="text-lg font-bold mb-2 text-white">اشحن رصيدك</h3><p class="text-sm text-gray-400 leading-relaxed">حوّل عبر CCP أو بريدي موب وارفع صورة الوصل من الموقع — تأكيد سريع من الأستاذ</p></div>
+<div class="card p-6 text-center pay-only"><div class="w-14 h-14 mx-auto rounded-2xl bg-gradient-to-br from-gold-500 to-gold-700 flex items-center justify-center text-2xl font-black text-dark-950 mb-4 shadow-lg shadow-gold-500/30">2</div><h3 class="text-lg font-bold mb-2 text-white">اشحن رصيدك</h3><p class="text-sm text-gray-400 leading-relaxed">حوّل عبر CCP أو بريدي موب وارفع صورة الوصل من الموقع — تأكيد سريع من الأستاذ</p></div>
 <div class="card p-6 text-center"><div class="w-14 h-14 mx-auto rounded-2xl bg-gradient-to-br from-gold-500 to-gold-700 flex items-center justify-center text-2xl font-black text-dark-950 mb-4 shadow-lg shadow-gold-500/30">3</div><h3 class="text-lg font-bold mb-2 text-white">شاهد وتعلّم</h3><p class="text-sm text-gray-400 leading-relaxed">درس واحد مجاناً كل يوم لتجربة المنصة، أو اشترك لفتح كل شيء بلا حدود</p></div>
 </div></div></section>
 <section class="py-16 sm:py-20 px-4"><div class="max-w-6xl mx-auto"><div class="text-center mb-12"><div class="inline-block px-4 py-1.5 rounded-full bg-gold-500/10 border border-gold-500/20 text-gold-500 text-xs font-bold mb-4">المميزات</div><h2 class="font-black text-3xl sm:text-4xl lg:text-5xl mb-3">لماذا <span class="text-gradient-gold">BERRAH PHYSICS</span>؟</h2></div><div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
@@ -1400,7 +1409,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 </div>
 </div>
 </main>
-<footer class="app-footer"><div class="max-w-6xl mx-auto"><div class="flex items-center justify-center gap-2 mb-3"><div class="w-8 h-8 flex items-center justify-center"><div class="brand-logo-img" role="img" aria-label="BERRAH PHYSICS" style="width:18px;height:18px"></div></div><span class="text-lg font-black logo-text">BERRAH PHYSICS</span></div><p class="text-sm text-gray-400 mb-3">منصة الفيزياء الأولى في ولاية برج بوعريريج 🇩🇿</p><p class="text-xs text-gray-500 mb-3">الأستاذ براح • ولاية برج بوعريريج</p><div class="flex flex-wrap items-center justify-center gap-4 text-sm"><a href="tel:0770032735" dir="ltr" class="flex items-center gap-1.5 text-gray-400 hover:text-gold-500 transition">📞 0770 03 27 35</a><span class="text-gray-700">•</span><a href="https://instagram.com/berrah_phys_34" target="_blank" class="flex items-center gap-1.5 text-gray-400 hover:text-gold-500 transition"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></svg> @berrah_phys_34</a><span class="text-gray-700">•</span><a href="https://berrah-phys.netlify.app/" target="_blank" class="flex items-center gap-1.5 text-gray-400 hover:text-gold-500 transition">🏫 دروس الدعم الحضورية</a><span class="text-gray-700">•</span><a href="#" onclick="showPage('courses');return false;" class="flex items-center gap-1.5 text-gray-400 hover:text-gold-500 transition">📚 دورات في الفيزياء</a><span class="text-gray-700">•</span><a href="#" onclick="showModal('terms');return false;" class="flex items-center gap-1.5 text-gray-400 hover:text-gold-500 transition">📜 الشروط والأحكام</a></div><p class="text-xs text-gray-600 mt-4">© 2026 جميع الحقوق محفوظة للأستاذ براح</p></div></footer>
+<footer class="app-footer"><div class="max-w-6xl mx-auto"><div class="flex items-center justify-center gap-2 mb-3"><div class="w-8 h-8 flex items-center justify-center"><div class="brand-logo-img" role="img" aria-label="BERRAH PHYSICS" style="width:18px;height:18px"></div></div><span class="text-lg font-black logo-text">BERRAH PHYSICS</span></div><p class="text-sm text-gray-400 mb-3">منصة الفيزياء الأولى في ولاية برج بوعريريج 🇩🇿</p><p class="text-xs text-gray-500 mb-3">الأستاذ براح • ولاية برج بوعريريج</p><div class="flex flex-wrap items-center justify-center gap-4 text-sm"><a href="tel:0770032735" dir="ltr" class="flex items-center gap-1.5 text-gray-400 hover:text-gold-500 transition">📞 0770 03 27 35</a><span class="text-gray-700">•</span><a href="https://instagram.com/berrah_phys_34" target="_blank" class="flex items-center gap-1.5 text-gray-400 hover:text-gold-500 transition"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></svg> @berrah_phys_34</a><span class="text-gray-700">•</span><a href="https://berrah-phys.netlify.app/" target="_blank" class="flex items-center gap-1.5 text-gray-400 hover:text-gold-500 transition">🏫 دروس الدعم الحضورية</a><span class="text-gray-700">•</span><a href="#" onclick="showPage('courses');return false;" class="flex items-center gap-1.5 text-gray-400 hover:text-gold-500 transition">📚 دورات في الفيزياء</a><span class="text-gray-700">•</span><a href="#" onclick="showModal('terms');return false;" class="flex items-center gap-1.5 text-gray-400 hover:text-gold-500 transition">📜 الشروط والأحكام</a><span class="text-gray-700">•</span><a href="/privacy.html" class="flex items-center gap-1.5 text-gray-400 hover:text-gold-500 transition">🔒 سياسة الخصوصية</a></div><p class="text-xs text-gray-600 mt-4">© 2026 جميع الحقوق محفوظة للأستاذ براح</p></div></footer>
 <a href="https://wa.me/213770032735?text=السلام%20عليكم%20أستاذ%20براح،%0Aأرغب%20في%20الاستفسار%20عن%20منصة%20BERRAH%20PHYSICS" class="whatsapp-float" target="_blank" title="تواصل معنا عبر واتساب">💬<span>تواصل معنا</span></a>
 <div class="lib-viewer" id="lib-viewer" role="dialog" aria-modal="true"><div class="lib-viewer-bar"><button onclick="closeLibViewer()" title="إغلاق">✕</button><div class="t" id="lib-viewer-title"></div></div><div class="lib-viewer-frame"><div class="lib-viewer-loading">⏳ جارِ تحميل الدرس...</div><iframe id="lib-viewer-iframe" title="عرض الدرس" allow="autoplay"></iframe></div><div class="lib-viewer-note">© الأستاذ براح عبد الرشيد — للقراءة فقط</div></div>
 <div class="modal-backdrop" id="modal-login"><div class="modal-content p-6 sm:p-8"><button onclick="hideModal('login')" class="absolute top-4 left-4 w-9 h-9 flex items-center justify-center rounded-xl bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition">✕</button><div class="text-center mb-6"><div class="w-16 h-16 mx-auto flex items-center justify-center mb-4"><div class="brand-logo-img" role="img" aria-label="BERRAH PHYSICS" style="width:38px;height:38px"></div></div><h2 class="text-2xl font-black text-white mb-1">مرحباً بعودتك</h2><p class="text-sm text-gray-400">سجّل دخولك للوصول إلى حسابك</p></div><div id="login-error" class="mb-4"></div><div class="space-y-4"><div><label class="form-label">رقم الهاتف</label><input type="text" id="login-phone" placeholder="07xxxxxxxx" class="form-input" dir="ltr"></div><div><label class="form-label">الرقم السري</label><div class="pw-wrap"><input type="password" id="login-password" placeholder="••••••••" class="form-input"><button type="button" class="pw-toggle" onclick="togglePwVisibility('login-password', this)" tabindex="-1">👁</button></div></div><div class="text-left"><a href="#" onclick="hideModal('login');showModal('forgot-password');return false;" class="text-xs text-gold-500 hover:underline">نسيت كلمة السر؟</a></div><button onclick="doLogin()" id="login-submit-btn" class="btn btn-primary btn-block btn-lg">تسجيل الدخول</button></div><div class="mt-6 pt-6 border-t border-white/5 text-center"><p class="text-sm text-gray-400">ليس لديك حساب؟ <a href="#" onclick="hideModal('login');showModal('register'); return false;" class="text-gold-500 font-bold hover:underline">أنشئ حساباً جديداً</a></p></div></div></div>
@@ -2841,7 +2850,9 @@ function loadWilayas() {
 
 // Replaces the old "go to store" flow — the real subscription options live
 // inside the wallet tab now (page-store is retired).
+function isAppMode() { return document.documentElement.classList.contains('twa'); }
 function goToSubscribe() {
+  if (isAppMode()) { try { showToast('هذا المحتوى متاح للمشتركين فقط', 'info'); } catch (e) {} return; }
   showPage('dashboard');
   setTimeout(() => showDashTab('wallet'), 50);
 }
@@ -3423,6 +3434,7 @@ function loadDashboard() {
 }
 
 function showDashTab(tab) {
+  if (isAppMode() && (tab === 'wallet' || tab === 'coupon')) tab = 'lessons';
   ['lessons','results','exams','evaluation','wallet','coupon','settings'].forEach(t => document.getElementById('dash-' + t).classList.add('hidden'));
   document.getElementById('dash-' + tab).classList.remove('hidden');
   document.querySelectorAll('#dash-tabs .tab-pill').forEach((t,i) => {
