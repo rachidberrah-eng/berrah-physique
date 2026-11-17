@@ -146,10 +146,10 @@ if (window.__isInAppBrowser) {
 
   document.addEventListener('DOMContentLoaded', function(){
     var banner = document.createElement('div');
-    banner.style.cssText = 'position:fixed;top:0;right:0;left:0;z-index:99999;background:#1a1650;border-bottom:2px solid #d4a017;padding:12px 16px;text-align:center;font-family:Cairo,sans-serif;color:#fff;font-size:14px;box-shadow:0 4px 12px rgba(0,0,0,0.3)';
+    banner.style.cssText = 'position:fixed;top:0;right:0;left:0;z-index:99999;background:#1a1650;border-bottom:2px solid #d4a017;padding:12px 16px;text-align:center;font-family:'IBM Plex Sans Arabic',sans-serif;color:#fff;font-size:14px;box-shadow:0 4px 12px rgba(0,0,0,0.3)';
     banner.innerHTML = 'لتجربة أفضل بلا مشاكل، افتح الموقع في متصفحك العادي (Chrome/Safari)'
-      + '<br><button id="bp-open-browser-btn" style="margin-top:8px;background:#d4a017;color:#0f0c3a;border:none;padding:8px 20px;border-radius:8px;font-weight:800;font-family:Cairo,sans-serif;font-size:14px">افتح في المتصفح</button>'
-      + ' <button id="bp-dismiss-banner-btn" style="margin-top:8px;background:transparent;color:#9ca3af;border:1px solid #444;padding:8px 16px;border-radius:8px;font-family:Cairo,sans-serif;font-size:13px">تجاهل</button>';
+      + '<br><button id="bp-open-browser-btn" style="margin-top:8px;background:#d4a017;color:#0f0c3a;border:none;padding:8px 20px;border-radius:8px;font-weight:800;font-family:'IBM Plex Sans Arabic',sans-serif;font-size:14px">افتح في المتصفح</button>'
+      + ' <button id="bp-dismiss-banner-btn" style="margin-top:8px;background:transparent;color:#9ca3af;border:1px solid #444;padding:8px 16px;border-radius:8px;font-family:'IBM Plex Sans Arabic',sans-serif;font-size:13px">تجاهل</button>';
     document.body.prepend(banner);
     document.body.style.paddingTop = banner.offsetHeight + 'px';
 
@@ -185,7 +185,7 @@ if (window.__isInAppBrowser) {
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js" defer></script>
 <style id="tw-static">@keyframes tw-pulse{0%,100%{opacity:1}50%{opacity:.5}}
@@ -519,13 +519,13 @@ if (window.__isInAppBrowser) {
 a{color:inherit;text-decoration:none}
 [data-theme="light"] .brand-logo-img{filter:brightness(0) saturate(100%)}
 html{scroll-behavior:smooth}
-body{font-family:'Cairo','Segoe UI',Tahoma,Arial,sans-serif;background:var(--dark-bg);color:var(--text-primary);min-height:100vh;min-height:calc(var(--vh, 1vh) * 100);min-height:100dvh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body{font-family:'IBM Plex Sans Arabic','Segoe UI',Tahoma,Arial,sans-serif;background:var(--dark-bg);color:var(--text-primary);min-height:100vh;min-height:calc(var(--vh, 1vh) * 100);min-height:100dvh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
 body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 0%,color-mix(in srgb, var(--gold) 8%, transparent) 0%,transparent 50%),radial-gradient(ellipse at 80% 100%,color-mix(in srgb, var(--info) 5%, transparent) 0%,transparent 50%);pointer-events:none;z-index:-1}
 ::-webkit-scrollbar{width:8px;height:8px}
 ::-webkit-scrollbar-track{background:var(--dark-bg)}
 ::-webkit-scrollbar-thumb{background:var(--gold-dark);border-radius:10px}
 ::-webkit-scrollbar-thumb:hover{background:var(--gold)}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:0.5rem;padding:0.75rem 1.5rem;border-radius:12px;font-weight:700;font-size:0.95rem;font-family:'Cairo',sans-serif;transition:all 0.3s cubic-bezier(0.4,0,0.2,1);cursor:pointer;border:none;text-decoration:none;white-space:nowrap;position:relative;overflow:hidden}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:0.5rem;padding:0.75rem 1.5rem;border-radius:12px;font-weight:700;font-size:0.95rem;font-family:'IBM Plex Sans Arabic',sans-serif;transition:all 0.3s cubic-bezier(0.4,0,0.2,1);cursor:pointer;border:none;text-decoration:none;white-space:nowrap;position:relative;overflow:hidden}
 .btn::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.2),transparent);transition:left 0.5s}
 .btn:hover::before{left:100%}
 .btn:active{transform:scale(0.97)}
@@ -569,7 +569,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .icon-nav-btn.icon-nav-highlight{background:rgba(232,162,61,0.12);background:color-mix(in srgb, var(--gold) 12%, transparent);border:1px solid color-mix(in srgb, var(--gold) 30%, transparent)}
 .icon-nav-btn.icon-nav-highlight:hover{background:rgba(232,162,61,0.2);background:color-mix(in srgb, var(--gold) 20%, transparent)}
 [data-tooltip]{position:relative}
-[data-tooltip]::after{content:attr(data-tooltip);position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%) translateY(-4px);background:var(--dark-elevated);color:var(--text-primary);font-size:0.75rem;font-weight:600;font-family:'Cairo',sans-serif;padding:0.4rem 0.75rem;border-radius:8px;border:1px solid var(--border);white-space:nowrap;pointer-events:none;opacity:0;visibility:hidden;transition:opacity 0.2s,transform 0.2s;box-shadow:0 8px 20px rgba(0,0,0,0.4);z-index:100}
+[data-tooltip]::after{content:attr(data-tooltip);position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%) translateY(-4px);background:var(--dark-elevated);color:var(--text-primary);font-size:0.75rem;font-weight:600;font-family:'IBM Plex Sans Arabic',sans-serif;padding:0.4rem 0.75rem;border-radius:8px;border:1px solid var(--border);white-space:nowrap;pointer-events:none;opacity:0;visibility:hidden;transition:opacity 0.2s,transform 0.2s;box-shadow:0 8px 20px rgba(0,0,0,0.4);z-index:100}
 [data-tooltip]:hover::after{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
 @media(max-width:1024px){.mobile-menu-btn{display:flex}.desktop-nav{display:none!important}}
 .mobile-nav{position:fixed;top:0;right:0;bottom:0;width:85%;max-width:360px;background:var(--dark-elevated);z-index:100;transform:translateX(100%);transition:transform 0.4s cubic-bezier(0.4,0,0.2,1);box-shadow:-10px 0 40px rgba(0,0,0,0.5);overflow-y:auto}
@@ -637,7 +637,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .lesson-card:hover::after{opacity:1}
 .lesson-card:hover{border-color:var(--border-hover);transform:translateY(-4px);box-shadow:0 15px 40px rgba(0,0,0,0.3)}
 .lesson-card.hidden-lesson{opacity:0.5;filter:grayscale(0.5)}
-.badge{display:inline-flex;align-items:center;gap:0.25rem;padding:0.25rem 0.75rem;border-radius:9999px;font-size:0.75rem;font-weight:700;font-family:'Cairo',sans-serif}
+.badge{display:inline-flex;align-items:center;gap:0.25rem;padding:0.25rem 0.75rem;border-radius:9999px;font-size:0.75rem;font-weight:700;font-family:'IBM Plex Sans Arabic',sans-serif}
 .badge-gold{background:rgba(232,162,61,0.15);background:color-mix(in srgb, var(--gold) 15%, transparent);color:var(--gold);border:1px solid color-mix(in srgb, var(--gold) 30%, transparent)}
 .badge-success{background:rgba(63,184,132,0.15);background:color-mix(in srgb, var(--success) 15%, transparent);color:var(--success);border:1px solid color-mix(in srgb, var(--success) 30%, transparent)}
 .badge-info{background:rgba(79,211,216,0.15);background:color-mix(in srgb, var(--info) 15%, transparent);color:var(--info);border:1px solid color-mix(in srgb, var(--info) 30%, transparent)}
@@ -650,12 +650,12 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .unit-card:hover,.unit-card.active{border-color:var(--gold);transform:translateY(-4px);box-shadow:0 15px 40px color-mix(in srgb, var(--gold) 20%, transparent)}
 .unit-card.active{background:linear-gradient(145deg,color-mix(in srgb, var(--gold) 10%, transparent),var(--dark-card))}
 .unit-icon{width:56px;height:56px;border-radius:14px;background:rgba(232,162,61,0.15);background:color-mix(in srgb, var(--gold) 15%, transparent);display:flex;align-items:center;justify-content:center;font-size:1.75rem;margin:0 auto 0.75rem;position:relative;z-index:1}
-.form-input{width:100%;padding:0.875rem 1rem;background:rgba(11,24,38,0.5);background:color-mix(in srgb, var(--dark-bg) 50%, transparent);border:1.5px solid var(--border);border-radius:12px;color:var(--text-primary);font-size:0.95rem;font-family:'Cairo',sans-serif;transition:all 0.3s}
+.form-input{width:100%;padding:0.875rem 1rem;background:rgba(11,24,38,0.5);background:color-mix(in srgb, var(--dark-bg) 50%, transparent);border:1.5px solid var(--border);border-radius:12px;color:var(--text-primary);font-size:0.95rem;font-family:'IBM Plex Sans Arabic',sans-serif;transition:all 0.3s}
 .form-input:focus{outline:none;border-color:var(--gold);background:rgba(11,24,38,0.8);background:color-mix(in srgb, var(--dark-bg) 80%, transparent);box-shadow:0 0 0 3px color-mix(in srgb, var(--gold) 10%, transparent)}
 .form-input::placeholder{color:var(--text-muted)}
 .form-label{display:block;margin-bottom:0.5rem;font-size:0.875rem;font-weight:600;color:var(--text-secondary)}
 .wilaya-selector{max-height:240px;overflow-y:auto;background:rgba(11,24,38,0.5);background:color-mix(in srgb, var(--dark-bg) 50%, transparent);border:1.5px solid var(--border);border-radius:12px;padding:0.75rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:0.5rem}
-.wilaya-option{padding:0.5rem 0.75rem;background:transparent;border:1px solid var(--border);color:var(--text-secondary);border-radius:8px;font-size:0.8rem;cursor:pointer;transition:all 0.2s;font-family:'Cairo',sans-serif;text-align:center}
+.wilaya-option{padding:0.5rem 0.75rem;background:transparent;border:1px solid var(--border);color:var(--text-secondary);border-radius:8px;font-size:0.8rem;cursor:pointer;transition:all 0.2s;font-family:'IBM Plex Sans Arabic',sans-serif;text-align:center}
 .wilaya-option:hover{border-color:var(--gold);color:var(--text-primary)}
 .wilaya-option.selected{background:var(--gold);color:var(--on-accent);border-color:var(--gold);font-weight:700}
 .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:90;display:flex;align-items:center;justify-content:center;padding:1rem;opacity:0;pointer-events:none;transition:opacity 0.3s}
@@ -686,7 +686,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .cp-seek::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:13px;border-radius:50%;background:var(--gold-500,var(--gold));cursor:pointer}
 .cp-seek::-moz-range-thumb{width:13px;height:13px;border-radius:50%;background:var(--gold-500,var(--gold));border:none;cursor:pointer}
 .player-fs-btn:hover{background:rgba(232,162,61,0.9);background:color-mix(in srgb, var(--gold) 90%, transparent);color:#0a0e1a;border-color:rgba(232,162,61,0.5);border-color:color-mix(in srgb, var(--gold) 50%, transparent);transform:scale(1.05)}
-.tab-pill{padding:0.625rem 1.25rem;border-radius:12px;font-size:0.875rem;font-weight:600;color:var(--text-secondary);background:transparent;border:1px solid transparent;cursor:pointer;transition:all 0.3s;white-space:nowrap;font-family:'Cairo',sans-serif}
+.tab-pill{padding:0.625rem 1.25rem;border-radius:12px;font-size:0.875rem;font-weight:600;color:var(--text-secondary);background:transparent;border:1px solid transparent;cursor:pointer;transition:all 0.3s;white-space:nowrap;font-family:'IBM Plex Sans Arabic',sans-serif}
 .tab-pill:hover{color:var(--text-primary);background:rgba(11,24,38,0.045);background:color-mix(in srgb, var(--dark-bg) 4.5%, transparent)}
 .tab-pill.active{background:var(--gradient-gold);color:var(--on-accent);box-shadow:0 4px 15px color-mix(in srgb, var(--gold) 30%, transparent)}
 .notif-badge{position:absolute;top:-4px;left:-4px;background:#ef4444;color:#fff;font-size:10px;font-weight:800;min-width:16px;height:16px;border-radius:9px;display:flex;align-items:center;justify-content:center;padding:0 4px}
@@ -754,7 +754,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .lesson-sidebar-item.active{background:rgba(232,162,61,0.15);background:color-mix(in srgb, var(--gold) 15%, transparent);border:1px solid color-mix(in srgb, var(--gold) 30%, transparent);color:var(--gold)}
 .lesson-sidebar-item .num{width:28px;height:28px;border-radius:50%;background:rgba(11,24,38,0.045);background:color-mix(in srgb, var(--dark-bg) 4.5%, transparent);display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;flex-shrink:0}
 .lesson-sidebar-item.active .num{background:var(--gradient-gold);color:var(--on-accent)}
-.quick-amount-btn{padding:0.5rem 1rem;border:1.5px solid var(--border);background:rgba(11,24,38,0.5);background:color-mix(in srgb, var(--dark-bg) 50%, transparent);color:var(--text-secondary);border-radius:10px;cursor:pointer;transition:all 0.2s;font-weight:700;font-size:0.875rem;font-family:'Cairo',sans-serif}
+.quick-amount-btn{padding:0.5rem 1rem;border:1.5px solid var(--border);background:rgba(11,24,38,0.5);background:color-mix(in srgb, var(--dark-bg) 50%, transparent);color:var(--text-secondary);border-radius:10px;cursor:pointer;transition:all 0.2s;font-weight:700;font-size:0.875rem;font-family:'IBM Plex Sans Arabic',sans-serif}
 .quick-amount-btn:hover{border-color:var(--gold);color:var(--gold);background:rgba(232,162,61,0.05);background:color-mix(in srgb, var(--gold) 5%, transparent)}
 .quick-amount-btn.selected{background:var(--gradient-gold);color:var(--on-accent);border-color:var(--gold)}
 .coupon-code{font-family:'Courier New',monospace;background:linear-gradient(135deg,color-mix(in srgb, var(--gold) 20%, transparent),color-mix(in srgb, var(--gold) 5%, transparent));padding:0.75rem 1.5rem;border:2px dashed var(--gold);border-radius:12px;font-size:1.5rem;font-weight:900;color:var(--gold);letter-spacing:0.2em;display:inline-block}
@@ -831,7 +831,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .lib-section-title{font-weight:900;font-size:1.25rem;color:var(--text-primary);display:flex;align-items:center;gap:.5rem}
 .lib-count{font-size:.75rem;font-weight:700;color:var(--text-muted);background:var(--dark-elevated);border:1px solid var(--border);border-radius:9999px;padding:.1rem .6rem}
 .lib-filters{display:flex;gap:.4rem;flex-wrap:wrap}
-.lib-chip{font-family:'Cairo',sans-serif;font-size:.8rem;font-weight:700;padding:.35rem .9rem;border-radius:9999px;border:1px solid var(--border);background:var(--dark-card);color:var(--text-secondary);cursor:pointer;transition:all .2s}
+.lib-chip{font-family:'IBM Plex Sans Arabic',sans-serif;font-size:.8rem;font-weight:700;padding:.35rem .9rem;border-radius:9999px;border:1px solid var(--border);background:var(--dark-card);color:var(--text-secondary);cursor:pointer;transition:all .2s}
 .lib-chip:hover{border-color:var(--border-hover);color:var(--gold)}
 .lib-chip.active{background:color-mix(in srgb,var(--gold) 15%,transparent);border-color:var(--gold);color:var(--gold)}
 .lib-grid{display:grid;grid-template-columns:1fr;gap:.85rem}
@@ -851,7 +851,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .lib-badges .lib-lvl{background:var(--dark-elevated);color:var(--text-secondary);border:1px solid var(--border)}
 .lib-title{font-weight:900;font-size:1rem;line-height:1.5;color:var(--text-primary);margin:0}
 .lib-sub{font-size:.78rem;color:var(--text-muted);margin:0}
-.lib-read{margin-top:auto;align-self:flex-start;font-family:'Cairo',sans-serif;font-weight:800;font-size:.8rem;color:var(--on-accent);background:var(--gradient-gold);border:none;border-radius:10px;padding:.4rem .9rem;cursor:pointer}
+.lib-read{margin-top:auto;align-self:flex-start;font-family:'IBM Plex Sans Arabic',sans-serif;font-weight:800;font-size:.8rem;color:var(--on-accent);background:var(--gradient-gold);border:none;border-radius:10px;padding:.4rem .9rem;cursor:pointer}
 .lib-empty{grid-column:1/-1;text-align:center;color:var(--text-muted);font-size:.9rem;padding:1.5rem}
 .lib-viewer{position:fixed;inset:0;z-index:200;background:rgba(5,12,20,.92);display:none;flex-direction:column}
 .lib-viewer.open{display:flex}
@@ -1533,7 +1533,7 @@ html.twa #pricing-compare-section,html.twa .pay-only,html.twa .balance-badge,htm
     <p class="text-xs text-gray-500">أمثلة: <code dir="ltr">x^2</code> · <code dir="ltr">\sqrt{x}</code> · <code dir="ltr">\frac{a}{b}</code> · <code dir="ltr">v_0</code> · <code dir="ltr">\vec{F}</code></p>
   </div>
   <div id="ew-canvas" contenteditable="true" dir="rtl"
-    style="min-height:300px;max-height:45vh;overflow-y:auto;background:#fff;color:#111;padding:1.5rem;border:1px solid rgba(255,255,255,0.1);border-radius:0 0 12px 12px;font-family:'Cairo',sans-serif;line-height:1.8"
+    style="min-height:300px;max-height:45vh;overflow-y:auto;background:#fff;color:#111;padding:1.5rem;border:1px solid rgba(255,255,255,0.1);border-radius:0 0 12px 12px;font-family:'IBM Plex Sans Arabic',sans-serif;line-height:1.8"
   ></div>
 
   <div class="grid sm:grid-cols-2 gap-3 mt-3">
@@ -4716,7 +4716,7 @@ async function saveExerciseFromWriter() {
   try {
     // Build a clean, printable page (title + content) for the PDF export
     const printWrapper = document.createElement('div');
-    printWrapper.style.cssText = 'background:#fff;color:#111;padding:2rem;font-family:Cairo,sans-serif;direction:rtl';
+    printWrapper.style.cssText = 'background:#fff;color:#111;padding:2rem;font-family:'IBM Plex Sans Arabic',sans-serif;direction:rtl';
     printWrapper.innerHTML = `<h1 style="font-size:1.4rem;font-weight:800;margin-bottom:1rem">${escHtml(title)}</h1>` + canvas.innerHTML;
 
     const pdfBlob = await html2pdf().set({
