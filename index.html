@@ -1582,7 +1582,7 @@ html.twa #pricing-compare-section,html.twa .pay-only,html.twa .balance-badge,htm
 <div class="modal-backdrop" id="modal-live-sessions"><div class="modal-content p-6 sm:p-8">
   <button onclick="hideModal('live-sessions')" class="absolute top-4 left-4 w-9 h-9 flex items-center justify-center rounded-xl bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition">✕</button>
   <h2 class="text-xl font-black text-white mb-1">🎥 دروس عبر الزوم</h2>
-  <p class="text-sm text-gray-400 mb-4">حصص الزوم المبرمجة — مفتوحة للجميع، ويظهر رابط الدخول قبل 30 دقيقة من بداية الحصة</p>
+  <p class="text-sm text-gray-400 mb-4">حصص الزوم المبرمجة — مفتوحة للجميع، وتُفتح الحصة في Zoom قبل 30 دقيقة من بدايتها</p>
   <div id="live-sessions-modal-body" class="space-y-3 max-h-[55vh] overflow-y-auto"></div>
 </div></div>
 <div class="modal-backdrop" id="modal-quiz-history"><div class="modal-content p-6 sm:p-8">
@@ -3495,8 +3495,8 @@ async function renderLiveSessionsModalBody(silent) {
     const dateStr = st.start.toLocaleDateString('ar-DZ', { weekday: 'long', day: 'numeric', month: 'long' });
     const timeStr = liveTimeStr(st.start);
     let actionHtml;
-    if (st.isOpen && s.meeting_link) {
-      actionHtml = `<a href="${s.meeting_link}" target="_blank" rel="noopener" class="btn ${st.hasStarted ? 'btn-danger' : 'btn-primary'} btn-sm">${st.hasStarted ? '🔴 انضم الآن' : '✅ ادخل الآن'}</a>`;
+    if (s.meeting_link) {
+      actionHtml = `<a href="${s.meeting_link}" target="_blank" rel="noopener" class="btn ${st.hasStarted ? 'btn-danger' : 'btn-primary'} btn-sm">${st.isOpen ? (st.hasStarted ? '🔴 انضم الآن' : '✅ ادخل الآن') : '🔗 رابط الحصة'}</a>`;
     } else {
       actionHtml = `<div class="text-center"><button disabled class="btn btn-secondary btn-sm" style="opacity:.7;cursor:not-allowed">🔒 يُفتح ${liveTimeStr(st.opensAt)}</button><div class="text-xs text-gray-500 mt-1">بعد ${liveCountdownStr(st.opensAt - now)}</div></div>`;
     }
@@ -3507,7 +3507,7 @@ async function renderLiveSessionsModalBody(silent) {
         <div>
           <div class="font-bold text-white text-sm">${escHtml(s.title)}</div>
           <div class="text-xs text-gray-400 mt-0.5">${dateStr} — ${timeStr}${(!currentUser || currentUser.isTeacher) ? ' • ' + liveLevelName(s.level) : ''}</div>
-          ${st.isOpen ? '' : `<div class="text-xs text-gray-500 mt-0.5">يُفتح الرابط قبل ${LIVE_OPEN_BEFORE_MIN} دقيقة من بداية الحصة</div>`}
+          ${st.isOpen ? '' : `<div class="text-xs text-gray-500 mt-0.5">تُفتح الحصة في Zoom قبل ${LIVE_OPEN_BEFORE_MIN} دقيقة من بدايتها</div>`}
         </div>
       </div>
       ${actionHtml}
@@ -3533,8 +3533,8 @@ async function loadLiveSessionBanner() {
   const timeStr = liveTimeStr(st.start);
   const tint = st.isOpen ? 'var(--danger)' : 'var(--gold)';
   const heading = st.isOpen ? (st.hasStarted ? 'الدرس المباشر جارٍ الآن!' : 'الرابط مفتوح — ادخل الآن') : 'الدرس المباشر القادم';
-  const action = (st.isOpen && session.meeting_link)
-    ? `<a href="${session.meeting_link}" target="_blank" rel="noopener" class="btn ${st.hasStarted ? 'btn-danger' : 'btn-primary'} btn-block sm:w-auto">${st.hasStarted ? '🔴 انضم الآن' : '✅ ادخل الآن'}</a>`
+  const action = session.meeting_link
+    ? `<a href="${session.meeting_link}" target="_blank" rel="noopener" class="btn ${st.hasStarted ? 'btn-danger' : 'btn-primary'} btn-block sm:w-auto">${st.isOpen ? (st.hasStarted ? '🔴 انضم الآن' : '✅ ادخل الآن') : '🔗 رابط الحصة'}</a>`
     : `<div class="text-center"><button disabled class="btn btn-secondary btn-block sm:w-auto" style="opacity:.75;cursor:not-allowed">🔒 يُفتح الرابط الساعة ${liveTimeStr(st.opensAt)}</button><div class="text-xs text-gray-500 mt-1">بعد ${liveCountdownStr(st.opensAt - now)}</div></div>`;
 
   el.innerHTML = `<div class="card p-5 mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4" style="background:linear-gradient(135deg,color-mix(in srgb, ${tint} ${st.isOpen ? 12 : 10}%, transparent),transparent);border-color:color-mix(in srgb, ${tint} ${st.isOpen ? 35 : 30}%, transparent)">
