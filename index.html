@@ -954,6 +954,7 @@ html.twa #pricing-compare-section,html.twa .pay-only,html.twa .balance-badge,htm
 <div id="hero-cta-guest" class="flex flex-wrap items-center justify-center gap-3 sm:gap-4 animate-slide-up">
 <button onclick="showModal('register')" class="btn btn-primary btn-lg group">أنشئ حسابك مجاناً<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="group-hover:-translate-x-1 transition-transform"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
 <button onclick="goToFreeLibrary()" class="btn btn-secondary btn-lg">📚 دروس مجانية الآن</button>
+<button onclick="openLiveSessionsModal()" class="btn btn-secondary btn-lg">🎥 حصص الزوم</button>
 <div class="w-full text-center lg:text-right mt-1"><button onclick="showModal('login')" class="hero-login-link">لدي حساب — تسجيل الدخول</button></div>
 </div>
 <div id="hero-cta-user" class="hidden flex flex-wrap items-center justify-center gap-3 sm:gap-4 animate-slide-up">
@@ -1581,7 +1582,7 @@ html.twa #pricing-compare-section,html.twa .pay-only,html.twa .balance-badge,htm
 <div class="modal-backdrop" id="modal-live-sessions"><div class="modal-content p-6 sm:p-8">
   <button onclick="hideModal('live-sessions')" class="absolute top-4 left-4 w-9 h-9 flex items-center justify-center rounded-xl bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition">✕</button>
   <h2 class="text-xl font-black text-white mb-1">🎥 دروس عبر الزوم</h2>
-  <p class="text-sm text-gray-400 mb-4">الدروس المباشرة المبرمجة لمستواك وشعبتك</p>
+  <p class="text-sm text-gray-400 mb-4">حصص الزوم المبرمجة — مفتوحة للجميع، ويظهر رابط الدخول قبل 30 دقيقة من بداية الحصة</p>
   <div id="live-sessions-modal-body" class="space-y-3 max-h-[55vh] overflow-y-auto"></div>
 </div></div>
 <div class="modal-backdrop" id="modal-quiz-history"><div class="modal-content p-6 sm:p-8">
@@ -2275,6 +2276,17 @@ const DB = {
     return [];
   },
 
+  // Public, no-login read of live sessions. The server returns meeting_link only from
+  // 30 min before start to 2 h after; otherwise it is null (see get_public_live_sessions).
+  async getPublicLiveSessions() {
+    if (!supabaseClient) return [];
+    const { data, error } = await supabaseClient.rpc('get_public_live_sessions');
+    if (!error && Array.isArray(data)) return data;
+    // Fallback (e.g. function not deployed yet): logged-in users can still read the table
+    console.warn('get_public_live_sessions error:', error);
+    return currentUser ? this.getLiveSessions() : [];
+  },
+
   async createLiveSession(session) {
     if (!supabaseClient) return false;
     const { error } = await supabaseClient.from('live_sessions').insert([session]);
@@ -2824,7 +2836,7 @@ function updateHeaderUI() {
     subscribeToRealtimeUpdates();
     renderStreakBadge();
   } else {
-    nav.innerHTML = `<button onclick="showPage('home')" class="btn btn-ghost text-sm">🏠 الرئيسية</button><a href="https://berrah-phys.netlify.app/" target="_blank" class="btn btn-ghost text-sm">🏫 دروس الدعم الحضورية</a><button onclick="showPage('courses')" class="btn btn-ghost text-sm">📚 دورات في الفيزياء</button><button onclick="showModal('login')" class="btn btn-primary text-sm">تسجيل الدخول</button>`;
+    nav.innerHTML = `<button onclick="showPage('home')" class="btn btn-ghost text-sm">🏠 الرئيسية</button><a href="https://berrah-phys.netlify.app/" target="_blank" class="btn btn-ghost text-sm">🏫 دروس الدعم الحضورية</a><button onclick="showPage('courses')" class="btn btn-ghost text-sm">📚 دورات في الفيزياء</button><button onclick="openLiveSessionsModal()" class="btn btn-ghost text-sm">🎥 حصص الزوم</button><button onclick="showModal('login')" class="btn btn-primary text-sm">تسجيل الدخول</button>`;
   }
   updateMobileNav();
   toggleAssistantFab();
@@ -2850,7 +2862,7 @@ function updateMobileNav() {
     html += `<a href="#" onclick="logout();return false;" class="flex items-center gap-3 px-4 py-3 rounded-xl text-red-400 hover:bg-red-500/10 transition mt-4">🚪 تسجيل الخروج</a>`;
     links.innerHTML = html;
   } else {
-    links.innerHTML = `<a href="#" onclick="showPage('home');toggleMobileNav();return false;" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/5 hover:text-white transition">🏠 الرئيسية</a><a href="https://berrah-phys.netlify.app/" target="_blank" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/5 hover:text-white transition">🏫 دروس الدعم الحضورية</a><a href="#" onclick="showPage('courses');toggleMobileNav();return false;" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/5 hover:text-white transition">📚 دورات في الفيزياء</a><a href="#" onclick="showModal('login');toggleMobileNav();return false;" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gold-500 bg-gold-500/10 mt-2">🔐 تسجيل الدخول</a><a href="#" onclick="showModal('register');toggleMobileNav();return false;" class="btn btn-primary btn-block mt-2">📝 إنشاء حساب</a>`;
+    links.innerHTML = `<a href="#" onclick="showPage('home');toggleMobileNav();return false;" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/5 hover:text-white transition">🏠 الرئيسية</a><a href="https://berrah-phys.netlify.app/" target="_blank" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/5 hover:text-white transition">🏫 دروس الدعم الحضورية</a><a href="#" onclick="showPage('courses');toggleMobileNav();return false;" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/5 hover:text-white transition">📚 دورات في الفيزياء</a><a href="#" onclick="openLiveSessionsModal();toggleMobileNav();return false;" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/5 hover:text-white transition">🎥 حصص الزوم</a><a href="#" onclick="showModal('login');toggleMobileNav();return false;" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gold-500 bg-gold-500/10 mt-2">🔐 تسجيل الدخول</a><a href="#" onclick="showModal('register');toggleMobileNav();return false;" class="btn btn-primary btn-block mt-2">📝 إنشاء حساب</a>`;
   }
 }
 
@@ -3419,6 +3431,10 @@ function liveSessionState(s, now) {
   };
 }
 
+function liveLevelName(level) {
+  return level === '1as' ? 'أولى ثانوي' : level === '2as' ? 'ثانية ثانوي' : level === '3as' ? 'ثالثة ثانوي' : 'كل المستويات';
+}
+
 function liveTimeStr(d) {
   return d.toLocaleTimeString('ar-DZ', { hour: '2-digit', minute: '2-digit' });
 }
@@ -3431,6 +3447,7 @@ function liveCountdownStr(ms) {
 }
 
 function liveRelevantSessions(sessions) {
+  if (!currentUser || currentUser.isTeacher || !currentUser.level) return sessions;
   return sessions.filter(s =>
     (s.level === 'all' || s.level === currentUser.level) &&
     (matchesStream(s.stream, currentUser.stream))
@@ -3459,14 +3476,9 @@ async function openLiveSessionsModal() {
 async function renderLiveSessionsModalBody(silent) {
   const body = document.getElementById('live-sessions-modal-body');
 
-  if (!currentUser.isTeacher && !hasFullAccess()) {
-    body.innerHTML = `<div class="empty-state"><div class="empty-state-icon">🎥</div><p class="text-lg font-bold mb-1">الحصص المباشرة للمشتركين فقط</p><p class="text-sm mb-4">اشترك بالفصل أو الموسم الكامل لتحضر حصص الزوم مع الأستاذ مباشرة</p><button onclick="hideModal('live-sessions');goToSubscribe()" class="btn btn-primary">🎓 اشترك الآن</button></div>`;
-    return;
-  }
-
   if (!silent) body.innerHTML = '<div class="text-center text-gray-500 py-8 text-sm">جارِ التحميل...</div>';
 
-  const sessions = await DB.getLiveSessions();
+  const sessions = await DB.getPublicLiveSessions();
   const now = new Date();
   // Keep sessions that are open now or still upcoming; drop finished ones
   const active = liveRelevantSessions(sessions)
@@ -3483,9 +3495,7 @@ async function renderLiveSessionsModalBody(silent) {
     const dateStr = st.start.toLocaleDateString('ar-DZ', { weekday: 'long', day: 'numeric', month: 'long' });
     const timeStr = liveTimeStr(st.start);
     let actionHtml;
-    if (!hasFullAccess()) {
-      actionHtml = `<button onclick="hideModal('live-sessions');showPage('dashboard');showDashTab('wallet');" class="btn btn-secondary btn-sm">🔒 للمشتركين — ترقية</button>`;
-    } else if (st.isOpen) {
+    if (st.isOpen && s.meeting_link) {
       actionHtml = `<a href="${s.meeting_link}" target="_blank" rel="noopener" class="btn ${st.hasStarted ? 'btn-danger' : 'btn-primary'} btn-sm">${st.hasStarted ? '🔴 انضم الآن' : '✅ ادخل الآن'}</a>`;
     } else {
       actionHtml = `<div class="text-center"><button disabled class="btn btn-secondary btn-sm" style="opacity:.7;cursor:not-allowed">🔒 يُفتح ${liveTimeStr(st.opensAt)}</button><div class="text-xs text-gray-500 mt-1">بعد ${liveCountdownStr(st.opensAt - now)}</div></div>`;
@@ -3496,7 +3506,7 @@ async function renderLiveSessionsModalBody(silent) {
         <div class="text-2xl">${st.isOpen ? '🔴' : '🎥'}</div>
         <div>
           <div class="font-bold text-white text-sm">${escHtml(s.title)}</div>
-          <div class="text-xs text-gray-400 mt-0.5">${dateStr} — ${timeStr}</div>
+          <div class="text-xs text-gray-400 mt-0.5">${dateStr} — ${timeStr}${(!currentUser || currentUser.isTeacher) ? ' • ' + liveLevelName(s.level) : ''}</div>
           ${st.isOpen ? '' : `<div class="text-xs text-gray-500 mt-0.5">يُفتح الرابط قبل ${LIVE_OPEN_BEFORE_MIN} دقيقة من بداية الحصة</div>`}
         </div>
       </div>
@@ -3508,8 +3518,7 @@ async function renderLiveSessionsModalBody(silent) {
 async function loadLiveSessionBanner() {
   const el = document.getElementById('live-session-banner');
   if (!el || !currentUser || currentUser.isTeacher) return;
-  if (!hasFullAccess()) { el.innerHTML = ''; return; } // free plan: no live sessions
-  const sessions = await DB.getLiveSessions();
+  const sessions = await DB.getPublicLiveSessions();
   const now = new Date();
   const relevant = liveRelevantSessions(sessions);
   const open = relevant.filter(s => liveSessionState(s, now).isOpen)
@@ -3524,7 +3533,7 @@ async function loadLiveSessionBanner() {
   const timeStr = liveTimeStr(st.start);
   const tint = st.isOpen ? 'var(--danger)' : 'var(--gold)';
   const heading = st.isOpen ? (st.hasStarted ? 'الدرس المباشر جارٍ الآن!' : 'الرابط مفتوح — ادخل الآن') : 'الدرس المباشر القادم';
-  const action = st.isOpen
+  const action = (st.isOpen && session.meeting_link)
     ? `<a href="${session.meeting_link}" target="_blank" rel="noopener" class="btn ${st.hasStarted ? 'btn-danger' : 'btn-primary'} btn-block sm:w-auto">${st.hasStarted ? '🔴 انضم الآن' : '✅ ادخل الآن'}</a>`
     : `<div class="text-center"><button disabled class="btn btn-secondary btn-block sm:w-auto" style="opacity:.75;cursor:not-allowed">🔒 يُفتح الرابط الساعة ${liveTimeStr(st.opensAt)}</button><div class="text-xs text-gray-500 mt-1">بعد ${liveCountdownStr(st.opensAt - now)}</div></div>`;
 
