@@ -3399,8 +3399,64 @@ function updateUsersStorage() {
   if (idx >= 0) { users[idx] = currentUser; safeStorage.setItem('bp_users', JSON.stringify(users)); }
 }
 
+// Live (Zoom) sessions: the join link is shown only from LIVE_OPEN_BEFORE_MIN minutes
+// before the start until LIVE_OPEN_AFTER_MIN minutes after it. Before that, students see
+// when it will open, and the card/banner refresh themselves every 30 s so the button
+// appears on time without reloading the page.
+const LIVE_OPEN_BEFORE_MIN = 30;
+const LIVE_OPEN_AFTER_MIN = 120;
+let liveSessionsRefreshTimer = null;
+
+function liveSessionState(s, now) {
+  const start = new Date(s.scheduled_at);
+  const diffMin = (now - start) / 60000;
+  const opensAt = new Date(start.getTime() - LIVE_OPEN_BEFORE_MIN * 60000);
+  return {
+    start, opensAt,
+    isOpen: diffMin >= -LIVE_OPEN_BEFORE_MIN && diffMin <= LIVE_OPEN_AFTER_MIN,
+    hasStarted: diffMin >= 0,
+    isOver: diffMin > LIVE_OPEN_AFTER_MIN
+  };
+}
+
+function liveTimeStr(d) {
+  return d.toLocaleTimeString('ar-DZ', { hour: '2-digit', minute: '2-digit' });
+}
+
+function liveCountdownStr(ms) {
+  const totalMin = Math.max(1, Math.ceil(ms / 60000));
+  const h = Math.floor(totalMin / 60), m = totalMin % 60;
+  if (h === 0) return `${m} دقيقة`;
+  return m === 0 ? `${h} سا` : `${h} سا ${m} د`;
+}
+
+function liveRelevantSessions(sessions) {
+  return sessions.filter(s =>
+    (s.level === 'all' || s.level === currentUser.level) &&
+    (matchesStream(s.stream, currentUser.stream))
+  );
+}
+
+function scheduleLiveSessionsRefresh() {
+  if (liveSessionsRefreshTimer) return;
+  liveSessionsRefreshTimer = setInterval(() => {
+    const modal = document.getElementById('modal-live-sessions');
+    const modalOpen = modal && modal.classList.contains('open');
+    const banner = document.getElementById('live-session-banner');
+    const bannerVisible = banner && banner.offsetParent !== null;
+    if (modalOpen) renderLiveSessionsModalBody(true);
+    if (bannerVisible) loadLiveSessionBanner();
+    if (!modalOpen && !bannerVisible) { clearInterval(liveSessionsRefreshTimer); liveSessionsRefreshTimer = null; }
+  }, 30000);
+}
+
 async function openLiveSessionsModal() {
   showModal('live-sessions');
+  await renderLiveSessionsModalBody(false);
+  scheduleLiveSessionsRefresh();
+}
+
+async function renderLiveSessionsModalBody(silent) {
   const body = document.getElementById('live-sessions-modal-body');
 
   if (!currentUser.isTeacher && !hasFullAccess()) {
@@ -3408,16 +3464,13 @@ async function openLiveSessionsModal() {
     return;
   }
 
-  body.innerHTML = '<div class="text-center text-gray-500 py-8 text-sm">جارِ التحميل...</div>';
+  if (!silent) body.innerHTML = '<div class="text-center text-gray-500 py-8 text-sm">جارِ التحميل...</div>';
 
   const sessions = await DB.getLiveSessions();
   const now = new Date();
-  const relevant = sessions.filter(s =>
-    (s.level === 'all' || s.level === currentUser.level) &&
-    (matchesStream(s.stream, currentUser.stream))
-  );
-  // Keep sessions still "live" (up to 2h after start) or fully upcoming; drop old ones
-  const active = relevant.filter(s => (now - new Date(s.scheduled_at)) / 60000 <= 120)
+  // Keep sessions that are open now or still upcoming; drop finished ones
+  const active = liveRelevantSessions(sessions)
+    .filter(s => !liveSessionState(s, now).isOver)
     .sort((a,b) => new Date(a.scheduled_at) - new Date(b.scheduled_at));
 
   if (active.length === 0) {
@@ -3426,20 +3479,25 @@ async function openLiveSessionsModal() {
   }
 
   body.innerHTML = active.map(s => {
-    const start = new Date(s.scheduled_at);
-    const diffMin = (now - start) / 60000;
-    const isLiveNow = diffMin >= -10 && diffMin <= 120;
-    const dateStr = start.toLocaleDateString('ar-DZ', { weekday: 'long', day: 'numeric', month: 'long' });
-    const timeStr = start.toLocaleTimeString('ar-DZ', { hour: '2-digit', minute: '2-digit' });
-    const actionHtml = hasFullAccess()
-      ? `<a href="${s.meeting_link}" target="_blank" class="btn ${isLiveNow ? 'btn-danger' : 'btn-primary'} btn-sm">${isLiveNow ? 'انضم الآن' : 'الرابط'}</a>`
-      : `<button onclick="hideModal('live-sessions');showPage('dashboard');showDashTab('wallet');" class="btn btn-secondary btn-sm">🔒 للمشتركين — ترقية</button>`;
-    return `<div class="card p-4 flex items-center justify-between gap-3" style="${isLiveNow ? 'border-color:rgba(226,88,74,0.35);border-color:color-mix(in srgb, var(--danger) 35%, transparent);background:rgba(226,88,74,0.08);background:color-mix(in srgb, var(--danger) 8%, transparent)' : ''}">
+    const st = liveSessionState(s, now);
+    const dateStr = st.start.toLocaleDateString('ar-DZ', { weekday: 'long', day: 'numeric', month: 'long' });
+    const timeStr = liveTimeStr(st.start);
+    let actionHtml;
+    if (!hasFullAccess()) {
+      actionHtml = `<button onclick="hideModal('live-sessions');showPage('dashboard');showDashTab('wallet');" class="btn btn-secondary btn-sm">🔒 للمشتركين — ترقية</button>`;
+    } else if (st.isOpen) {
+      actionHtml = `<a href="${s.meeting_link}" target="_blank" rel="noopener" class="btn ${st.hasStarted ? 'btn-danger' : 'btn-primary'} btn-sm">${st.hasStarted ? '🔴 انضم الآن' : '✅ ادخل الآن'}</a>`;
+    } else {
+      actionHtml = `<div class="text-center"><button disabled class="btn btn-secondary btn-sm" style="opacity:.7;cursor:not-allowed">🔒 يُفتح ${liveTimeStr(st.opensAt)}</button><div class="text-xs text-gray-500 mt-1">بعد ${liveCountdownStr(st.opensAt - now)}</div></div>`;
+    }
+    const hl = st.isOpen ? 'border-color:rgba(226,88,74,0.35);border-color:color-mix(in srgb, var(--danger) 35%, transparent);background:rgba(226,88,74,0.08);background:color-mix(in srgb, var(--danger) 8%, transparent)' : '';
+    return `<div class="card p-4 flex items-center justify-between gap-3" style="${hl}">
       <div class="flex items-center gap-3">
-        <div class="text-2xl">${isLiveNow ? '🔴' : '🎥'}</div>
+        <div class="text-2xl">${st.isOpen ? '🔴' : '🎥'}</div>
         <div>
           <div class="font-bold text-white text-sm">${escHtml(s.title)}</div>
           <div class="text-xs text-gray-400 mt-0.5">${dateStr} — ${timeStr}</div>
+          ${st.isOpen ? '' : `<div class="text-xs text-gray-500 mt-0.5">يُفتح الرابط قبل ${LIVE_OPEN_BEFORE_MIN} دقيقة من بداية الحصة</div>`}
         </div>
       </div>
       ${actionHtml}
@@ -3453,36 +3511,35 @@ async function loadLiveSessionBanner() {
   if (!hasFullAccess()) { el.innerHTML = ''; return; } // free plan: no live sessions
   const sessions = await DB.getLiveSessions();
   const now = new Date();
-  const relevant = sessions.filter(s =>
-    (s.level === 'all' || s.level === currentUser.level) &&
-    (matchesStream(s.stream, currentUser.stream))
-  );
-  // A session counts as "live now" for up to 2 hours after its start time
-  const live = relevant.find(s => {
-    const start = new Date(s.scheduled_at);
-    const diffMin = (now - start) / 60000;
-    return diffMin >= -10 && diffMin <= 120; // joinable from 10 min before to 2h after start
-  });
-  const upcoming = relevant.filter(s => new Date(s.scheduled_at) > now).sort((a,b) => new Date(a.scheduled_at) - new Date(b.scheduled_at))[0];
-  const session = live || upcoming;
+  const relevant = liveRelevantSessions(sessions);
+  const open = relevant.filter(s => liveSessionState(s, now).isOpen)
+    .sort((a,b) => new Date(a.scheduled_at) - new Date(b.scheduled_at))[0];
+  const upcoming = relevant.filter(s => liveSessionState(s, now).opensAt > now)
+    .sort((a,b) => new Date(a.scheduled_at) - new Date(b.scheduled_at))[0];
+  const session = open || upcoming;
   if (!session) { el.innerHTML = ''; return; }
 
-  const start = new Date(session.scheduled_at);
-  const isLiveNow = live === session;
-  const dateStr = start.toLocaleDateString('ar-DZ', { weekday: 'long', day: 'numeric', month: 'long' });
-  const timeStr = start.toLocaleTimeString('ar-DZ', { hour: '2-digit', minute: '2-digit' });
+  const st = liveSessionState(session, now);
+  const dateStr = st.start.toLocaleDateString('ar-DZ', { weekday: 'long', day: 'numeric', month: 'long' });
+  const timeStr = liveTimeStr(st.start);
+  const tint = st.isOpen ? 'var(--danger)' : 'var(--gold)';
+  const heading = st.isOpen ? (st.hasStarted ? 'الدرس المباشر جارٍ الآن!' : 'الرابط مفتوح — ادخل الآن') : 'الدرس المباشر القادم';
+  const action = st.isOpen
+    ? `<a href="${session.meeting_link}" target="_blank" rel="noopener" class="btn ${st.hasStarted ? 'btn-danger' : 'btn-primary'} btn-block sm:w-auto">${st.hasStarted ? '🔴 انضم الآن' : '✅ ادخل الآن'}</a>`
+    : `<div class="text-center"><button disabled class="btn btn-secondary btn-block sm:w-auto" style="opacity:.75;cursor:not-allowed">🔒 يُفتح الرابط الساعة ${liveTimeStr(st.opensAt)}</button><div class="text-xs text-gray-500 mt-1">بعد ${liveCountdownStr(st.opensAt - now)}</div></div>`;
 
-  el.innerHTML = `<div class="card p-5 mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4" style="background:linear-gradient(135deg,${isLiveNow?'color-mix(in srgb, var(--danger) 12%, transparent)':'color-mix(in srgb, var(--gold) 10%, transparent)'},transparent);border-color:${isLiveNow?'color-mix(in srgb, var(--danger) 35%, transparent)':'color-mix(in srgb, var(--gold) 30%, transparent)'}">
+  el.innerHTML = `<div class="card p-5 mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4" style="background:linear-gradient(135deg,color-mix(in srgb, ${tint} ${st.isOpen ? 12 : 10}%, transparent),transparent);border-color:color-mix(in srgb, ${tint} ${st.isOpen ? 35 : 30}%, transparent)">
     <div class="flex items-center gap-3">
-      <div class="text-3xl">${isLiveNow ? '🔴' : '🎥'}</div>
+      <div class="text-3xl">${st.isOpen ? '🔴' : '🎥'}</div>
       <div>
-        <div class="text-sm font-bold ${isLiveNow?'text-red-400':'text-gold-500'}">${isLiveNow ? 'الدرس المباشر جارٍ الآن!' : 'الدرس المباشر القادم'}</div>
+        <div class="text-sm font-bold ${st.isOpen ? 'text-red-400' : 'text-gold-500'}">${heading}</div>
         <div class="text-white font-black">${escHtml(session.title)}</div>
         <div class="text-xs text-gray-400 mt-0.5">${dateStr} — الساعة ${timeStr}</div>
       </div>
     </div>
-    <a href="${hasFullAccess() ? session.meeting_link : '#'}" ${hasFullAccess() ? 'target="_blank"' : `onclick="event.preventDefault();showDashTab('wallet')"`} class="btn ${isLiveNow?'btn-danger':'btn-primary'} btn-block sm:w-auto">${hasFullAccess() ? (isLiveNow ? '🔴 انضم الآن' : '🔗 رابط الانضمام') : '🔒 خاصية للمشتركين — ترقية'}</a>
+    ${action}
   </div>`;
+  scheduleLiveSessionsRefresh();
 }
 
 function loadDashboard() {
@@ -3960,7 +4017,7 @@ function deadlineBadgeHtml(level, unit) {
   if (info.overdue) return `<div class="text-[11px] text-red-400 mt-1">⚠️ فات الموعد (${info.deadline})</div>`;
   if (info.daysLeft === 0) return `<div class="text-[11px] text-amber-400 mt-1">⏳ اليوم آخر أجل!</div>`;
   if (info.daysLeft <= 3) return `<div class="text-[11px] text-amber-400 mt-1">⏳ باقي ${info.daysLeft} ${info.daysLeft === 1 ? 'يوم' : 'أيام'}</div>`;
-  return `<div class="text-[11px] text-gray-500 mt-1">📅 الموعد: ${info.deadline}</div>`;
+  return `<div class="text-xs text-gray-500 mt-1">📅 الموعد: ${info.deadline}</div>`;
 }
 
 async function loadUnits() {
