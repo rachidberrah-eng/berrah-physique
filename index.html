@@ -607,6 +607,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .trust-badge b{font-size:1.05rem;font-weight:900;color:var(--gold)}
 .trust-badge span{font-size:.8rem;font-weight:600;color:var(--text-primary,inherit);opacity:.85;line-height:1.3}
 #hero-cta-user.hidden,#hero-cta-guest.hidden,#hero-continue-btn.hidden{display:none!important}
+.att-layout{display:grid;gap:1.5rem}@media(min-width:1024px){.att-layout{grid-template-columns:1fr 2fr}}
 .hero-login-link{background:none;border:0;color:inherit;opacity:.85;font-weight:700;text-decoration:underline;text-underline-offset:4px;cursor:pointer;font-size:.95rem}
 .trust-item .ic{font-size:1.1rem}
 .pw-wrap{position:relative}
@@ -1082,7 +1083,7 @@ html.twa #pricing-compare-section,html.twa .pay-only,html.twa .balance-badge,htm
 <div id="page-dashboard" class="hidden"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
 <div class="card p-6 sm:p-8 mb-6 relative overflow-hidden"><div class="absolute top-0 right-0 w-40 h-40 bg-gold-500/10 rounded-full blur-3xl"></div><div class="relative z-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"><div class="flex items-center gap-4"><div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-gold-500 to-gold-700 flex items-center justify-center text-2xl sm:text-3xl font-black text-dark-950 shadow-lg shadow-gold-500/30" id="user-avatar">أ</div><div><div class="text-xs text-gray-500 mb-0.5">مرحباً بعودتك</div><h1 class="text-xl sm:text-2xl font-black text-white" id="user-name">مرحباً</h1><div class="text-sm text-gold-500 font-semibold mt-0.5" id="user-level"></div></div></div><div class="flex items-center gap-3"><div class="balance-badge" style="cursor:pointer" onclick="showDashTab('wallet')" title="اضغط لفتح المحفظة"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v12M9 9h4.5a2 2 0 010 4H9"/></svg><span id="user-balance">0 دج</span><span style="opacity:0.7;font-size:0.75rem">💳</span></div></div></div></div>
 <div id="live-session-banner"></div>
-<div class="scroll-fade-wrap"><div class="flex items-center gap-2 mb-6 pb-2 overflow-x-auto no-scrollbar" style="flex-wrap:nowrap" id="dash-tabs"><button class="tab-pill active" onclick="showDashTab('lessons')"><svg class="icon"><use href="#icon-book"/></svg> دروسي</button><button class="tab-pill" onclick="showDashTab('results')"><svg class="icon"><use href="#icon-chart"/></svg> نتائجي</button><button class="tab-pill" onclick="showDashTab('exams')"><svg class="icon"><use href="#icon-exam"/></svg> اختبارات الفصول</button><button class="tab-pill" onclick="showDashTab('evaluation')"><svg class="icon"><use href="#icon-star"/></svg> تقييم الأستاذ</button><button class="tab-pill" onclick="showDashTab('wallet')"><svg class="icon"><use href="#icon-wallet"/></svg> المحفظة</button><button class="tab-pill" onclick="showDashTab('coupon')"><svg class="icon"><use href="#icon-ticket"/></svg> كوبون شحن</button><button class="tab-pill" onclick="showDashTab('settings')"><svg class="icon"><use href="#icon-settings"/></svg> الإعدادات</button></div></div>
+<div class="scroll-fade-wrap"><div class="flex items-center gap-2 mb-6 pb-2 overflow-x-auto no-scrollbar" style="flex-wrap:nowrap" id="dash-tabs"><button class="tab-pill active" onclick="showDashTab('lessons')"><svg class="icon"><use href="#icon-book"/></svg> دروسي</button><button class="tab-pill" onclick="showDashTab('results')"><svg class="icon"><use href="#icon-chart"/></svg> نتائجي</button><button class="tab-pill" onclick="showDashTab('exams')"><svg class="icon"><use href="#icon-exam"/></svg> اختبارات الفصول</button><button class="tab-pill" onclick="showDashTab('evaluation')"><svg class="icon"><use href="#icon-star"/></svg> تقييم الأستاذ</button><button class="tab-pill" onclick="showDashTab('attendance')"><svg class="icon"><use href="#icon-chart"/></svg> حضوري واشتراكي</button><button class="tab-pill" onclick="showDashTab('wallet')"><svg class="icon"><use href="#icon-wallet"/></svg> المحفظة</button><button class="tab-pill" onclick="showDashTab('coupon')"><svg class="icon"><use href="#icon-ticket"/></svg> كوبون شحن</button><button class="tab-pill" onclick="showDashTab('settings')"><svg class="icon"><use href="#icon-settings"/></svg> الإعدادات</button></div></div>
 <div id="dash-lessons">
 <div id="dash-units-view">
 <div class="flex items-center justify-between mb-4"><h2 class="text-lg sm:text-xl font-bold text-white">📖 الوحدات الدراسية</h2><span class="text-sm text-gray-500" id="units-count"></span></div>
@@ -1097,6 +1098,7 @@ html.twa #pricing-compare-section,html.twa .pay-only,html.twa .balance-badge,htm
 <div id="dash-results" class="hidden"><div class="card overflow-hidden"><div class="p-4 sm:p-6 border-b border-white/5"><h2 class="text-lg sm:text-xl font-bold text-white">📝 نتائج اختباراتي</h2></div><div class="overflow-x-auto"><table class="data-table"><thead><tr><th>الدرس</th><th>النتيجة</th><th>النسبة</th><th>التاريخ</th></tr></thead><tbody id="my-results-table"><tr><td colspan="4" class="text-center text-gray-500 py-8">جارِ التحميل...</td></tr></tbody></table></div></div></div>
 <div id="dash-exams" class="hidden"><div class="card p-6"><h2 class="text-lg sm:text-xl font-bold text-white mb-2">🗂️ اختبارات الفصول</h2><p class="text-sm text-gray-400 mb-4">أجب على الاختبار على ورقة، ثم صوّر إجابتك وارفعها هنا — سيصحّحها الذكاء الاصطناعي فوراً</p><div id="student-exams-list"><div class="text-center text-gray-500 py-8">جارِ التحميل...</div></div></div></div>
 <div id="dash-evaluation" class="hidden"><div id="evaluation-body"></div></div>
+<div id="dash-attendance" class="hidden"><div id="attendance-body"></div></div>
 
 
 <div id="dash-wallet" class="hidden"><div class="grid lg:grid-cols-2 gap-6">
@@ -3431,6 +3433,20 @@ function liveSessionState(s, now) {
   };
 }
 
+// Records the student's attendance when they press "join". Fire-and-forget: the link
+// still opens in a new tab straight away; the server decides present/late from the time.
+function markLiveJoin(sessionId) {
+  try {
+    if (!supabaseClient || !currentUser || currentUser.isTeacher) return;
+    supabaseClient.rpc('record_live_attendance', { p_session_id: String(sessionId) })
+      .then(({ data, error }) => {
+        if (error) { console.warn('record_live_attendance:', error); return; }
+        if (data && data.ok && data.status === 'late') showToast(`⏰ سُجّل حضورك متأخراً بـ ${data.late_minutes} دقيقة`, 'info');
+        else if (data && data.ok) showToast('✅ سُجّل حضورك', 'success');
+      });
+  } catch (e) { console.warn(e); }
+}
+
 function liveLevelName(level) {
   return level === '1as' ? 'أولى ثانوي' : level === '2as' ? 'ثانية ثانوي' : level === '3as' ? 'ثالثة ثانوي' : 'كل المستويات';
 }
@@ -3496,7 +3512,7 @@ async function renderLiveSessionsModalBody(silent) {
     const timeStr = liveTimeStr(st.start);
     let actionHtml;
     if (s.meeting_link) {
-      actionHtml = `<a href="${s.meeting_link}" target="_blank" rel="noopener" class="btn ${st.hasStarted ? 'btn-danger' : 'btn-primary'} btn-sm">${st.isOpen ? (st.hasStarted ? '🔴 انضم الآن' : '✅ ادخل الآن') : '🔗 رابط الحصة'}</a>`;
+      actionHtml = `<a href="${s.meeting_link}" target="_blank" rel="noopener" onclick="markLiveJoin('${s.id}')" class="btn ${st.hasStarted ? 'btn-danger' : 'btn-primary'} btn-sm">${st.isOpen ? (st.hasStarted ? '🔴 انضم الآن' : '✅ ادخل الآن') : '🔗 رابط الحصة'}</a>`;
     } else {
       actionHtml = `<div class="text-center"><button disabled class="btn btn-secondary btn-sm" style="opacity:.7;cursor:not-allowed">🔒 يُفتح ${liveTimeStr(st.opensAt)}</button><div class="text-xs text-gray-500 mt-1">بعد ${liveCountdownStr(st.opensAt - now)}</div></div>`;
     }
@@ -3508,6 +3524,7 @@ async function renderLiveSessionsModalBody(silent) {
           <div class="font-bold text-white text-sm">${escHtml(s.title)}</div>
           <div class="text-xs text-gray-400 mt-0.5">${dateStr} — ${timeStr}${(!currentUser || currentUser.isTeacher) ? ' • ' + liveLevelName(s.level) : ''}</div>
           ${st.isOpen ? '' : `<div class="text-xs text-gray-500 mt-0.5">تُفتح الحصة في Zoom قبل ${LIVE_OPEN_BEFORE_MIN} دقيقة من بدايتها</div>`}
+          ${(!currentUser && s.meeting_link) ? `<div class="text-xs mt-0.5" style="color:var(--gold)">سجّل الدخول قبل الانضمام ليُحسب حضورك</div>` : ''}
         </div>
       </div>
       ${actionHtml}
@@ -3534,7 +3551,7 @@ async function loadLiveSessionBanner() {
   const tint = st.isOpen ? 'var(--danger)' : 'var(--gold)';
   const heading = st.isOpen ? (st.hasStarted ? 'الدرس المباشر جارٍ الآن!' : 'الرابط مفتوح — ادخل الآن') : 'الدرس المباشر القادم';
   const action = session.meeting_link
-    ? `<a href="${session.meeting_link}" target="_blank" rel="noopener" class="btn ${st.hasStarted ? 'btn-danger' : 'btn-primary'} btn-block sm:w-auto">${st.isOpen ? (st.hasStarted ? '🔴 انضم الآن' : '✅ ادخل الآن') : '🔗 رابط الحصة'}</a>`
+    ? `<a href="${session.meeting_link}" target="_blank" rel="noopener" onclick="markLiveJoin('${session.id}')" class="btn ${st.hasStarted ? 'btn-danger' : 'btn-primary'} btn-block sm:w-auto">${st.isOpen ? (st.hasStarted ? '🔴 انضم الآن' : '✅ ادخل الآن') : '🔗 رابط الحصة'}</a>`
     : `<div class="text-center"><button disabled class="btn btn-secondary btn-block sm:w-auto" style="opacity:.75;cursor:not-allowed">🔒 يُفتح الرابط الساعة ${liveTimeStr(st.opensAt)}</button><div class="text-xs text-gray-500 mt-1">بعد ${liveCountdownStr(st.opensAt - now)}</div></div>`;
 
   el.innerHTML = `<div class="card p-5 mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4" style="background:linear-gradient(135deg,color-mix(in srgb, ${tint} ${st.isOpen ? 12 : 10}%, transparent),transparent);border-color:color-mix(in srgb, ${tint} ${st.isOpen ? 35 : 30}%, transparent)">
@@ -3564,15 +3581,16 @@ function loadDashboard() {
 
 function showDashTab(tab) {
   if (isAppMode() && (tab === 'wallet' || tab === 'coupon')) tab = 'lessons';
-  ['lessons','results','exams','evaluation','wallet','coupon','settings'].forEach(t => document.getElementById('dash-' + t).classList.add('hidden'));
+  ['lessons','results','exams','evaluation','attendance','wallet','coupon','settings'].forEach(t => document.getElementById('dash-' + t).classList.add('hidden'));
   document.getElementById('dash-' + tab).classList.remove('hidden');
   document.querySelectorAll('#dash-tabs .tab-pill').forEach((t,i) => {
-    const tabs = ['lessons','results','exams','evaluation','wallet','coupon','settings'];
+    const tabs = ['lessons','results','exams','evaluation','attendance','wallet','coupon','settings'];
     t.classList.toggle('active', tabs[i] === tab);
   });
   if (tab === 'results') loadMyQuizResults();
   if (tab === 'exams') loadStudentExams();
   if (tab === 'evaluation') loadMyEvaluation();
+  if (tab === 'attendance') loadMyAttendance();
   if (tab === 'wallet') { loadWallet(); loadMyPaymentRequests(); }
   if (tab === 'settings') loadMySettingsForm();
 }
@@ -5109,6 +5127,107 @@ async function loadSuggestedExercises() {
   </div>`;
 }
 
+// ===== Student: attendance + subscription status =====
+async function loadMyAttendance() {
+  const el = document.getElementById('attendance-body');
+  if (!el) return;
+  if (!supabaseClient || !currentUser) { el.innerHTML = '<div class="text-center text-gray-500 py-8">غير متاح بدون اتصال</div>'; return; }
+  el.innerHTML = '<div class="text-center text-gray-500 py-8">جارِ التحميل...</div>';
+
+  // Subscription status
+  const exp = currentUser.subscriptionExpiresAt ? new Date(currentUser.subscriptionExpiresAt) : null;
+  const now = new Date();
+  let subHtml;
+  if (currentUser.hasActiveSubscription && exp && exp > now) {
+    const days = Math.ceil((exp - now) / 86400000);
+    const warn = days <= 3;
+    const tint = warn ? 'var(--danger)' : 'var(--success, #34d399)';
+    subHtml = `<div class="card p-5" style="border-color:${tint}">
+      <div class="text-sm text-gray-400 mb-1">اشتراكي</div>
+      <div class="text-xl font-bold text-white">${warn ? '⚠️ ينتهي قريباً' : '✅ اشتراك فعّال'}</div>
+      <div class="text-sm text-gray-300 mt-2">ينتهي يوم <b>${exp.toLocaleDateString('ar-DZ', { weekday:'long', day:'numeric', month:'long', year:'numeric' })}</b></div>
+      <div class="text-sm mt-1" style="color:${tint}">${days === 1 ? 'باقي يوم واحد' : days === 2 ? 'باقي يومان' : 'باقي ' + days + ' ' + (days <= 10 ? 'أيام' : 'يوماً')}</div>
+      ${warn && !isAppMode() ? `<button onclick="showDashTab('wallet')" class="btn btn-primary btn-sm mt-3">🔄 جدّد الاشتراك الآن</button>` : ''}
+    </div>`;
+  } else {
+    subHtml = `<div class="card p-5" style="border-color:var(--gold)">
+      <div class="text-sm text-gray-400 mb-1">اشتراكي</div>
+      <div class="text-xl font-bold text-white">${exp ? '⛔ انتهى الاشتراك' : 'لا يوجد اشتراك فعّال'}</div>
+      ${exp ? `<div class="text-sm text-gray-300 mt-2">انتهى يوم ${exp.toLocaleDateString('ar-DZ')}</div>` : ''}
+      ${!isAppMode() ? `<button onclick="showDashTab('wallet')" class="btn btn-primary btn-sm mt-3">🎓 فعّل الاشتراك</button>` : ''}
+    </div>`;
+  }
+
+  const { data, error } = await supabaseClient.rpc('get_my_attendance');
+  let attHtml;
+  if (error) {
+    console.warn('get_my_attendance:', error);
+    attHtml = '<div class="card p-5 text-center text-gray-500 text-sm">سجل الحضور غير متاح حالياً</div>';
+  } else {
+    const rows = data || [];
+    const c = { present: 0, late: 0, absent: 0 };
+    rows.forEach(r => { c[r.status] = (c[r.status] || 0) + 1; });
+    const total = rows.length;
+    const rate = total ? Math.round(100 * (c.present + c.late) / total) : 0;
+    const badge = r => r.status === 'present' ? '<span class="badge badge-success">✅ حاضر</span>'
+      : r.status === 'late' ? `<span class="badge badge-gold">⏰ متأخر ${r.late_minutes} د</span>`
+      : '<span class="badge badge-danger">❌ غائب</span>';
+    attHtml = `<div class="card p-5">
+      <div class="text-sm text-gray-400 mb-3">حضوري في الحصص المباشرة</div>
+      <div class="text-center mb-4" style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.5rem">
+        <div><div class="text-2xl font-bold text-white">${rate}%</div><div class="text-xs text-gray-400">نسبة الحضور</div></div>
+        <div><div class="text-2xl font-bold" style="color:var(--success, #34d399)">${c.present}</div><div class="text-xs text-gray-400">حاضر</div></div>
+        <div><div class="text-2xl font-bold" style="color:var(--gold)">${c.late}</div><div class="text-xs text-gray-400">متأخر</div></div>
+        <div><div class="text-2xl font-bold" style="color:var(--danger)">${c.absent}</div><div class="text-xs text-gray-400">غائب</div></div>
+      </div>
+      ${total === 0 ? '<div class="text-center text-gray-500 text-sm py-4">لا توجد حصص مباشرة سابقة بعد</div>' :
+        `<div class="space-y-2">${rows.map(r => {
+          const d = new Date(r.scheduled_at);
+          return `<div class="flex items-center justify-between gap-2 p-3 rounded-xl bg-white/5 border border-white/10">
+            <div><div class="text-sm font-bold text-white">${escHtml(r.title || 'حصة مباشرة')}</div>
+            <div class="text-xs text-gray-400">${d.toLocaleDateString('ar-DZ', { weekday:'long', day:'numeric', month:'long' })} — ${liveTimeStr(d)}</div></div>
+            ${badge(r)}</div>`;
+        }).join('')}</div>`}
+      <div class="text-xs text-gray-500 mt-3">يُحسب الحضور عند الدخول للحصة من زر «ادخل الآن» في الموقع. بعد 5 دقائق من البداية يُسجّل تأخراً.</div>
+    </div>`;
+  }
+  el.innerHTML = `<div class="att-layout"><div>${subHtml}</div><div>${attHtml}</div></div>`;
+}
+
+// ===== Teacher: attendance list for one session =====
+async function openSessionAttendance(sessionId) {
+  const old = document.getElementById('modal-session-attendance'); if (old) old.remove();
+  const wrap = document.createElement('div');
+  wrap.id = 'modal-session-attendance';
+  wrap.className = 'modal-backdrop open';
+  wrap.onclick = e => { if (e.target === wrap) wrap.remove(); };
+  wrap.innerHTML = `<div class="modal-content p-6" style="max-width:640px"><div class="flex items-center justify-between mb-4">
+    <h3 class="text-lg font-bold text-white">📋 حضور الحصة</h3>
+    <button class="btn btn-ghost btn-sm" onclick="document.getElementById('modal-session-attendance').remove()">✕</button></div>
+    <div id="session-attendance-body" class="text-center text-gray-500 py-8">جارِ التحميل...</div></div>`;
+  document.body.appendChild(wrap);
+  const body = document.getElementById('session-attendance-body');
+  const { data, error } = await supabaseClient.rpc('get_session_attendance', { p_session_id: String(sessionId) });
+  if (error) { body.innerHTML = `<div class="text-red-400 text-sm">تعذّر التحميل: ${escHtml(error.message || '')}</div>`; return; }
+  const rows = data || [];
+  const c = { present: 0, late: 0, absent: 0 };
+  rows.forEach(r => { c[r.status] = (c[r.status] || 0) + 1; });
+  const lab = { present: '✅ حاضر', late: '⏰ متأخر', absent: '❌ غائب' };
+  const absentList = rows.filter(r => r.status === 'absent').map(r => r.name + (r.phone ? ' — ' + r.phone : '')).join('\n');
+  body.className = '';
+  body.innerHTML = `<div class="text-center mb-4" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.5rem">
+      <div class="p-2 rounded-xl bg-white/5"><div class="text-xl font-bold" style="color:var(--success, #34d399)">${c.present}</div><div class="text-xs text-gray-400">حاضر</div></div>
+      <div class="p-2 rounded-xl bg-white/5"><div class="text-xl font-bold" style="color:var(--gold)">${c.late}</div><div class="text-xs text-gray-400">متأخر</div></div>
+      <div class="p-2 rounded-xl bg-white/5"><div class="text-xl font-bold" style="color:var(--danger)">${c.absent}</div><div class="text-xs text-gray-400">غائب</div></div></div>
+    ${rows.length === 0 ? '<div class="text-center text-gray-500 text-sm py-4">لا يوجد تلاميذ مشتركون في هذا المستوى</div>' :
+    `<div class="space-y-1 max-h-96 overflow-auto">${rows.map(r => `<div class="flex items-center justify-between gap-2 p-2 rounded-lg bg-white/5 text-sm">
+      <div><div class="text-white font-bold">${escHtml(r.name || '—')}</div><div class="text-xs text-gray-400" dir="ltr">${escHtml(r.phone || '')}</div></div>
+      <div class="text-xs">${lab[r.status] || r.status}${r.status === 'late' ? ' ' + r.late_minutes + ' د' : ''}</div></div>`).join('')}</div>`}
+    ${c.absent ? `<button class="btn btn-secondary btn-sm mt-4" id="copy-absent-btn">📋 نسخ قائمة الغائبين</button>` : ''}`;
+  const cb = document.getElementById('copy-absent-btn');
+  if (cb) cb.onclick = async () => { try { await navigator.clipboard.writeText(absentList); showToast('تم نسخ القائمة', 'success'); } catch (e) { showToast('تعذّر النسخ', 'error'); } };
+}
+
 async function loadAdminLiveSessions() {
   const el = document.getElementById('admin-live-list');
   const sessions = await DB.getLiveSessions();
@@ -5125,7 +5244,7 @@ async function loadAdminLiveSessions() {
           <div class="text-xs text-gray-400 mt-1">${start.toLocaleDateString('ar-DZ')} — ${start.toLocaleTimeString('ar-DZ',{hour:'2-digit',minute:'2-digit'})}</div>
           <div class="text-xs text-gray-500 mt-0.5">${levelName}${isPast ? ' • انتهى' : ''}</div>
         </div>
-        <button onclick="deleteLiveSessionConfirm('${s.id}')" class="btn btn-ghost btn-sm text-red-400">🗑️</button>
+        <div class="flex gap-1">${isPast ? `<button onclick="openSessionAttendance('${s.id}')" class="btn btn-ghost btn-sm" title="الحضور">📋</button>` : ''}<button onclick="deleteLiveSessionConfirm('${s.id}')" class="btn btn-ghost btn-sm text-red-400">🗑️</button></div>
       </div>
     </div>`;
   }).join('');
