@@ -87,13 +87,14 @@ $$;
 create or replace function public.get_session_attendance(p_session_id text)
 returns table (name text, phone text, status text, late_minutes int, joined_at timestamptz)
 language plpgsql security definer set search_path = public as $$
+#variable_conflict use_column
 declare s record;
 begin
   if not exists (select 1 from users where auth_user_id = auth.uid() and is_teacher) then
     raise exception 'teacher only';
   end if;
   select * into s from live_sessions where id::text = p_session_id;
-  if s is null then return; end if;
+  if not found then return; end if;
 
   return query
   select trim(coalesce(u.name,'') || ' ' || coalesce(u.lastname,'')) as name,
@@ -107,7 +108,7 @@ begin
     and (a.id is not null
          or (_live_session_targets(s.level, s.stream, u.level, u.stream)
              and coalesce(u.has_active_subscription, false)))
-  order by case coalesce(a.status,'absent') when 'present' then 0 when 'late' then 1 else 2 end, name;
+  order by case coalesce(a.status,'absent') when 'present' then 0 when 'late' then 1 else 2 end, 1;
 end $$;
 
 revoke all on function public.record_live_attendance(text) from public;

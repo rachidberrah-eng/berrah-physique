@@ -5127,6 +5127,10 @@ async function loadSuggestedExercises() {
   </div>`;
 }
 
+// Attendance tracking went live on this date; earlier sessions have no records,
+// so they are not shown (otherwise every old session would look like an absence).
+const ATTENDANCE_SINCE = new Date('2026-11-23T00:00:00Z');
+
 // ===== Student: attendance + subscription status =====
 async function loadMyAttendance() {
   const el = document.getElementById('attendance-body');
@@ -5164,7 +5168,7 @@ async function loadMyAttendance() {
     console.warn('get_my_attendance:', error);
     attHtml = '<div class="card p-5 text-center text-gray-500 text-sm">سجل الحضور غير متاح حالياً</div>';
   } else {
-    const rows = data || [];
+    const rows = (data || []).filter(r => new Date(r.scheduled_at) >= ATTENDANCE_SINCE);
     const c = { present: 0, late: 0, absent: 0 };
     rows.forEach(r => { c[r.status] = (c[r.status] || 0) + 1; });
     const total = rows.length;
@@ -5244,7 +5248,7 @@ async function loadAdminLiveSessions() {
           <div class="text-xs text-gray-400 mt-1">${start.toLocaleDateString('ar-DZ')} — ${start.toLocaleTimeString('ar-DZ',{hour:'2-digit',minute:'2-digit'})}</div>
           <div class="text-xs text-gray-500 mt-0.5">${levelName}${isPast ? ' • انتهى' : ''}</div>
         </div>
-        <div class="flex gap-1">${isPast ? `<button onclick="openSessionAttendance('${s.id}')" class="btn btn-ghost btn-sm" title="الحضور">📋</button>` : ''}<button onclick="deleteLiveSessionConfirm('${s.id}')" class="btn btn-ghost btn-sm text-red-400">🗑️</button></div>
+        <div class="flex gap-1">${(isPast && start >= ATTENDANCE_SINCE) ? `<button onclick="openSessionAttendance('${s.id}')" class="btn btn-ghost btn-sm" title="الحضور">📋</button>` : ''}<button onclick="deleteLiveSessionConfirm('${s.id}')" class="btn btn-ghost btn-sm text-red-400">🗑️</button></div>
       </div>
     </div>`;
   }).join('');
