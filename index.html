@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" data-theme="dark">
+<html lang="ar" dir="rtl" data-theme="light">
 <head>
 <link rel="manifest" href="manifest.json">
 <script>
@@ -90,7 +90,8 @@ window.safeStorage = (function(){
 (function(){
   try {
     var t = window.safeStorage.getItem('bp-theme');
-    if (t === 'light') document.documentElement.setAttribute('data-theme', 'light');
+    // Light (Italian palette) is the default; dark only if the student chose it
+    if (t === 'dark') document.documentElement.removeAttribute('data-theme');
   } catch (e) { /* بلا ضرر */ }
 })();
 </script>
@@ -180,7 +181,7 @@ if (window.__isInAppBrowser) {
 <link rel="icon" type="image/png" href="data:image/png;base64,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">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-<meta name="theme-color" content="#0b1826" id="meta-theme-color">
+<meta name="theme-color" content="#0066cc" id="meta-theme-color">
 <title>BERRAH PHYSICS | دروس الفيزياء للتعليم الثانوي في كل الجزائر</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -487,12 +488,13 @@ if (window.__isInAppBrowser) {
 
 :root{
   /* — Blueprint / chalkboard design system — */
-  --gold:#e8a23d;--gold-light:#f2bc6b;--gold-dark:#c9821f;
-  --cyan:#4fd3d8;--cyan-dark:#2fa9ae;
-  --dark-bg:#0b1826;--dark-card:#101f30;--dark-elevated:#152a3d;
+  /* night mode — navy with Italian blue accents */
+  --gold:#5aa9ff;--gold-light:#8cc3ff;--gold-dark:#2f86e6;
+  --cyan:#3cc8a0;--cyan-dark:#26a382;
+  --dark-bg:#0f1d2b;--dark-card:#152738;--dark-elevated:#1b3147;
   --border:rgba(159,196,214,0.12);--border-hover:rgba(232,162,61,0.35);--border-hover:color-mix(in srgb, var(--gold) 35%, transparent);
   --text-primary:#eef4f8;--text-secondary:#93a9bd;--text-muted:#5f7688;
-  --success:#3fb884;--danger:#e2584a;--info:#4fd3d8;
+  --success:#3cc8a0;--danger:#ff6b7f;--info:#5aa9ff;
   --gradient-gold:linear-gradient(135deg,var(--gold) 0%,var(--gold-light) 50%,var(--gold) 100%);
   --gradient-glow:linear-gradient(135deg,color-mix(in srgb, var(--gold) 15%, transparent) 0%,color-mix(in srgb, var(--cyan) 8%, transparent) 100%);
   --grid-line:rgba(159,196,214,0.06);
@@ -502,17 +504,18 @@ if (window.__isInAppBrowser) {
   color-scheme: dark;
 }
 [data-theme="light"]{
-  --gold:#b9720f;--gold-light:#d68f22;--gold-dark:#8f5709;
-  --cyan:#1a8a90;--cyan-dark:#0f6b70;
-  --dark-bg:#f5f6f3;--dark-card:#ffffff;--dark-elevated:#eef0ec;
-  --border:rgba(15,35,50,0.10);--border-hover:rgba(232,162,61,0.35);--border-hover:color-mix(in srgb, var(--gold) 35%, transparent);
-  --text-primary:#10202c;--text-secondary:#4c6072;--text-muted:#5c6f80;
-  --success:#1f9e6a;--danger:#c8402f;--info:#1a8a90;
+  /* Italian palette (Designers Italia): Blu Italia #0066CC, near-black text, light grey sections */
+  --gold:#0066cc;--gold-light:#3385d6;--gold-dark:#004d99;
+  --cyan:#008055;--cyan-dark:#00664a;
+  --dark-bg:#f2f4f7;--dark-card:#ffffff;--dark-elevated:#e8ecf1;
+  --border:rgba(23,50,77,0.12);--border-hover:rgba(232,162,61,0.35);--border-hover:color-mix(in srgb, var(--gold) 35%, transparent);
+  --text-primary:#17324d;--text-secondary:#455b71;--text-muted:#5c6f82;
+  --success:#008055;--danger:#cc334d;--info:#0066cc;
   --gradient-gold:linear-gradient(135deg,var(--gold) 0%,var(--gold-light) 50%,var(--gold) 100%);
   --gradient-glow:linear-gradient(135deg,color-mix(in srgb, var(--gold) 10%, transparent) 0%,color-mix(in srgb, var(--cyan) 6%, transparent) 100%);
   --grid-line:rgba(15,35,50,0.05);
   --shadow-ambient:0 16px 40px rgba(16,32,44,0.10);
-  --on-accent:#0e1c29;
+  --on-accent:#ffffff;
   color-scheme: light;
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -836,6 +839,11 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .lib-chip:hover{border-color:var(--border-hover);color:var(--gold)}
 .lib-chip.active{background:color-mix(in srgb,var(--gold) 15%,transparent);border-color:var(--gold);color:var(--gold)}
 .lib-grid{display:grid;grid-template-columns:1fr;gap:.85rem}
+.lib-lock{grid-column:1/-1;text-align:center;padding:2rem 1.25rem;border-radius:18px;border:1px dashed var(--border-subtle,rgba(127,127,127,.35));background:color-mix(in srgb,var(--success) 6%,transparent)}
+.lib-lock-ico{font-size:2.2rem;margin-bottom:.5rem}
+.lib-lock-title{font-weight:900;font-size:1.15rem;margin-bottom:.4rem}
+.lib-lock-sub{font-size:.9rem;opacity:.8;max-width:30rem;margin:0 auto 1rem}
+.lib-lock-btns{display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap}
 @media(min-width:640px){.lib-grid{grid-template-columns:repeat(2,1fr);gap:1rem}}
 @media(min-width:1024px){.lib-grid.lib-grid-3{grid-template-columns:repeat(3,1fr)}}
 .lib-card{display:flex;gap:.9rem;align-items:stretch;background:var(--dark-card);border:1px solid var(--border);border-radius:16px;padding:.75rem;cursor:pointer;transition:border-color .2s,transform .2s,box-shadow .2s;text-align:right}
@@ -1199,6 +1207,16 @@ html.twa #pricing-compare-section,html.twa .pay-only,html.twa .balance-badge,htm
 <div class="card p-6 sm:p-8">
   <h2 class="text-2xl font-black text-white mb-2">⚙️ إعدادات الحساب</h2><p class="text-sm text-gray-400 mb-6">غيّر رقمك السري أو معلومات حسابك</p><form onsubmit="changePassword(event)" class="space-y-4"><div><label class="form-label">الرقم السري الحالي</label><div class="pw-wrap"><input type="password" id="cp-current" class="form-input" required><button type="button" class="pw-toggle" onclick="togglePwVisibility('cp-current', this)" tabindex="-1">👁</button></div></div><div><label class="form-label">الرقم السري الجديد</label><div class="pw-wrap"><input type="password" id="cp-new" class="form-input" required minlength="6"><button type="button" class="pw-toggle" onclick="togglePwVisibility('cp-new', this)" tabindex="-1">👁</button></div></div><div><label class="form-label">تأكيد الرقم السري الجديد</label><div class="pw-wrap"><input type="password" id="cp-confirm" class="form-input" required><button type="button" class="pw-toggle" onclick="togglePwVisibility('cp-confirm', this)" tabindex="-1">👁</button></div></div><button type="submit" class="btn btn-primary btn-block">🔒 تغيير الرقم السري</button><div id="cp-result"></div></form>
 </div>
+<div class="card p-6 sm:p-8 mb-6">
+  <h2 class="text-2xl font-black text-white mb-2">📧 البريد الإلكتروني</h2>
+  <p class="text-sm text-gray-400 mb-4">إن نسيت كلمة السر يصلك عليه رابط لاختيار كلمة سر جديدة. يبقى دخولك برقم الهاتف كما هو.</p>
+  <div class="text-sm mb-3" id="my-email-current"></div>
+  <div class="space-y-3">
+    <input type="email" id="my-email-input" placeholder="name@gmail.com" class="form-input" dir="ltr" autocomplete="email">
+    <button onclick="saveMyEmail()" class="btn btn-secondary btn-block">💾 حفظ البريد</button>
+    <div id="my-email-result"></div>
+  </div>
+</div>
 <div class="card p-6 sm:p-8">
   <h2 class="text-2xl font-black text-white mb-2">🔑 سؤال الأمان</h2>
   <p class="text-sm text-gray-400 mb-6">يُستخدم لاستعادة حسابك من صفحة الدخول إن نسيت كلمة السر، دون الحاجة لمراسلة الأستاذ</p>
@@ -1432,7 +1450,15 @@ html.twa #pricing-compare-section,html.twa .pay-only,html.twa .balance-badge,htm
 <footer class="app-footer"><div class="max-w-6xl mx-auto"><div class="flex items-center justify-center gap-2 mb-3"><div class="w-8 h-8 flex items-center justify-center"><div class="brand-logo-img" role="img" aria-label="BERRAH PHYSICS" style="width:18px;height:18px"></div></div><span class="text-lg font-black logo-text">BERRAH PHYSICS</span></div><p class="text-sm text-gray-400 mb-3">دروس الفيزياء للتعليم الثانوي لتلاميذ كل ولايات الوطن 🇩🇿</p><p class="text-xs text-gray-500 mb-3">الأستاذ براح • دروس حضورية في برج بوعريريج</p><div class="flex flex-wrap items-center justify-center gap-4 text-sm"><a href="tel:0770032735" dir="ltr" class="flex items-center gap-1.5 text-gray-400 hover:text-gold-500 transition">📞 0770 03 27 35</a><span class="text-gray-700">•</span><a href="https://instagram.com/berrah_phys_34" target="_blank" class="flex items-center gap-1.5 text-gray-400 hover:text-gold-500 transition"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></svg> @berrah_phys_34</a><span class="text-gray-700">•</span><a href="https://berrah-phys.netlify.app/" target="_blank" class="flex items-center gap-1.5 text-gray-400 hover:text-gold-500 transition">🏫 دروس الدعم الحضورية</a><span class="text-gray-700">•</span><a href="#" onclick="showPage('courses');return false;" class="flex items-center gap-1.5 text-gray-400 hover:text-gold-500 transition">📚 دورات في الفيزياء</a><span class="text-gray-700">•</span><a href="#" onclick="showModal('terms');return false;" class="flex items-center gap-1.5 text-gray-400 hover:text-gold-500 transition">📜 الشروط والأحكام</a><span class="text-gray-700">•</span><a href="/privacy.html" class="flex items-center gap-1.5 text-gray-400 hover:text-gold-500 transition">🔒 سياسة الخصوصية</a></div><p class="text-xs text-gray-600 mt-4">© 2026 جميع الحقوق محفوظة للأستاذ براح</p></div></footer>
 <a href="https://wa.me/213770032735?text=السلام%20عليكم%20أستاذ%20براح،%0Aأرغب%20في%20الاستفسار%20عن%20منصة%20BERRAH%20PHYSICS" class="whatsapp-float" target="_blank" title="تواصل معنا عبر واتساب">💬<span>تواصل معنا</span></a>
 <div class="lib-viewer" id="lib-viewer" role="dialog" aria-modal="true"><div class="lib-viewer-bar"><button onclick="closeLibViewer()" title="إغلاق">✕</button><div class="t" id="lib-viewer-title"></div></div><div class="lib-viewer-frame"><div class="lib-viewer-loading">⏳ جارِ تحميل الدرس...</div><iframe id="lib-viewer-iframe" title="عرض الدرس" allow="autoplay"></iframe></div><div class="lib-viewer-note">© الأستاذ براح عبد الرشيد — للقراءة فقط</div></div>
-<div class="modal-backdrop" id="modal-login"><div class="modal-content p-6 sm:p-8"><button onclick="hideModal('login')" class="absolute top-4 left-4 w-9 h-9 flex items-center justify-center rounded-xl bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition">✕</button><div class="text-center mb-6"><div class="w-16 h-16 mx-auto flex items-center justify-center mb-4"><div class="brand-logo-img" role="img" aria-label="BERRAH PHYSICS" style="width:38px;height:38px"></div></div><h2 class="text-2xl font-black text-white mb-1">مرحباً بعودتك</h2><p class="text-sm text-gray-400">سجّل دخولك للوصول إلى حسابك</p></div><div id="login-error" class="mb-4"></div><div class="space-y-4"><div><label class="form-label">رقم الهاتف</label><input type="text" id="login-phone" placeholder="07xxxxxxxx" class="form-input" dir="ltr"></div><div><label class="form-label">الرقم السري</label><div class="pw-wrap"><input type="password" id="login-password" placeholder="••••••••" class="form-input"><button type="button" class="pw-toggle" onclick="togglePwVisibility('login-password', this)" tabindex="-1">👁</button></div></div><div class="text-left"><a href="#" onclick="hideModal('login');showModal('forgot-password');return false;" class="text-xs text-gold-500 hover:underline">نسيت كلمة السر؟</a></div><button onclick="doLogin()" id="login-submit-btn" class="btn btn-primary btn-block btn-lg">تسجيل الدخول</button></div><div class="mt-6 pt-6 border-t border-white/5 text-center"><p class="text-sm text-gray-400">ليس لديك حساب؟ <a href="#" onclick="hideModal('login');showModal('register'); return false;" class="text-gold-500 font-bold hover:underline">أنشئ حساباً جديداً</a></p></div></div></div>
+<div class="modal-backdrop" id="modal-login"><div class="modal-content p-6 sm:p-8"><button onclick="hideModal('login')" class="absolute top-4 left-4 w-9 h-9 flex items-center justify-center rounded-xl bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition">✕</button><div class="text-center mb-6"><div class="w-16 h-16 mx-auto flex items-center justify-center mb-4"><div class="brand-logo-img" role="img" aria-label="BERRAH PHYSICS" style="width:38px;height:38px"></div></div><h2 class="text-2xl font-black text-white mb-1">مرحباً بعودتك</h2><p class="text-sm text-gray-400">سجّل دخولك للوصول إلى حسابك</p></div><div id="login-error" class="mb-4"></div><div class="space-y-4"><div><label class="form-label">رقم الهاتف أو البريد الإلكتروني</label><input type="text" id="login-phone" placeholder="07xxxxxxxx" class="form-input" dir="ltr" autocomplete="username"></div><div><label class="form-label">الرقم السري</label><div class="pw-wrap"><input type="password" id="login-password" placeholder="••••••••" class="form-input"><button type="button" class="pw-toggle" onclick="togglePwVisibility('login-password', this)" tabindex="-1">👁</button></div></div><div class="text-left"><a href="#" onclick="hideModal('login');showModal('forgot-password');return false;" class="text-xs text-gold-500 hover:underline">نسيت كلمة السر؟</a></div><button onclick="doLogin()" id="login-submit-btn" class="btn btn-primary btn-block btn-lg">تسجيل الدخول</button></div><div class="mt-6 pt-6 border-t border-white/5 text-center"><p class="text-sm text-gray-400">ليس لديك حساب؟ <a href="#" onclick="hideModal('login');showModal('register'); return false;" class="text-gold-500 font-bold hover:underline">أنشئ حساباً جديداً</a></p></div></div></div>
+<div class="modal-backdrop" id="modal-new-password"><div class="modal-content p-6 sm:p-8">
+  <div class="text-center mb-6"><div class="text-4xl mb-3">🔐</div><h2 class="text-2xl font-black text-white mb-1">اختر كلمة سر جديدة</h2><p class="text-sm text-gray-400">وصلت من رابط البريد الإلكتروني</p></div>
+  <div id="new-password-error" class="mb-4"></div>
+  <div class="space-y-4">
+    <div><label class="form-label">كلمة السر الجديدة</label><div class="pw-wrap"><input type="password" id="np-password" placeholder="6 أحرف على الأقل" class="form-input" minlength="6" autocomplete="new-password"><button type="button" class="pw-toggle" onclick="togglePwVisibility('np-password', this)" tabindex="-1">👁</button></div></div>
+    <button onclick="saveNewPasswordFromEmail()" id="np-btn" class="btn btn-primary btn-block btn-lg">💾 حفظ كلمة السر</button>
+  </div>
+</div></div>
 <div class="modal-backdrop" id="modal-forgot-password"><div class="modal-content p-6 sm:p-8">
   <button onclick="hideModal('forgot-password')" class="absolute top-4 left-4 w-9 h-9 flex items-center justify-center rounded-xl bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition">✕</button>
   <div class="text-center mb-6">
@@ -1441,6 +1467,13 @@ html.twa #pricing-compare-section,html.twa .pay-only,html.twa .balance-badge,htm
     <p class="text-sm text-gray-400" id="fp-subtitle">أدخل رقم هاتفك للمتابعة</p>
   </div>
   <div id="forgot-password-error" class="mb-4"></div>
+  <div id="fp-email-block" class="space-y-3 mb-5 pb-5 border-b border-white/5">
+    <div class="text-sm font-bold text-white">📧 عن طريق البريد الإلكتروني</div>
+    <div><input type="email" id="fp-email" placeholder="name@gmail.com" class="form-input" dir="ltr" autocomplete="email"></div>
+    <button onclick="sendResetEmail()" id="fp-email-btn" class="btn btn-primary btn-block">أرسل لي رابط الاسترجاع</button>
+    <p class="text-xs text-gray-500">يعمل إذا أضفت بريدك عند التسجيل أو في إعدادات حسابك.</p>
+  </div>
+  <div class="text-sm font-bold text-white mb-3">🔑 أو عن طريق سؤال الأمان</div>
   <div id="fp-step1" class="space-y-4">
     <div><label class="form-label">رقم الهاتف</label><input type="text" id="fp-phone" placeholder="07xxxxxxxx" class="form-input" dir="ltr"></div>
     <button onclick="doFetchRecoveryQuestion()" class="btn btn-primary btn-block btn-lg">التالي</button>
@@ -1660,7 +1693,7 @@ html.twa #pricing-compare-section,html.twa .pay-only,html.twa .balance-badge,htm
 </div></div>
 <div class="modal-backdrop" id="modal-register"><div class="modal-content p-5 sm:p-7"><button onclick="hideModal('register')" class="absolute top-4 left-4 w-9 h-9 flex items-center justify-center rounded-xl bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition">✕</button><div class="text-center mb-5"><div class="w-14 h-14 mx-auto flex items-center justify-center mb-3"><div class="brand-logo-img" role="img" aria-label="BERRAH PHYSICS" style="width:32px;height:32px"></div></div><h2 class="text-xl font-black text-white mb-1">إنشاء حساب</h2><p class="text-xs text-gray-400">ابدأ رحلتك في تعلم الفيزياء</p></div><div id="register-error" class="mb-3"></div><div class="space-y-3">
 <div class="grid grid-cols-2 gap-3"><div><label class="form-label">الاسم</label><input type="text" id="reg-name" placeholder="محمد" class="form-input"></div><div><label class="form-label">اللقب</label><input type="text" id="reg-lastname" placeholder="بن علي" class="form-input"></div></div>
-<div><label class="form-label">رقم الهاتف</label><input type="text" id="reg-phone" placeholder="0555123456" class="form-input" dir="ltr"></div>
+<div><label class="form-label">رقم الهاتف</label><input type="text" id="reg-phone" placeholder="0555123456" class="form-input" dir="ltr"></div><div><label class="form-label">البريد الإلكتروني <span class="text-xs text-gray-500">(اختياري — لاسترجاع كلمة السر إن نسيتها)</span></label><input type="email" id="reg-email" placeholder="name@gmail.com" class="form-input" dir="ltr" autocomplete="email"></div>
 <div><label class="form-label">الرقم السري</label><div class="pw-wrap"><input type="password" id="reg-password" placeholder="6 أحرف على الأقل" class="form-input"><button type="button" class="pw-toggle" onclick="togglePwVisibility('reg-password', this)" tabindex="-1">👁</button></div></div>
 <div><label class="form-label">سؤال الأمان</label><select id="reg-recovery-question" class="form-input"></select></div>
 <div><label class="form-label">إجابتك</label><input type="text" id="reg-recovery-answer" placeholder="اكتب إجابتك هنا" class="form-input"></div>
@@ -2813,6 +2846,7 @@ function saveCurrentUser() {
 
 function updateHeaderUI() {
   try { updateHeroCTA(); } catch (e) {}
+  try { if (_libraryItems && _libraryItems.length) { renderLibraryGrid(); runPendingLib(); } } catch (e) {}
   const nav = document.getElementById('nav');
   if (currentUser) {
     let html = '';
@@ -3083,18 +3117,27 @@ function doLogin() {
   errorEl.innerHTML = '<div class="flex items-center justify-center gap-2 text-gold-500 text-sm py-2"><div class="spinner" style="width:20px;height:20px;border-width:2px"></div> جاري التحقق...</div>';
   (async () => {
     try {
-      const normPhone = normalizePhone(phone);
-      const authEmail = phoneToAuthEmail(normPhone);
+      const isEmailLogin = phone.includes('@');
+      let normPhone = isEmailLogin ? '' : normalizePhone(phone);
+      const authEmail = isEmailLogin ? phone.toLowerCase() : phoneToAuthEmail(normPhone);
 
       if (supabaseClient) {
         // STEP 1: Supabase Auth is the only source of truth for passwords
-        const { data: authData, error: authErr } = await supabaseClient.auth.signInWithPassword({
+        let { data: authData, error: authErr } = await supabaseClient.auth.signInWithPassword({
           email: authEmail,
           password: password
         });
+        // A student who added a real email no longer has the phone address in Auth:
+        // ask the server for it (returned only when the password is right) and retry.
+        if ((authErr || !authData?.user) && !isEmailLogin && !/rate limit|too many/i.test((authErr && authErr.message) || '')) {
+          try {
+            const { data: realEmail } = await supabaseClient.rpc('resolve_login_email', { p_phone: normPhone, p_password: password });
+            if (realEmail) ({ data: authData, error: authErr } = await supabaseClient.auth.signInWithPassword({ email: realEmail, password }));
+          } catch (e) { console.warn('resolve_login_email', e); }
+        }
         if (authErr || !authData?.user) {
           const msg = (authErr && authErr.message) || '';
-          let arMsg = 'رقم الهاتف أو الرقم السري غير صحيح';
+          let arMsg = 'رقم الهاتف (أو البريد) أو الرقم السري غير صحيح';
           if (/confirm/i.test(msg)) arMsg = 'الحساب غير مفعّل بعد. تواصل مع الأستاذ لتفعيله.';
           else if (/rate limit|too many/i.test(msg)) arMsg = 'محاولات كثيرة. انتظر بضع دقائق ثم أعد المحاولة.';
           errorEl.innerHTML = '<div class="p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm text-center">' + arMsg + '</div>';
@@ -3103,7 +3146,15 @@ function doLogin() {
       }
 
       // STEP 2: Fetch the user profile (requires the authenticated session from step 1)
-      const user = await DB.getUserByPhone(normPhone);
+      if (isEmailLogin && supabaseClient) {
+        const { data: s } = await supabaseClient.auth.getSession();
+        const uid = s && s.session && s.session.user && s.session.user.id;
+        if (uid) {
+          const { data: row } = await supabaseClient.from('users').select('phone').eq('auth_user_id', uid).maybeSingle();
+          if (row && row.phone) normPhone = row.phone;
+        }
+      }
+      const user = normPhone ? await DB.getUserByPhone(normPhone) : null;
       if (!user) {
         errorEl.innerHTML = '<div class="p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm text-center">الحساب موجود لكن الملف الشخصي مفقود. تواصل مع الأستاذ.</div>';
         return;
@@ -3136,11 +3187,13 @@ function doRegister() {
   const recoveryAnswer = document.getElementById('reg-recovery-answer').value.trim();
   const level = document.getElementById('reg-level').value;
   const wilaya = document.getElementById('reg-wilaya').value;
+  const regEmail = ((document.getElementById('reg-email') || {}).value || '').trim().toLowerCase();
   const errorEl = document.getElementById('register-error');
   if (!name || !lastname || !phone || !password || !level || !wilaya) { errorEl.innerHTML = '<div class="p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm text-center">الرجاء ملء جميع الحقول واختيار الولاية</div>'; return; }
   if (!recoveryQuestion) { errorEl.innerHTML = '<div class="p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm text-center">اختر سؤال الأمان</div>'; return; }
   if (recoveryAnswer.length < 2) { errorEl.innerHTML = '<div class="p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm text-center">أدخل إجابة سؤال الأمان</div>'; return; }
   if (!document.getElementById('reg-terms').checked) { errorEl.innerHTML = '<div class="p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm text-center">يجب الموافقة على الشروط والأحكام أولاً</div>'; return; }
+  if (regEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(regEmail)) { errorEl.innerHTML = '<div class="p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm text-center">البريد الإلكتروني غير صالح</div>'; return; }
   if (password.length < 6) { errorEl.innerHTML = '<div class="p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm text-center">الرقم السري يجب أن يكون 6 أحرف على الأقل</div>'; return; }
   // SECURITY: validate phone format
   if (!/^[0-9]{8,15}$/.test(phone.replace(/[\s\-\+]/g, ''))) {
@@ -3193,6 +3246,9 @@ function doRegister() {
         }
         // SECURITY: never keep the plaintext password in memory/localStorage
         currentUser = created || {name, lastname, phone: normPhone, level, wilaya, stream:null, streamName:null, balance:0, isTeacher:false, purchasedLessons:[], purchasedPackages:[], walletHistory:[]};
+
+        // Optional real email for password recovery (best-effort — never blocks registration)
+        if (regEmail) { try { await linkRecoveryEmail(regEmail, true); } catch (e) { console.warn('link email', e); } }
 
         // Save the security question/answer (best-effort — never blocks registration)
         try { await supabaseClient.rpc('set_recovery_question', { p_question: recoveryQuestion, p_answer: recoveryAnswer }); }
@@ -3269,6 +3325,77 @@ function unsubscribeFromRealtimeUpdates() {
   realtimeChannel = null;
   realtimeSubscribedUserId = null;
 }
+
+// ---- Email for password recovery ----
+const RESET_REDIRECT = 'https://berrah.app/';
+async function linkRecoveryEmail(email, quiet) {
+  if (!supabaseClient) throw new Error('offline');
+  const { error } = await supabaseClient.auth.updateUser({ email }, { emailRedirectTo: RESET_REDIRECT });
+  if (error) throw error;
+  if (!quiet) showToast('📧 تحقق من بريدك لتأكيد العنوان', 'info');
+}
+async function loadMyEmail() {
+  const el = document.getElementById('my-email-current');
+  if (!el || !supabaseClient || !currentUser) return;
+  try {
+    const { data } = await supabaseClient.rpc('get_my_email');
+    el.innerHTML = data ? 'بريدك الحالي: <b dir="ltr">' + escHtml(data) + '</b>' : '<span class="text-gray-500">لم تضف بريداً بعد</span>';
+  } catch (e) {}
+}
+async function saveMyEmail() {
+  const email = (document.getElementById('my-email-input').value || '').trim().toLowerCase();
+  const out = document.getElementById('my-email-result');
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { out.innerHTML = '<div class="text-sm text-red-400">البريد الإلكتروني غير صالح</div>'; return; }
+  out.innerHTML = '<div class="text-sm text-gray-400">جارِ الحفظ...</div>';
+  try {
+    await linkRecoveryEmail(email, true);
+    out.innerHTML = '<div class="text-sm text-emerald-400">✅ تم. إن وصلتك رسالة تأكيد على ' + escHtml(email) + ' فاضغط الرابط الذي فيها.</div>';
+    setTimeout(loadMyEmail, 1500);
+  } catch (e) {
+    const m = (e && e.message) || '';
+    out.innerHTML = '<div class="text-sm text-red-400">' + (/already|registered|exists/i.test(m) ? 'هذا البريد مستعمل في حساب آخر' : /rate|too many/i.test(m) ? 'محاولات كثيرة، أعد بعد قليل' : 'تعذّر الحفظ: ' + escHtml(m)) + '</div>';
+  }
+}
+async function sendResetEmail() {
+  const email = (document.getElementById('fp-email').value || '').trim().toLowerCase();
+  const errorEl = document.getElementById('forgot-password-error');
+  const btn = document.getElementById('fp-email-btn');
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { errorEl.innerHTML = '<div class="p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm text-center">اكتب بريداً إلكترونياً صحيحاً</div>'; return; }
+  if (btn) btn.disabled = true;
+  try {
+    const { error } = await supabaseClient.auth.resetPasswordForEmail(email, { redirectTo: RESET_REDIRECT });
+    if (error && /rate|too many|429/i.test(error.message || '')) {
+      errorEl.innerHTML = '<div class="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 text-sm text-center">أُرسلت رسائل كثيرة. انتظر قليلاً ثم أعد المحاولة.</div>';
+    } else {
+      errorEl.innerHTML = '<div class="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm text-center">📧 إن كان هذا البريد مرتبطاً بحساب، فقد أرسلنا إليه رابطاً. افتح بريدك (وتفقد الرسائل غير المرغوبة).</div>';
+    }
+  } catch (e) {
+    errorEl.innerHTML = '<div class="p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm text-center">تعذّر الإرسال. تحقق من الاتصال.</div>';
+  } finally { if (btn) btn.disabled = false; }
+}
+async function saveNewPasswordFromEmail() {
+  const pw = document.getElementById('np-password').value;
+  const errorEl = document.getElementById('new-password-error');
+  if (!pw || pw.length < 6) { errorEl.innerHTML = '<div class="p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm text-center">كلمة السر يجب أن تكون 6 أحرف على الأقل</div>'; return; }
+  const btn = document.getElementById('np-btn'); if (btn) btn.disabled = true;
+  const { error } = await supabaseClient.auth.updateUser({ password: pw });
+  if (btn) btn.disabled = false;
+  if (error) { errorEl.innerHTML = '<div class="p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm text-center">تعذّر الحفظ: ' + escHtml(error.message || '') + '. اطلب رابطاً جديداً.</div>'; return; }
+  try { await supabaseClient.auth.signOut(); } catch (e) {}
+  currentUser = null; saveCurrentUser(); updateHeaderUI();
+  hideModal('new-password');
+  showToast('✅ تم تغيير كلمة السر. سجّل دخولك بها الآن', 'success');
+  setTimeout(() => showModal('login'), 600);
+}
+// Arriving from the "reset password" email link
+if (window.supabaseClient) {
+  supabaseClient.auth.onAuthStateChange((event) => {
+    if (event === 'PASSWORD_RECOVERY') setTimeout(() => showModal('new-password'), 300);
+  });
+}
+if (/type=recovery/.test(location.hash || '')) window.addEventListener('load', () => setTimeout(() => {
+  const m = document.getElementById('modal-new-password'); if (m && !m.classList.contains('open')) showModal('new-password');
+}, 1500));
 
 async function logout() {
   if (!confirm('هل تريد الخروج من حسابك؟')) return;
@@ -3511,7 +3638,9 @@ async function renderLiveSessionsModalBody(silent) {
     const dateStr = st.start.toLocaleDateString('ar-DZ', { weekday: 'long', day: 'numeric', month: 'long' });
     const timeStr = liveTimeStr(st.start);
     let actionHtml;
-    if (s.meeting_link) {
+    if (s.meeting_link && !currentUser) {
+      actionHtml = `<button onclick="hideModal('live-sessions');showModal('login')" class="btn btn-primary btn-sm">🔒 سجّل الدخول للانضمام</button>`;
+    } else if (s.meeting_link) {
       actionHtml = `<a href="${s.meeting_link}" target="_blank" rel="noopener" onclick="markLiveJoin('${s.id}')" class="btn ${st.hasStarted ? 'btn-danger' : 'btn-primary'} btn-sm">${st.isOpen ? (st.hasStarted ? '🔴 انضم الآن' : '✅ ادخل الآن') : '🔗 رابط الحصة'}</a>`;
     } else {
       actionHtml = `<div class="text-center"><button disabled class="btn btn-secondary btn-sm" style="opacity:.7;cursor:not-allowed">🔒 يُفتح ${liveTimeStr(st.opensAt)}</button><div class="text-xs text-gray-500 mt-1">بعد ${liveCountdownStr(st.opensAt - now)}</div></div>`;
@@ -3524,7 +3653,7 @@ async function renderLiveSessionsModalBody(silent) {
           <div class="font-bold text-white text-sm">${escHtml(s.title)}</div>
           <div class="text-xs text-gray-400 mt-0.5">${dateStr} — ${timeStr}${(!currentUser || currentUser.isTeacher) ? ' • ' + liveLevelName(s.level) : ''}</div>
           ${st.isOpen ? '' : `<div class="text-xs text-gray-500 mt-0.5">تُفتح الحصة في Zoom قبل ${LIVE_OPEN_BEFORE_MIN} دقيقة من بدايتها</div>`}
-          ${(!currentUser && s.meeting_link) ? `<div class="text-xs mt-0.5" style="color:var(--gold)">سجّل الدخول قبل الانضمام ليُحسب حضورك</div>` : ''}
+          ${(!currentUser) ? `<div class="text-xs mt-0.5" style="color:var(--gold)">الحصص المباشرة خاصة بالتلاميذ المسجلين: سجّل الدخول ليظهر الرابط ويُحسب حضورك</div>` : ''}
         </div>
       </div>
       ${actionHtml}
@@ -3592,7 +3721,7 @@ function showDashTab(tab) {
   if (tab === 'evaluation') loadMyEvaluation();
   if (tab === 'attendance') loadMyAttendance();
   if (tab === 'wallet') { loadWallet(); loadMyPaymentRequests(); }
-  if (tab === 'settings') loadMySettingsForm();
+  if (tab === 'settings') { loadMySettingsForm(); loadMyEmail(); }
 }
 
 function showWalletPayTab(sub) {
@@ -4506,6 +4635,11 @@ async function startInstantCardPayment() {
 // Show a result message if the visitor was just redirected back from Chargily
 function checkPaymentReturnStatus() {
   const params = new URLSearchParams(window.location.search);
+  if (params.get('login') === '1') {
+    params.delete('login');
+    window.history.replaceState({}, '', window.location.pathname + (params.toString() ? '?' + params.toString() : ''));
+    if (!currentUser) setTimeout(() => { showToast('🔒 الدروس خاصة بالتلاميذ المسجلين: سجّل دخولك', 'info'); showModal('login'); }, 600);
+  }
   const status = params.get('payment');
   if (status === 'success') {
     showToast('✅ تم الدفع بنجاح! رصيدك سيُحدَّث خلال لحظات', 'success');
@@ -7531,9 +7665,30 @@ async function loadAdminCourses() {
     box.innerHTML = `<div class="text-sm text-red-400 text-center py-6">تعذّر تحميل الدورات (${escHtml(error.message||'')})<br><span class="text-gray-500">تأكد من إنشاء جدول courses في Supabase</span></div>`;
     return;
   }
+  await loadLessonViewCounts();
   renderAdminCoursesList(data || []);
 }
 
+let _lessonViewCounts = {};
+async function loadLessonViewCounts() {
+  _lessonViewCounts = {};
+  if (!supabaseClient) return;
+  const { data, error } = await supabaseClient.rpc('get_lesson_view_counts');
+  if (error || !data) return;
+  data.forEach(r => { _lessonViewCounts[r.course_id] = r; });
+}
+async function showLessonViewers(id, title) {
+  showToast('جارِ تحميل القائمة...', 'info');
+  const { data, error } = await supabaseClient.rpc('get_lesson_viewers', { p_course_id: id });
+  if (error) { showToast('تعذّر التحميل: ' + (error.message || ''), 'error'); return; }
+  const rows = (data || []).map((r, i) => `<tr><td class="py-1.5 px-2">${i + 1}</td><td class="py-1.5 px-2">${escHtml((r.name || '') + ' ' + (r.lastname || ''))}</td><td class="py-1.5 px-2" dir="ltr">${escHtml(r.phone || '')}</td><td class="py-1.5 px-2">${escHtml(liveLevelName(r.level))}</td><td class="py-1.5 px-2">${r.opens}</td><td class="py-1.5 px-2 text-xs">${new Date(r.last_at).toLocaleString('ar-DZ')}</td></tr>`).join('');
+  const box = document.getElementById('admin-courses-list');
+  const el = document.createElement('div');
+  el.className = 'card p-4 mb-3';
+  el.innerHTML = `<div class="flex items-center justify-between mb-2"><b class="text-white">👥 من قرأ: ${escHtml(title)} (${(data || []).length})</b><button class="btn btn-ghost btn-sm" onclick="this.closest('.card').remove()">✕</button></div>` +
+    ((data || []).length ? `<div style="overflow-x:auto"><table class="w-full text-sm"><thead><tr class="text-gray-400"><th class="text-right px-2">#</th><th class="text-right px-2">الاسم</th><th class="text-right px-2">الهاتف</th><th class="text-right px-2">المستوى</th><th class="text-right px-2">مرات الفتح</th><th class="text-right px-2">آخر فتح</th></tr></thead><tbody>${rows}</tbody></table></div>` : '<div class="text-sm text-gray-500">لم يفتحه أي تلميذ بعد</div>');
+  box.prepend(el);
+}
 function renderAdminCoursesList(courses) {
   const box = document.getElementById('admin-courses-list');
   if (!courses.length) { box.innerHTML = '<div class="text-sm text-gray-500 text-center py-6">لا توجد دورات مضافة بعد</div>'; return; }
@@ -7546,6 +7701,7 @@ function renderAdminCoursesList(courses) {
           <span class="font-bold text-white">${escHtml(c.title)}</span>
           ${c.is_active ? '<span class="badge badge-success">ظاهرة</span>' : '<span class="badge badge-locked">مخفية</span>'}
           ${typeof c.views === 'number' ? `<span class="badge badge-info" title="عدد مرات فتح الملف">👁 ${c.views} قراءة</span>` : ''}
+          ${_lessonViewCounts[c.id] ? `<button class="badge badge-success" style="cursor:pointer" onclick="showLessonViewers('${c.id}', this.dataset.t)" data-t="${escHtml(c.title)}" title="اضغط لرؤية الأسماء">👥 ${_lessonViewCounts[c.id].students} تلميذ</button>` : ''}
         </div>
         <div class="text-xs text-gray-500 mt-1">${escHtml(c.start_date||'')}${c.price ? ' • ' + escHtml(c.price) : ''}</div>
       </div>
@@ -7631,9 +7787,27 @@ function libCardHtml(c) {
     </div>
   </div>`;
 }
+function libLockedHtml() {
+  const n = _libraryItems.length;
+  return `<div class="lib-lock">
+    <div class="lib-lock-ico">🔒</div>
+    <h3 class="lib-lock-title">${n} مجلة دروس مع التمارين والحلول</h3>
+    <p class="lib-lock-sub">المكتبة مجانية لكن خاصة بتلاميذ المنصة. أنشئ حساباً في دقيقة واحدة أو سجّل دخولك للقراءة.</p>
+    <div class="lib-lock-btns"><button class="btn btn-primary" onclick="showModal('register')">أنشئ حساباً مجاناً</button><button class="btn btn-secondary" onclick="showModal('login')">تسجيل الدخول</button></div>
+  </div>`;
+}
+let _pendingLibId = null;
+function runPendingLib() {
+  if (!currentUser || !_pendingLibId) return;
+  const id = _pendingLibId; _pendingLibId = null;
+  setTimeout(() => openLibViewer(id), 400);
+}
 function renderLibraryGrid() {
   const grid = document.getElementById('library-grid');
   if (!grid) return;
+  const filters = document.getElementById('library-filters');
+  if (filters) filters.style.display = currentUser ? '' : 'none';
+  if (!currentUser) { grid.innerHTML = libLockedHtml(); return; }
   const items = _libraryItems.filter(c => _libraryFilter === 'all' || libSubject(c) === _libraryFilter);
   grid.innerHTML = items.length ? items.map(libCardHtml).join('') : '<div class="lib-empty">لا توجد دروس في هذا القسم بعد — قريباً إن شاء الله</div>';
   document.querySelectorAll('#library-filters .lib-chip').forEach(b => b.classList.toggle('active', b.dataset.f === _libraryFilter));
@@ -7650,7 +7824,14 @@ function setLibraryFilter(f) { _libraryFilter = f; renderLibraryGrid(); }
 function openLibViewer(id) {
   const c = _libraryItems.find(x => String(x.id) === String(id));
   if (!c) return;
+  if (!currentUser) {
+    _pendingLibId = id;
+    showToast('🔒 سجّل دخولك أو أنشئ حساباً مجانياً لقراءة الدرس', 'info');
+    showModal('login');
+    return;
+  }
   countLessonView(c.id);
+  if (supabaseClient && !currentUser.isTeacher) supabaseClient.rpc('record_lesson_view', { p_course_id: c.id }).then(() => {}, () => {});
   rememberLastLesson('pdf', c.id, libShortTitle(c));
   const url = libPreviewUrl(c.registration_link);
   // On phones the viewer opens as its own page: zooming inside an iframe on top of the
@@ -7684,9 +7865,8 @@ async function loadHomeLibrary(retry) {
   const data = await fetchActiveCourses();
   if (!data || !_libraryItems.length) { sec.style.display = 'none'; return; }
   const fp = document.getElementById('stat-free-pdfs'); if (fp) fp.textContent = _libraryItems.length;
-  document.getElementById('home-library-grid').innerHTML = _libraryItems.slice(0, 4).map(libCardHtml).join('');
-  sec.style.display = 'block';
-  if (location.hash === '#home-library-section') setTimeout(() => sec.scrollIntoView({ block: 'start' }), 100);
+  // Lesson files are for registered students only: they are no longer shown on the public home page.
+  sec.style.display = 'none';
 }
 
 async function loadPublicCourses() {
@@ -8136,7 +8316,7 @@ function applyThemeIcon() {
   const iconEl = document.getElementById('theme-toggle-icon');
   if (iconEl) iconEl.textContent = isLight ? '☀️' : '🌙';
   const metaTheme = document.getElementById('meta-theme-color');
-  if (metaTheme) metaTheme.setAttribute('content', isLight ? '#f5f6f3' : '#0b1826');
+  if (metaTheme) metaTheme.setAttribute('content', isLight ? '#0066cc' : '#0f1d2b');
 }
 function toggleSiteTheme() {
   const html = document.documentElement;
