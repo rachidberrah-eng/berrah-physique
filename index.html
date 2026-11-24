@@ -1234,16 +1234,6 @@ html.twa #pricing-compare-section,html.twa .pay-only,html.twa .balance-badge,htm
     <div id="my-email-result"></div>
   </div>
 </div>
-<div class="card p-6 sm:p-8 lg:col-span-2">
-  <h2 class="text-2xl font-black text-white mb-2">🎁 ادعُ صديقاً واربح 200 دج</h2>
-  <p class="text-sm text-gray-400 mb-4">شارك رابطك مع أصدقائك — عند تسجيلهم بنجاح تحصل أنت و صديقك على 200 دج لكل واحد منكما.</p>
-  <div class="flex flex-col sm:flex-row gap-3">
-    <input type="text" id="referral-link-display" class="form-input" readonly dir="ltr">
-    <button onclick="copyReferralLink()" class="btn btn-primary sm:w-40">📋 نسخ الرابط</button>
-    <button onclick="shareReferralWhatsapp()" class="btn btn-secondary sm:w-40">📤 مشاركة واتساب</button>
-  </div>
-  <p class="text-xs text-gray-500 mt-3" id="referral-count-text"></p>
-</div>
 </div></div>
 </div></div>
 <div id="page-player" class="hidden"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6"><div class="breadcrumb flex items-center gap-2 text-sm text-gray-500 mb-4"><a href="#" onclick="showPage('dashboard')" class="text-gold-500">حسابي</a><span>›</span><a href="#" id="player-unit-link" class="text-gold-500">الوحدة</a><span>›</span><span id="player-lesson-name">الدرس</span></div><div class="grid lg:grid-cols-[1fr_320px] gap-4 sm:gap-6"><div><div class="video-frame mb-4" id="player-frame" oncontextmenu="return false" ondragstart="return false"><div id="player-iframe-container"></div><div id="cp-click-overlay" class="cp-click-overlay" onclick="cpTogglePlay()"></div><div id="custom-player-controls" class="custom-player-controls" dir="ltr"><button onclick="togglePlayerFullscreen()" id="player-fs-btn" class="player-fs-btn" title="ملء الشاشة (تكبير/تصغير)">⛶</button><button onclick="cpTogglePlay()" id="cp-play-btn" class="cp-play-btn">▶</button><span id="cp-time-current" class="cp-time">0:00</span><input type="range" id="cp-seek" class="cp-seek" min="0" max="100" value="0" oninput="cpSeekPreview(this.value)" onchange="cpSeek(this.value)"><span id="cp-time-total" class="cp-time">0:00</span><button onclick="cpToggleMute()" id="cp-mute-btn" class="cp-mute-btn">🔊</button></div></div><div class="card p-4 sm:p-6" style="position:relative"><button onclick="closePlayer()" class="btn btn-ghost btn-sm" title="إغلاق" style="position:absolute;top:14px;left:14px;width:32px;height:32px;padding:0;display:flex;align-items:center;justify-content:center">✕</button><div class="flex flex-wrap items-start justify-between gap-3 mb-3"><div><h1 class="text-xl sm:text-2xl font-black text-white" id="player-title">عنوان الدرس</h1><div class="flex flex-wrap gap-2 mt-2"><span class="badge badge-gold" id="player-unit-badge">📘 الوحدة</span><span class="badge badge-info" id="player-level-badge">🎓 المستوى</span><span class="badge badge-success" id="player-stream-badge">📂 الشعبة</span></div></div><div class="flex flex-wrap gap-2"><a id="player-pdf-link" href="#" target="_blank" class="btn btn-secondary btn-sm hidden" title="تحميل الدرس">📄 حمّل الدرس</a><button id="player-quiz-btn" onclick="openQuizTaker()" class="btn btn-primary btn-sm hidden" title="تقييم سريع">📝 تقييم سريع</button><button id="player-eval-btn" onclick="openLessonEvaluationSubmit()" class="btn btn-primary btn-sm hidden" title="سلسلة التمارين">📊 سلسلة التمارين</button></div></div><p class="text-sm text-gray-400" id="player-description"></p><div id="player-eval-result" class="mt-3"></div><div id="player-lesson-files" class="flex flex-wrap gap-2 mt-3"></div><div id="player-mark-complete" class="mt-3"></div><div id="player-unlock-note" class="mt-3"></div></div></div><div class="lesson-sidebar" id="player-sidebar"><div class="p-3 border-b border-white/5 mb-2"><h3 class="text-sm font-bold text-gold-500">📚 دروس الوحدة</h3></div><div id="player-lessons-list"></div></div></div></div></div>
@@ -1703,7 +1693,6 @@ html.twa #pricing-compare-section,html.twa .pay-only,html.twa .balance-badge,htm
 <div><label class="form-label">السنة الدراسية</label><select id="reg-level" class="form-input"><option value="">اختر السنة</option><option value="1as">أولى ثانوي</option><option value="2as">ثانية ثانوي</option><option value="3as">ثالثة ثانوي</option></select></div>
 <div><label class="form-label">الولاية</label><select id="reg-wilaya" class="form-input"></select></div>
 </div>
-<div><label class="form-label">كود دعوة صديق <span class="text-gray-600">(اختياري، 200 دج 🎁)</span></label><input type="text" id="reg-referral" placeholder="رقم هاتف من دعاك" class="form-input" dir="ltr"></div>
 <label class="flex items-start gap-2.5 text-xs text-gray-400 cursor-pointer"><input type="checkbox" id="reg-terms" class="mt-0.5 w-4 h-4 accent-[var(--gold)] flex-shrink-0"><span>أوافق على <a href="#" onclick="showModal('terms');return false;" class="text-gold-500 underline hover:no-underline">الشروط والأحكام وسياسة الخصوصية</a></span></label>
 <button onclick="doRegister()" class="btn btn-primary btn-block btn-lg">إنشاء الحساب</button>
 </div><div class="mt-4 pt-4 border-t border-white/5 text-center"><p class="text-sm text-gray-400">لديك حساب؟ <a href="#" onclick="hideModal('register');showModal('login'); return false;" class="text-gold-500 font-bold hover:underline">سجّل دخولك</a></p></div></div></div>
@@ -2662,7 +2651,6 @@ function init() {
   loadUserFromStorage();
   loadFreeLessons();
   setupScrollHeader();
-  applyReferralLinkIfPresent();
   updateBacCountdown();
   checkPaymentReturnStatus();
   loadRealStats();
@@ -3249,17 +3237,6 @@ function doRegister() {
         if (regEmail) { try { await linkRecoveryEmail(regEmail, true); } catch (e) { console.warn('link email', e); } }
 
 
-        // Referral bonus (optional, best-effort — never blocks registration)
-        const referralCode = normalizePhone(document.getElementById('reg-referral').value.trim());
-        if (referralCode) {
-          try {
-            const { data: refData } = await supabaseClient.rpc('claim_referral', { p_referrer_phone: referralCode });
-            if (refData && refData.ok) {
-              currentUser.balance = (currentUser.balance || 0) + refData.bonus;
-              showToast(`🎁 حصلت على ${refData.bonus} دج مكافأة دعوة!`, 'success');
-            }
-          } catch (e) { console.warn('Referral claim failed:', e); }
-        }
       } else {
         // Offline/local fallback only (no Supabase configured)
         const newUser = {name, lastname, phone: normPhone, password, level, wilaya, stream:null, streamName:null, balance:0, isTeacher:false, purchasedLessons:[], purchasedPackages:[], walletHistory:[]};
@@ -4142,7 +4119,6 @@ function loadMySettingsForm() {
   wilayaSel.value = currentUser.wilaya || WILAYAS[0];
   const qSel = document.getElementById('new-recovery-question');
   if (qSel) qSel.innerHTML = '<option value="">اختر سؤال الأمان</option>' + RECOVERY_QUESTIONS.map(q => `<option value="${q}">${q}</option>`).join('');
-  loadReferralInfo();
 }
 
 function loadReferralInfo() {
