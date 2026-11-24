@@ -7889,14 +7889,25 @@ function runPendingLib() {
   const id = _pendingLibId; _pendingLibId = null;
   setTimeout(() => openLibViewer(id), 400);
 }
+// Lesson level from its title: "(2 ثانوي)" -> 2as, "(3 ثانوي)" -> 3as; no tag = everyone
+function libLevel(c) {
+  const m = String((c && c.title) || '').match(/\(\s*([123])\s*ثانوي\s*\)/);
+  return m ? m[1] + 'as' : null;
+}
+function libVisibleForUser(c) {
+  if (!currentUser) return false;
+  if (currentUser.isTeacher) return true;
+  const lv = libLevel(c);
+  return !lv || lv === currentUser.level;
+}
 function renderLibraryGrid() {
   const grid = document.getElementById('library-grid');
   if (!grid) return;
   const filters = document.getElementById('library-filters');
   if (filters) filters.style.display = currentUser ? '' : 'none';
   if (!currentUser) { grid.innerHTML = libLockedHtml(); return; }
-  const items = _libraryItems.filter(c => _libraryFilter === 'all' || libSubject(c) === _libraryFilter);
-  grid.innerHTML = items.length ? items.map(libCardHtml).join('') : '<div class="lib-empty">لا توجد دروس في هذا القسم بعد — قريباً إن شاء الله</div>';
+  const items = _libraryItems.filter(c => libVisibleForUser(c) && (_libraryFilter === 'all' || libSubject(c) === _libraryFilter));
+  grid.innerHTML = items.length ? items.map(libCardHtml).join('') : '<div class="lib-empty">لا توجد دروس لمستواك في هذا القسم بعد — قريباً إن شاء الله</div>';
   document.querySelectorAll('#library-filters .lib-chip').forEach(b => b.classList.toggle('active', b.dataset.f === _libraryFilter));
 }
 // count one open per browser per lesson per day (needs SQL function increment_course_view)
@@ -7911,6 +7922,7 @@ function setLibraryFilter(f) { _libraryFilter = f; renderLibraryGrid(); }
 function openLibViewer(id) {
   const c = _libraryItems.find(x => String(x.id) === String(id));
   if (!c) return;
+  if (currentUser && !libVisibleForUser(c)) { showToast('هذا الدرس مخصص لمستوى آخر', 'info'); return; }
   if (!currentUser) {
     _pendingLibId = id;
     showToast('🔒 سجّل دخولك أو أنشئ حساباً مجانياً لقراءة الدرس', 'info');
