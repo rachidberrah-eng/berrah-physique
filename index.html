@@ -1234,26 +1234,6 @@ html.twa #pricing-compare-section,html.twa .pay-only,html.twa .balance-badge,htm
     <div id="my-email-result"></div>
   </div>
 </div>
-<div class="card p-6 sm:p-8">
-  <h2 class="text-2xl font-black text-white mb-2">🔑 سؤال الأمان</h2>
-  <p class="text-sm text-gray-400 mb-6">يُستخدم لاستعادة حسابك من صفحة الدخول إن نسيت كلمة السر، دون الحاجة لمراسلة الأستاذ</p>
-  <div class="space-y-3">
-    <div><label class="form-label">سؤال الأمان</label><select id="new-recovery-question" class="form-input"></select></div>
-    <div><label class="form-label">إجابتك</label><input type="text" id="new-recovery-answer" placeholder="اكتب إجابتك هنا" class="form-input"></div>
-    <button onclick="updateMyRecoveryQuestion()" class="btn btn-secondary btn-block">💾 حفظ سؤال الأمان</button>
-    <div id="recovery-pin-result"></div>
-  </div>
-</div>
-<div class="card p-6 sm:p-8 lg:col-span-2">
-  <h2 class="text-2xl font-black text-white mb-2">🎁 ادعُ صديقاً واربح 200 دج</h2>
-  <p class="text-sm text-gray-400 mb-4">شارك رابطك مع أصدقائك — عند تسجيلهم بنجاح تحصل أنت و صديقك على 200 دج لكل واحد منكما.</p>
-  <div class="flex flex-col sm:flex-row gap-3">
-    <input type="text" id="referral-link-display" class="form-input" readonly dir="ltr">
-    <button onclick="copyReferralLink()" class="btn btn-primary sm:w-40">📋 نسخ الرابط</button>
-    <button onclick="shareReferralWhatsapp()" class="btn btn-secondary sm:w-40">📤 مشاركة واتساب</button>
-  </div>
-  <p class="text-xs text-gray-500 mt-3" id="referral-count-text"></p>
-</div>
 </div></div>
 </div></div>
 <div id="page-player" class="hidden"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6"><div class="breadcrumb flex items-center gap-2 text-sm text-gray-500 mb-4"><a href="#" onclick="showPage('dashboard')" class="text-gold-500">حسابي</a><span>›</span><a href="#" id="player-unit-link" class="text-gold-500">الوحدة</a><span>›</span><span id="player-lesson-name">الدرس</span></div><div class="grid lg:grid-cols-[1fr_320px] gap-4 sm:gap-6"><div><div class="video-frame mb-4" id="player-frame" oncontextmenu="return false" ondragstart="return false"><div id="player-iframe-container"></div><div id="cp-click-overlay" class="cp-click-overlay" onclick="cpTogglePlay()"></div><div id="custom-player-controls" class="custom-player-controls" dir="ltr"><button onclick="togglePlayerFullscreen()" id="player-fs-btn" class="player-fs-btn" title="ملء الشاشة (تكبير/تصغير)">⛶</button><button onclick="cpTogglePlay()" id="cp-play-btn" class="cp-play-btn">▶</button><span id="cp-time-current" class="cp-time">0:00</span><input type="range" id="cp-seek" class="cp-seek" min="0" max="100" value="0" oninput="cpSeekPreview(this.value)" onchange="cpSeek(this.value)"><span id="cp-time-total" class="cp-time">0:00</span><button onclick="cpToggleMute()" id="cp-mute-btn" class="cp-mute-btn">🔊</button></div></div><div class="card p-4 sm:p-6" style="position:relative"><button onclick="closePlayer()" class="btn btn-ghost btn-sm" title="إغلاق" style="position:absolute;top:14px;left:14px;width:32px;height:32px;padding:0;display:flex;align-items:center;justify-content:center">✕</button><div class="flex flex-wrap items-start justify-between gap-3 mb-3"><div><h1 class="text-xl sm:text-2xl font-black text-white" id="player-title">عنوان الدرس</h1><div class="flex flex-wrap gap-2 mt-2"><span class="badge badge-gold" id="player-unit-badge">📘 الوحدة</span><span class="badge badge-info" id="player-level-badge">🎓 المستوى</span><span class="badge badge-success" id="player-stream-badge">📂 الشعبة</span></div></div><div class="flex flex-wrap gap-2"><a id="player-pdf-link" href="#" target="_blank" class="btn btn-secondary btn-sm hidden" title="تحميل الدرس">📄 حمّل الدرس</a><button id="player-quiz-btn" onclick="openQuizTaker()" class="btn btn-primary btn-sm hidden" title="تقييم سريع">📝 تقييم سريع</button><button id="player-eval-btn" onclick="openLessonEvaluationSubmit()" class="btn btn-primary btn-sm hidden" title="سلسلة التمارين">📊 سلسلة التمارين</button></div></div><p class="text-sm text-gray-400" id="player-description"></p><div id="player-eval-result" class="mt-3"></div><div id="player-lesson-files" class="flex flex-wrap gap-2 mt-3"></div><div id="player-mark-complete" class="mt-3"></div><div id="player-unlock-note" class="mt-3"></div></div></div><div class="lesson-sidebar" id="player-sidebar"><div class="p-3 border-b border-white/5 mb-2"><h3 class="text-sm font-bold text-gold-500">📚 دروس الوحدة</h3></div><div id="player-lessons-list"></div></div></div></div></div>
@@ -1489,28 +1469,17 @@ html.twa #pricing-compare-section,html.twa .pay-only,html.twa .balance-badge,htm
   <div class="text-center mb-6">
     <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-gold-500 to-gold-700 flex items-center justify-center text-3xl font-black text-dark-950 mb-4 shadow-lg shadow-gold-500/30">🔑</div>
     <h2 class="text-2xl font-black text-white mb-1">استعادة كلمة السر</h2>
-    <p class="text-sm text-gray-400" id="fp-subtitle">أدخل رقم هاتفك للمتابعة</p>
+    <p class="text-sm text-gray-400" id="fp-subtitle">سنرسل لك رابطاً لاختيار كلمة سر جديدة</p>
   </div>
   <div id="forgot-password-error" class="mb-4"></div>
-  <div id="fp-email-block" class="space-y-3 mb-5 pb-5 border-b border-white/5">
+  <div id="fp-email-block" class="space-y-3">
     <div class="text-sm font-bold text-white">📧 عن طريق البريد الإلكتروني</div>
     <div><input type="email" id="fp-email" placeholder="name@gmail.com" class="form-input" dir="ltr" autocomplete="email"></div>
     <button onclick="sendResetEmail()" id="fp-email-btn" class="btn btn-primary btn-block">أرسل لي رابط الاسترجاع</button>
-    <p class="text-xs text-gray-500">يعمل إذا أضفت بريدك عند التسجيل أو في إعدادات حسابك.</p>
-  </div>
-  <div class="text-sm font-bold text-white mb-3">🔑 أو عن طريق سؤال الأمان</div>
-  <div id="fp-step1" class="space-y-4">
-    <div><label class="form-label">رقم الهاتف</label><input type="text" id="fp-phone" placeholder="07xxxxxxxx" class="form-input" dir="ltr"></div>
-    <button onclick="doFetchRecoveryQuestion()" class="btn btn-primary btn-block btn-lg">التالي</button>
-  </div>
-  <div id="fp-step2" class="space-y-4 hidden">
-    <div class="p-3 rounded-xl bg-gold-500/10 border border-gold-500/20 text-gold-500 text-sm font-bold text-center" id="fp-question-display"></div>
-    <div><label class="form-label">إجابتك</label><input type="text" id="fp-answer" placeholder="اكتب إجابتك هنا" class="form-input"></div>
-    <div><label class="form-label">كلمة السر الجديدة</label><div class="pw-wrap"><input type="password" id="fp-new-password" placeholder="6 أحرف على الأقل" class="form-input" minlength="6"><button type="button" class="pw-toggle" onclick="togglePwVisibility('fp-new-password', this)" tabindex="-1">👁</button></div></div>
-    <button onclick="doResetPasswordWithAnswer()" class="btn btn-primary btn-block btn-lg">🔓 إعادة تعيين كلمة السر</button>
+    <p class="text-xs text-gray-500">اكتب البريد الذي سجّلت به أو أضفته في إعدادات حسابك.</p>
   </div>
   <div class="mt-6 pt-6 border-t border-white/5 text-center">
-    <p class="text-sm text-gray-400">لا تتذكر إجابتك؟ <a href="https://wa.me/213770032735" target="_blank" class="text-gold-500 font-bold hover:underline">تواصل مع الأستاذ</a></p>
+    <p class="text-sm text-gray-400">لم تضف بريداً لحسابك؟ <a href="https://wa.me/213770032735" target="_blank" class="text-gold-500 font-bold hover:underline">تواصل مع الأستاذ</a></p>
   </div>
 </div></div>
 <div class="modal-backdrop" id="modal-exam-submit"><div class="modal-content p-6 sm:p-8">
@@ -1718,16 +1687,12 @@ html.twa #pricing-compare-section,html.twa .pay-only,html.twa .balance-badge,htm
 </div></div>
 <div class="modal-backdrop" id="modal-register"><div class="modal-content p-5 sm:p-7"><button onclick="hideModal('register')" class="absolute top-4 left-4 w-9 h-9 flex items-center justify-center rounded-xl bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition">✕</button><div class="text-center mb-5"><div class="w-14 h-14 mx-auto flex items-center justify-center mb-3"><div class="brand-logo-img" role="img" aria-label="BERRAH PHYSICS" style="width:32px;height:32px"></div></div><h2 class="text-xl font-black text-white mb-1">إنشاء حساب</h2><p class="text-xs text-gray-400">ابدأ رحلتك في تعلم الفيزياء</p></div><div id="register-error" class="mb-3"></div><div class="space-y-3"><button type="button" onclick="signInWithGoogle()" class="btn btn-block btn-lg" style="background:#fff;color:#1f1f1f;border:1px solid #c7ccd1;display:flex;align-items:center;justify-content:center;gap:10px"><svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>التسجيل بحساب Google</button><div class="flex items-center gap-3 text-xs text-gray-500"><span class="flex-1 h-px bg-white/10"></span>أو<span class="flex-1 h-px bg-white/10"></span></div>
 <div class="grid grid-cols-2 gap-3"><div><label class="form-label">الاسم</label><input type="text" id="reg-name" placeholder="محمد" class="form-input"></div><div><label class="form-label">اللقب</label><input type="text" id="reg-lastname" placeholder="بن علي" class="form-input"></div></div>
-<div><label class="form-label">رقم الهاتف</label><input type="text" id="reg-phone" placeholder="0555123456" class="form-input" dir="ltr"></div><div><label class="form-label">البريد الإلكتروني <span class="text-xs text-gray-500">(اختياري — لاسترجاع كلمة السر إن نسيتها)</span></label><input type="email" id="reg-email" placeholder="name@gmail.com" class="form-input" dir="ltr" autocomplete="email"></div>
+<div><label class="form-label">رقم الهاتف</label><input type="text" id="reg-phone" placeholder="0555123456" class="form-input" dir="ltr"></div><div><label class="form-label">البريد الإلكتروني <span class="text-xs text-gray-500">(ضروري — لاسترجاع كلمة السر إن نسيتها)</span></label><input type="email" id="reg-email" placeholder="name@gmail.com" class="form-input" dir="ltr" autocomplete="email"></div>
 <div><label class="form-label">الرقم السري</label><div class="pw-wrap"><input type="password" id="reg-password" placeholder="6 أحرف على الأقل" class="form-input"><button type="button" class="pw-toggle" onclick="togglePwVisibility('reg-password', this)" tabindex="-1">👁</button></div></div>
-<div><label class="form-label">سؤال الأمان</label><select id="reg-recovery-question" class="form-input"></select></div>
-<div><label class="form-label">إجابتك</label><input type="text" id="reg-recovery-answer" placeholder="اكتب إجابتك هنا" class="form-input"></div>
-<p class="text-xs text-gray-500 -mt-2">💡 احفظ إجابتك جيداً — تُستخدم لاستعادة حسابك وحدك إن نسيت كلمة السر</p>
 <div class="grid grid-cols-2 gap-3">
 <div><label class="form-label">السنة الدراسية</label><select id="reg-level" class="form-input"><option value="">اختر السنة</option><option value="1as">أولى ثانوي</option><option value="2as">ثانية ثانوي</option><option value="3as">ثالثة ثانوي</option></select></div>
 <div><label class="form-label">الولاية</label><select id="reg-wilaya" class="form-input"></select></div>
 </div>
-<div><label class="form-label">كود دعوة صديق <span class="text-gray-600">(اختياري، 200 دج 🎁)</span></label><input type="text" id="reg-referral" placeholder="رقم هاتف من دعاك" class="form-input" dir="ltr"></div>
 <label class="flex items-start gap-2.5 text-xs text-gray-400 cursor-pointer"><input type="checkbox" id="reg-terms" class="mt-0.5 w-4 h-4 accent-[var(--gold)] flex-shrink-0"><span>أوافق على <a href="#" onclick="showModal('terms');return false;" class="text-gold-500 underline hover:no-underline">الشروط والأحكام وسياسة الخصوصية</a></span></label>
 <button onclick="doRegister()" class="btn btn-primary btn-block btn-lg">إنشاء الحساب</button>
 </div><div class="mt-4 pt-4 border-t border-white/5 text-center"><p class="text-sm text-gray-400">لديك حساب؟ <a href="#" onclick="hideModal('register');showModal('login'); return false;" class="text-gold-500 font-bold hover:underline">سجّل دخولك</a></p></div></div></div>
@@ -2686,7 +2651,6 @@ function init() {
   loadUserFromStorage();
   loadFreeLessons();
   setupScrollHeader();
-  applyReferralLinkIfPresent();
   updateBacCountdown();
   checkPaymentReturnStatus();
   loadRealStats();
@@ -3042,10 +3006,7 @@ function showModal(type) {
   document.body.style.overflow = 'hidden';
   if (type === 'register') document.getElementById('register-error').innerHTML = '';
   if (type === 'forgot-password') {
-    document.getElementById('fp-step1').classList.remove('hidden');
-    document.getElementById('fp-step2').classList.add('hidden');
-    document.getElementById('fp-subtitle').textContent = 'أدخل رقم هاتفك للمتابعة';
-    fpPhone = null;
+    const fe = document.getElementById('forgot-password-error'); if (fe) fe.innerHTML = '';
   }
 }
 
@@ -3212,17 +3173,13 @@ function doRegister() {
   const lastname = document.getElementById('reg-lastname').value.trim();
   const phone = document.getElementById('reg-phone').value.trim();
   const password = document.getElementById('reg-password').value;
-  const recoveryQuestion = document.getElementById('reg-recovery-question').value;
-  const recoveryAnswer = document.getElementById('reg-recovery-answer').value.trim();
   const level = document.getElementById('reg-level').value;
   const wilaya = document.getElementById('reg-wilaya').value;
   const regEmail = ((document.getElementById('reg-email') || {}).value || '').trim().toLowerCase();
   const errorEl = document.getElementById('register-error');
   if (!name || !lastname || !phone || !password || !level || !wilaya) { errorEl.innerHTML = '<div class="p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm text-center">الرجاء ملء جميع الحقول واختيار الولاية</div>'; return; }
-  if (!recoveryQuestion) { errorEl.innerHTML = '<div class="p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm text-center">اختر سؤال الأمان</div>'; return; }
-  if (recoveryAnswer.length < 2) { errorEl.innerHTML = '<div class="p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm text-center">أدخل إجابة سؤال الأمان</div>'; return; }
   if (!document.getElementById('reg-terms').checked) { errorEl.innerHTML = '<div class="p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm text-center">يجب الموافقة على الشروط والأحكام أولاً</div>'; return; }
-  if (regEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(regEmail)) { errorEl.innerHTML = '<div class="p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm text-center">البريد الإلكتروني غير صالح</div>'; return; }
+  if (!regEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(regEmail)) { errorEl.innerHTML = '<div class="p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm text-center">البريد الإلكتروني غير صالح</div>'; return; }
   if (password.length < 6) { errorEl.innerHTML = '<div class="p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm text-center">الرقم السري يجب أن يكون 6 أحرف على الأقل</div>'; return; }
   // SECURITY: validate phone format
   if (!/^[0-9]{8,15}$/.test(phone.replace(/[\s\-\+]/g, ''))) {
@@ -3279,21 +3236,7 @@ function doRegister() {
         // Optional real email for password recovery (best-effort — never blocks registration)
         if (regEmail) { try { await linkRecoveryEmail(regEmail, true); } catch (e) { console.warn('link email', e); } }
 
-        // Save the security question/answer (best-effort — never blocks registration)
-        try { await supabaseClient.rpc('set_recovery_question', { p_question: recoveryQuestion, p_answer: recoveryAnswer }); }
-        catch (e) { console.warn('Set recovery PIN failed:', e); }
 
-        // Referral bonus (optional, best-effort — never blocks registration)
-        const referralCode = normalizePhone(document.getElementById('reg-referral').value.trim());
-        if (referralCode) {
-          try {
-            const { data: refData } = await supabaseClient.rpc('claim_referral', { p_referrer_phone: referralCode });
-            if (refData && refData.ok) {
-              currentUser.balance = (currentUser.balance || 0) + refData.bonus;
-              showToast(`🎁 حصلت على ${refData.bonus} دج مكافأة دعوة!`, 'success');
-            }
-          } catch (e) { console.warn('Referral claim failed:', e); }
-        }
       } else {
         // Offline/local fallback only (no Supabase configured)
         const newUser = {name, lastname, phone: normPhone, password, level, wilaya, stream:null, streamName:null, balance:0, isTeacher:false, purchasedLessons:[], purchasedPackages:[], walletHistory:[]};
@@ -4176,7 +4119,6 @@ function loadMySettingsForm() {
   wilayaSel.value = currentUser.wilaya || WILAYAS[0];
   const qSel = document.getElementById('new-recovery-question');
   if (qSel) qSel.innerHTML = '<option value="">اختر سؤال الأمان</option>' + RECOVERY_QUESTIONS.map(q => `<option value="${q}">${q}</option>`).join('');
-  loadReferralInfo();
 }
 
 function loadReferralInfo() {
@@ -6424,7 +6366,7 @@ function renderAdminStudentsTable() {
       <td>${lastActiveBadgeHtml(s)}</td>
       <td style="color:#10b981;font-weight:700">${s.balance||0} دج</td>
       <td>${purchases}</td>
-      <td><button onclick="quickTopup('${s.phone}')" class="btn btn-secondary btn-sm">💰 شحن</button> <button onclick="openEvaluateStudent('${s.phone}')" class="btn btn-ghost btn-sm text-gold-500" title="تقييم التلميذ (يظهر له إذا كان مشتركاً)">⭐ تقييم</button> <button onclick="viewMissingObjectives('${s.phone}')" class="btn btn-ghost btn-sm text-blue-400" title="عرض الأهداف الناقصة">🎯</button> <button onclick="fixRecoveryQuestion('${s.id}','${s.name} ${s.lastname||''}')" class="btn btn-ghost btn-sm text-purple-400" title="إصلاح/تحديد سؤال الأمان">🔑</button> <button onclick="printStudentReport('${s.phone}')" class="btn btn-ghost btn-sm" title="طباعة تقرير التلميذ">🖨️</button> <button onclick="openEditStudent('${s.phone}')" class="btn btn-ghost btn-sm" title="تعديل بيانات التلميذ">✏️</button> <button onclick="deleteStudentConfirm('${s.id}')" class="btn btn-ghost btn-sm text-red-400" title="حذف التلميذ نهائياً">🗑️</button></td>
+      <td><button onclick="quickTopup('${s.phone}')" class="btn btn-secondary btn-sm">💰 شحن</button> <button onclick="openEvaluateStudent('${s.phone}')" class="btn btn-ghost btn-sm text-gold-500" title="تقييم التلميذ (يظهر له إذا كان مشتركاً)">⭐ تقييم</button> <button onclick="viewMissingObjectives('${s.phone}')" class="btn btn-ghost btn-sm text-blue-400" title="عرض الأهداف الناقصة">🎯</button> <button onclick="printStudentReport('${s.phone}')" class="btn btn-ghost btn-sm" title="طباعة تقرير التلميذ">🖨️</button> <button onclick="openEditStudent('${s.phone}')" class="btn btn-ghost btn-sm" title="تعديل بيانات التلميذ">✏️</button> <button onclick="deleteStudentConfirm('${s.id}')" class="btn btn-ghost btn-sm text-red-400" title="حذف التلميذ نهائياً">🗑️</button></td>
     </tr>`;
   }).join('');
 }
