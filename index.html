@@ -1256,6 +1256,7 @@ html.twa #pricing-compare-section,html.twa .pay-only,html.twa .balance-badge,htm
 <div class="stat-card"><div class="flex items-center justify-between mb-3"><div class="text-xs text-gray-500 font-semibold uppercase tracking-wider">الشحنات</div><div class="w-10 h-10 rounded-xl bg-gold-500/10 flex items-center justify-center text-xl">💰</div></div><div class="text-3xl sm:text-4xl font-black text-gradient-gold" id="stat-revenue">0 دج</div></div>
 <div class="stat-card cursor-pointer hover:border-red-500/40 transition" onclick="showAdminTab('students');if(!lateStudentsFilterActive)toggleLateStudentsFilter();"><div class="flex items-center justify-between mb-3"><div class="text-xs text-gray-500 font-semibold uppercase tracking-wider">تلاميذ متأخرين</div><div class="w-10 h-10 rounded-xl bg-red-500/10 flex items-center justify-center text-xl">⚠️</div></div><div class="text-3xl sm:text-4xl font-black text-red-400" id="stat-late-students">0</div></div>
 </div>
+<div class="card p-5 sm:p-6 mt-6" id="visits-card"><div class="flex flex-wrap items-center justify-between gap-3 mb-4"><h2 class="text-lg sm:text-xl font-black text-white">📈 زوار المنصة</h2><div class="flex gap-2"><button class="tab-pill active" data-vdays="7" onclick="loadVisitStats(7)">7 أيام</button><button class="tab-pill" data-vdays="30" onclick="loadVisitStats(30)">30 يوماً</button></div></div><div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-5"><div class="p-3 rounded-xl bg-blue-500/5 border border-blue-500/20"><div class="text-xs text-gray-400">زوار اليوم</div><div class="text-2xl font-black text-blue-400" id="vis-today">–</div></div><div class="p-3 rounded-xl bg-emerald-500/5 border border-emerald-500/20"><div class="text-xs text-gray-400">منهم تلاميذ مسجّلون</div><div class="text-2xl font-black text-emerald-400" id="vis-today-users">–</div></div><div class="p-3 rounded-xl bg-purple-500/5 border border-purple-500/20"><div class="text-xs text-gray-400">مشاهدات الصفحات اليوم</div><div class="text-2xl font-black text-purple-400" id="vis-today-views">–</div></div><div class="p-3 rounded-xl bg-gold-500/5 border border-gold-500/20"><div class="text-xs text-gray-400" id="vis-period-label">زوار مختلفون (7 أيام)</div><div class="text-2xl font-black text-gold-500" id="vis-period">–</div></div></div><div id="vis-chart" class="mb-5"></div><div><div class="text-sm font-bold text-gray-300 mb-2">الصفحات الأكثر زيارة</div><div id="vis-pages" class="space-y-2"><div class="text-sm text-gray-500">جارِ التحميل...</div></div></div></div>
 </div>
 <div id="admin-students" class="hidden"><div class="card p-4 sm:p-6 mb-4"><div class="flex flex-col sm:flex-row gap-3"><input type="text" id="search-student" placeholder="🔍 ابحث بالاسم أو الهاتف..." oninput="renderAdminStudentsTable()" class="form-input flex-1"><button id="late-students-toggle" onclick="toggleLateStudentsFilter()" class="btn btn-secondary">⚠️ التلاميذ المتأخرين فقط</button><button onclick="printAllStudentsReports()" class="btn btn-ghost" title="طباعة تقرير لكل التلاميذ (كل تلميذ في صفحة)">🖨️ تقارير الكل</button></div></div><div class="card overflow-hidden"><div class="overflow-x-auto"><table class="data-table"><thead><tr><th>الاسم</th><th>الهاتف</th><th>السنة</th><th>الشعبة</th><th>آخر نشاط</th><th>الرصيد</th><th>المشتريات</th><th></th></tr></thead><tbody id="students-table"></tbody></table></div></div></div>
 
@@ -2916,6 +2917,62 @@ function goToSubscribe() {
   setTimeout(() => showDashTab('wallet'), 50);
 }
 
+// ===== Visitor counter (anonymous; no IP or personal data) =====
+const _trackedPages = new Set();
+function _visitorId() {
+  try {
+    let id = safeStorage.getItem('bp_vid');
+    if (!id || !/^[A-Za-z0-9-]{8,64}$/.test(id)) {
+      id = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : (Date.now().toString(36) + Math.random().toString(36).slice(2, 12));
+      safeStorage.setItem('bp_vid', id);
+    }
+    return id;
+  } catch (e) { return null; }
+}
+function trackVisit(page) {
+  try {
+    if (!supabaseClient || !page) return;
+    if (currentUser && currentUser.isTeacher) return;
+    if (/bot|crawl|spider|lighthouse|headless/i.test(navigator.userAgent || '')) return;
+    if (_trackedPages.has(page)) return;
+    const vid = _visitorId(); if (!vid) return;
+    _trackedPages.add(page);
+    supabaseClient.rpc('track_visit', { p_visitor: vid, p_page: String(page).slice(0, 40) }).then(() => {}, () => {});
+  } catch (e) {}
+}
+window.addEventListener('load', () => setTimeout(() => {
+  const vis = document.querySelector('#main-container > div[id^="page-"]:not(.hidden)');
+  trackVisit(vis ? vis.id.replace(/^page-/, '') : 'home');
+}, 3000));
+
+const VISIT_PAGE_NAMES = { home: 'الرئيسية', library: 'المكتبة', live: 'الحصص المباشرة', zoom: 'الزوم', courses: 'دورات الفيزياء', dashboard: 'لوحة التلميذ', store: 'المتجر', 'my-lessons': 'دروسي', player: 'مشاهدة درس', setup: 'اختيار الشعبة', register: 'نافذة التسجيل', login: 'نافذة الدخول', 'live-sessions': 'حصص الزوم', 'library-pdf': 'قراءة ملف من المكتبة', admin: 'الإدارة', other: 'أخرى' };
+async function loadVisitStats(days) {
+  days = days || 7; window._visDays = days;
+  document.querySelectorAll('#visits-card [data-vdays]').forEach(b => b.classList.toggle('active', +b.dataset.vdays === days));
+  const lbl = document.getElementById('vis-period-label'); if (lbl) lbl.textContent = `زوار مختلفون (${days === 7 ? '7 أيام' : days + ' يوماً'})`;
+  const pagesEl = document.getElementById('vis-pages'), chartEl = document.getElementById('vis-chart');
+  if (!pagesEl || !supabaseClient) return;
+  const { data, error } = await supabaseClient.rpc('get_visit_stats', { p_days: days });
+  if (error || !data) { pagesEl.innerHTML = '<div class="text-sm text-gray-500">لا تتوفر الإحصائيات بعد</div>'; chartEl.innerHTML = ''; return; }
+  const d = typeof data === 'string' ? JSON.parse(data) : data;
+  const list = d.days || [], today = list[list.length - 1] || { visitors: 0, users: 0, views: 0 };
+  document.getElementById('vis-today').textContent = today.visitors;
+  document.getElementById('vis-today-users').textContent = today.users;
+  document.getElementById('vis-today-views').textContent = today.views;
+  document.getElementById('vis-period').textContent = d.period_visitors || 0;
+  const max = Math.max(1, ...list.map(x => x.visitors));
+  const many = list.length > 10;
+  chartEl.innerHTML = `<div style="display:flex;align-items:flex-end;gap:${many ? 2 : 6}px;height:150px;direction:ltr">${list.map((x, i) => {
+    const h = Math.round(x.visitors / max * 100), dd = String(x.day).slice(5).split('-').reverse().join('/');
+    const uh = x.visitors ? Math.round(x.users / x.visitors * 100) : 0;
+    const showLbl = !many || i % 5 === 0 || i === list.length - 1;
+    return `<div style="flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%" title="${dd}: ${x.visitors} زائر — ${x.users} مسجّل — ${x.views} مشاهدة"><div style="font-size:10px;color:#9ca3af;margin-bottom:2px">${!many && x.visitors ? x.visitors : '&nbsp;'}</div><div style="height:${Math.max(h * 1.1, x.visitors ? 3 : 1)}px;width:100%;max-width:34px;border-radius:6px 6px 2px 2px;background:linear-gradient(to top, rgba(16,185,129,.9) ${uh}%, var(--gold, #38bdf8) ${uh}%);opacity:${x.visitors ? 1 : .25}"></div><div style="font-size:10px;color:#6b7280;margin-top:4px;white-space:nowrap">${showLbl ? dd : '&nbsp;'}</div></div>`;
+  }).join('')}</div><div style="display:flex;gap:16px;justify-content:center;margin-top:8px;font-size:12px;color:#9ca3af"><span><span style="display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--gold, #38bdf8)"></span> زوار</span><span><span style="display:inline-block;width:10px;height:10px;border-radius:3px;background:rgba(16,185,129,.9)"></span> منهم تلاميذ مسجّلون</span></div>`;
+  const pages = d.pages || [], pmax = Math.max(1, ...pages.map(p => p.visitors));
+  pagesEl.innerHTML = pages.length ? pages.map(p => `<div style="display:flex;align-items:center;gap:12px"><div style="width:9rem;flex:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" class="text-sm text-gray-300">${VISIT_PAGE_NAMES[p.page] || escapeHtmlSafe(p.page)}</div><div style="flex:1 1 0;height:8px;border-radius:999px;background:rgba(255,255,255,.06);overflow:hidden"><div style="width:${Math.round(p.visitors / pmax * 100)}%;height:100%;border-radius:999px;background:var(--gradient-gold, #38bdf8)"></div></div><div class="text-sm font-bold text-white" style="width:2.5rem;flex:none;text-align:left">${p.visitors}</div></div>`).join('') : '<div class="text-sm text-gray-500">لا توجد زيارات بعد</div>';
+}
+function escapeHtmlSafe(t) { return String(t).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+
 function showPage(page) {
   if (page !== 'player') stopVideoProgressTracking();
   document.querySelectorAll('#main-container > div').forEach(p => p.classList.add('hidden'));
@@ -2936,6 +2993,7 @@ function showPage(page) {
   if (page === 'my-lessons') loadMyLessonsPage();
   if (page === 'courses') loadPublicCourses();
   updateHeaderUI();
+  trackVisit(page);
 }
 
 function goToFreeLibrary() {
@@ -3003,6 +3061,7 @@ function togglePwVisibility(id, btn) {
 
 function showModal(type) {
   document.getElementById('modal-' + type).classList.add('open');
+  if (type === 'register' || type === 'login' || type === 'live-sessions') trackVisit(type);
   document.body.style.overflow = 'hidden';
   if (type === 'register') document.getElementById('register-error').innerHTML = '';
   if (type === 'forgot-password') {
@@ -5554,6 +5613,7 @@ async function saveSubscriptionSettings() {
 
 function loadAdmin() {
   if (!currentUser?.isTeacher) { showToast('غير مصرح', 'error'); return showPage('home'); }
+  loadVisitStats(window._visDays || 7);
   refreshPendingPaymentsBadge();
   refreshNotifications();
   // Load students from DB (fallback to localStorage)
@@ -7862,6 +7922,7 @@ function countLessonView(id) {
 }
 function setLibraryFilter(f) { _libraryFilter = f; renderLibraryGrid(); }
 function openLibViewer(id) {
+  trackVisit('library-pdf');
   const c = _libraryItems.find(x => String(x.id) === String(id));
   if (!c) return;
   if (currentUser && !libVisibleForUser(c)) { showToast('هذا الدرس مخصص لمستوى آخر', 'info'); return; }
