@@ -1065,6 +1065,14 @@ html.twa #pricing-compare-section,html.twa .pay-only,html.twa .balance-badge,htm
 </div></section>
 
 </div>
+<div id="page-zoom-videos" class="hidden">
+  <section class="pt-28 sm:pt-32 pb-6 px-4"><div class="max-w-4xl mx-auto text-center">
+    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gold-500/10 border border-gold-500/20 text-gold-500 text-sm font-semibold mb-5">🎬 مجاني لتلاميذ المنصة</div>
+    <h1 class="font-black text-3xl sm:text-4xl lg:text-5xl mb-3 leading-tight">فيديوهات <span class="text-gradient-gold">حصص الزوم</span></h1>
+    <p class="text-base sm:text-lg text-gray-400 max-w-2xl mx-auto leading-relaxed">تسجيلات الحصص المباشرة بعد المونتاج: مختصرة، مقسّمة إلى فصول، بدون تكرار.</p>
+  </div></section>
+  <section class="pb-16 px-4"><div class="max-w-5xl mx-auto"><div id="zv-grid" class="zv-grid"></div></div></section>
+</div>
 <div id="page-courses" class="hidden">
   <section class="hero-section" style="padding:3rem 1.5rem 2.5rem">
     <div class="hero-glow-a"></div>
@@ -1445,6 +1453,37 @@ html.twa #pricing-compare-section,html.twa .pay-only,html.twa .balance-badge,htm
 </div>
 </div>
 </main>
+<div class="zv-player" id="zv-player" role="dialog" aria-modal="true"><div class="zv-player-box"><div class="zv-player-bar"><button onclick="closeZoomVideo()" title="إغلاق">✕</button><div class="t" id="zv-player-title"></div></div><div class="zv-player-body"><div class="zv-video-wrap"><video id="zv-video" controls playsinline preload="metadata" controlsList="nodownload" oncontextmenu="return false"></video></div><div class="zv-chapters" id="zv-chapters"></div></div><div class="zv-note">© الأستاذ براح عبد الرشيد — للمشاهدة على المنصة فقط</div></div></div>
+<style id="zv-style">
+.zv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.25rem}
+.zv-card{cursor:pointer;border-radius:20px;overflow:hidden;background:var(--dark-card,#0b132b);border:1px solid rgba(56,189,248,.18);transition:transform .2s,border-color .2s}
+.zv-card:hover{transform:translateY(-3px);border-color:rgba(56,189,248,.5)}
+.zv-thumb{position:relative;aspect-ratio:16/9;background:#040714 center/cover no-repeat}
+.zv-thumb .play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.zv-thumb .play span{width:64px;height:64px;border-radius:50%;background:rgba(0,229,255,.9);color:#04101f;display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 0 30px rgba(0,229,255,.5)}
+.zv-thumb .dur{position:absolute;bottom:8px;left:8px;background:rgba(4,7,20,.85);color:#e8eefc;font-size:12px;font-weight:700;padding:3px 8px;border-radius:8px;direction:ltr}
+.zv-body{padding:14px 16px 16px}
+.zv-title{font-weight:800;font-size:1.05rem;color:#fff;margin:6px 0 4px}
+.zv-meta{font-size:.82rem;color:#a9b6d3}
+.zv-player{position:fixed;inset:0;z-index:9999;background:rgba(2,4,12,.92);display:none;align-items:center;justify-content:center;padding:12px}
+.zv-player.open{display:flex}
+.zv-player-box{width:min(1200px,100%);max-height:100%;display:flex;flex-direction:column;background:#091329;border:1px solid rgba(56,189,248,.25);border-radius:18px;overflow:hidden}
+.zv-player-bar{display:flex;align-items:center;gap:12px;padding:10px 14px;border-bottom:1px solid rgba(56,189,248,.15)}
+.zv-player-bar button{width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,.06);color:#fff;font-size:18px}
+.zv-player-bar .t{font-weight:800;color:#fff;font-size:1rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.zv-player-body{display:flex;gap:0;min-height:0;flex:1}
+.zv-video-wrap{flex:1;min-width:0;background:#000;display:flex;align-items:center}
+.zv-video-wrap video{width:100%;max-height:75vh;background:#000}
+.zv-chapters{width:300px;overflow-y:auto;max-height:75vh;border-right:1px solid rgba(56,189,248,.15)}
+.zv-ch{display:flex;gap:10px;align-items:flex-start;width:100%;text-align:right;padding:10px 12px;color:#cbd5e1;font-size:.88rem;background:transparent;border:0;border-bottom:1px solid rgba(255,255,255,.04);cursor:pointer;font-family:inherit}
+.zv-ch:hover{background:rgba(56,189,248,.08)}
+.zv-ch.active{background:rgba(0,229,255,.12);color:#fff}
+.zv-ch .n{flex:none;font-weight:800;color:#38bdf8;direction:ltr;font-size:.78rem;min-width:40px}
+.zv-note{font-size:.75rem;color:#7383a6;text-align:center;padding:8px}
+@media (max-width:900px){.zv-player{padding:0}.zv-player-box{border-radius:0;height:100%}.zv-player-body{flex-direction:column}.zv-chapters{width:100%;max-height:none;flex:1;border-right:none;border-top:1px solid rgba(56,189,248,.15)}.zv-video-wrap video{max-height:40vh}}
+[data-theme="light"] .zv-card{background:#fff}
+[data-theme="light"] .zv-title{color:#0f172a}
+</style>
 <footer class="app-footer"><div class="max-w-6xl mx-auto"><div class="flex items-center justify-center gap-2 mb-3"><div class="w-8 h-8 flex items-center justify-center"><div class="brand-logo-img" role="img" aria-label="BERRAH PHYSICS" style="width:18px;height:18px"></div></div><span class="text-lg font-black logo-text">BERRAH PHYSICS</span></div><p class="text-sm text-gray-400 mb-3">دروس الفيزياء للتعليم الثانوي لتلاميذ كل ولايات الوطن 🇩🇿</p><p class="text-xs text-gray-500 mb-3">الأستاذ براح • دروس حضورية في برج بوعريريج</p><div class="flex flex-wrap items-center justify-center gap-4 text-sm"><a href="tel:0770032735" dir="ltr" class="flex items-center gap-1.5 text-gray-400 hover:text-gold-500 transition">📞 0770 03 27 35</a><span class="text-gray-700">•</span><a href="https://instagram.com/berrah_phys_34" target="_blank" class="flex items-center gap-1.5 text-gray-400 hover:text-gold-500 transition"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></svg> @berrah_phys_34</a><span class="text-gray-700">•</span><a href="https://berrah-phys.netlify.app/" target="_blank" class="flex items-center gap-1.5 text-gray-400 hover:text-gold-500 transition">🏫 دروس الدعم الحضورية</a><span class="text-gray-700">•</span><a href="#" onclick="showPage('courses');return false;" class="flex items-center gap-1.5 text-gray-400 hover:text-gold-500 transition">📚 دورات في الفيزياء</a><span class="text-gray-700">•</span><a href="#" onclick="showModal('terms');return false;" class="flex items-center gap-1.5 text-gray-400 hover:text-gold-500 transition">📜 الشروط والأحكام</a><span class="text-gray-700">•</span><a href="/privacy.html" class="flex items-center gap-1.5 text-gray-400 hover:text-gold-500 transition">🔒 سياسة الخصوصية</a></div><p class="text-xs text-gray-600 mt-4">© 2026 جميع الحقوق محفوظة للأستاذ براح</p></div></footer>
 <a href="https://wa.me/213770032735?text=السلام%20عليكم%20أستاذ%20براح،%0Aأرغب%20في%20الاستفسار%20عن%20منصة%20BERRAH%20PHYSICS" class="whatsapp-float" target="_blank" title="تواصل معنا عبر واتساب">💬<span>تواصل معنا</span></a>
 <div class="lib-viewer" id="lib-viewer" role="dialog" aria-modal="true"><div class="lib-viewer-bar"><button onclick="closeLibViewer()" title="إغلاق">✕</button><div class="t" id="lib-viewer-title"></div></div><div class="lib-viewer-frame"><div class="lib-viewer-loading">⏳ جارِ تحميل الدرس...</div><iframe id="lib-viewer-iframe" title="عرض الدرس" allow="autoplay"></iframe></div><div class="lib-viewer-note">© الأستاذ براح عبد الرشيد — للقراءة فقط</div></div>
@@ -2841,12 +2880,14 @@ function saveCurrentUser() {
 function updateHeaderUI() {
   try { updateHeroCTA(); } catch (e) {}
   try { if (_libraryItems && _libraryItems.length) { renderLibraryGrid(); runPendingLib(); } } catch (e) {}
+  try { if (_zoomVideos) renderZoomVideos(); } catch (e) {}
   const nav = document.getElementById('nav');
   if (currentUser) {
     let html = '';
     html += `<button onclick="showPage('home')" class="icon-nav-btn" data-tooltip="الرئيسية"><svg class="icon"><use href="#icon-home"/></svg></button>`;
     html += `<a href="https://berrah-phys.netlify.app/" target="_blank" class="icon-nav-btn" data-tooltip="دروس الدعم الحضورية"><svg class="icon"><use href="#icon-school"/></svg></a>`;
     html += `<a href="#" onclick="showPage('courses');return false;" class="icon-nav-btn" data-tooltip="دورات في الفيزياء">📚</a>`;
+    html += `<button onclick="showPage('zoom-videos')" class="icon-nav-btn" data-tooltip="فيديوهات الزوم">🎬</button>`;
     // Student navigation only for non-teachers
     if (!currentUser.isTeacher && currentUser.stream) {
       html += `<button onclick="showPage('my-lessons')" class="icon-nav-btn" data-tooltip="دروسي"><svg class="icon"><use href="#icon-video"/></svg></button>`;
@@ -2866,7 +2907,7 @@ function updateHeaderUI() {
     subscribeToRealtimeUpdates();
     renderStreakBadge();
   } else {
-    nav.innerHTML = `<button onclick="showPage('home')" class="btn btn-ghost text-sm">🏠 الرئيسية</button><a href="https://berrah-phys.netlify.app/" target="_blank" class="btn btn-ghost text-sm">🏫 دروس الدعم الحضورية</a><button onclick="showPage('courses')" class="btn btn-ghost text-sm">📚 دورات في الفيزياء</button><button onclick="openLiveSessionsModal()" class="btn btn-ghost text-sm">🎥 حصص الزوم</button><button onclick="showModal('login')" class="btn btn-primary text-sm">تسجيل الدخول</button>`;
+    nav.innerHTML = `<button onclick="showPage('home')" class="btn btn-ghost text-sm">🏠 الرئيسية</button><a href="https://berrah-phys.netlify.app/" target="_blank" class="btn btn-ghost text-sm">🏫 دروس الدعم الحضورية</a><button onclick="showPage('courses')" class="btn btn-ghost text-sm">📚 دورات في الفيزياء</button><button onclick="openLiveSessionsModal()" class="btn btn-ghost text-sm">🎥 حصص الزوم</button><button onclick="showPage('zoom-videos')" class="btn btn-ghost text-sm">🎬 فيديوهات الزوم</button><button onclick="showModal('login')" class="btn btn-primary text-sm">تسجيل الدخول</button>`;
   }
   updateMobileNav();
   toggleAssistantFab();
@@ -2881,6 +2922,7 @@ function updateMobileNav() {
     html += `<a href="#" onclick="showPage('home');toggleMobileNav();return false;" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/5 hover:text-white transition">🏠 الرئيسية</a>`;
     html += `<a href="https://berrah-phys.netlify.app/" target="_blank" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/5 hover:text-white transition">🏫 دروس الدعم الحضورية</a>`;
     html += `<a href="#" onclick="showPage('courses');toggleMobileNav();return false;" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/5 hover:text-white transition">📚 دورات في الفيزياء</a>`;
+    html += `<a href="#" onclick="showPage('zoom-videos');toggleMobileNav();return false;" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/5 hover:text-white transition">🎬 فيديوهات الزوم</a>`;
     // Student navigation only for non-teachers
     if (!currentUser.isTeacher && currentUser.stream) {
       html += `<a href="#" onclick="showPage('my-lessons');toggleMobileNav();return false;" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/5 hover:text-white transition"><svg class="icon"><use href="#icon-video"/></svg> دروسي</a>`;
@@ -2892,7 +2934,7 @@ function updateMobileNav() {
     html += `<a href="#" onclick="logout();return false;" class="flex items-center gap-3 px-4 py-3 rounded-xl text-red-400 hover:bg-red-500/10 transition mt-4">🚪 تسجيل الخروج</a>`;
     links.innerHTML = html;
   } else {
-    links.innerHTML = `<a href="#" onclick="showPage('home');toggleMobileNav();return false;" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/5 hover:text-white transition">🏠 الرئيسية</a><a href="https://berrah-phys.netlify.app/" target="_blank" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/5 hover:text-white transition">🏫 دروس الدعم الحضورية</a><a href="#" onclick="showPage('courses');toggleMobileNav();return false;" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/5 hover:text-white transition">📚 دورات في الفيزياء</a><a href="#" onclick="openLiveSessionsModal();toggleMobileNav();return false;" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/5 hover:text-white transition">🎥 حصص الزوم</a><a href="#" onclick="showModal('login');toggleMobileNav();return false;" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gold-500 bg-gold-500/10 mt-2">🔐 تسجيل الدخول</a><a href="#" onclick="showModal('register');toggleMobileNav();return false;" class="btn btn-primary btn-block mt-2">📝 إنشاء حساب</a>`;
+    links.innerHTML = `<a href="#" onclick="showPage('home');toggleMobileNav();return false;" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/5 hover:text-white transition">🏠 الرئيسية</a><a href="https://berrah-phys.netlify.app/" target="_blank" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/5 hover:text-white transition">🏫 دروس الدعم الحضورية</a><a href="#" onclick="showPage('courses');toggleMobileNav();return false;" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/5 hover:text-white transition">📚 دورات في الفيزياء</a><a href="#" onclick="openLiveSessionsModal();toggleMobileNav();return false;" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/5 hover:text-white transition">🎥 حصص الزوم</a><a href="#" onclick="showPage('zoom-videos');toggleMobileNav();return false;" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/5 hover:text-white transition">🎬 فيديوهات الزوم</a><a href="#" onclick="showModal('login');toggleMobileNav();return false;" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gold-500 bg-gold-500/10 mt-2">🔐 تسجيل الدخول</a><a href="#" onclick="showModal('register');toggleMobileNav();return false;" class="btn btn-primary btn-block mt-2">📝 إنشاء حساب</a>`;
   }
 }
 
@@ -2945,7 +2987,7 @@ window.addEventListener('load', () => setTimeout(() => {
   trackVisit(vis ? vis.id.replace(/^page-/, '') : 'home');
 }, 3000));
 
-const VISIT_PAGE_NAMES = { home: 'الرئيسية', library: 'المكتبة', live: 'الحصص المباشرة', zoom: 'الزوم', courses: 'دورات الفيزياء', dashboard: 'لوحة التلميذ', store: 'المتجر', 'my-lessons': 'دروسي', player: 'مشاهدة درس', setup: 'اختيار الشعبة', register: 'نافذة التسجيل', login: 'نافذة الدخول', 'live-sessions': 'حصص الزوم', 'library-pdf': 'قراءة ملف من المكتبة', admin: 'الإدارة', other: 'أخرى' };
+const VISIT_PAGE_NAMES = { home: 'الرئيسية', library: 'المكتبة', live: 'الحصص المباشرة', zoom: 'الزوم', courses: 'دورات الفيزياء', dashboard: 'لوحة التلميذ', store: 'المتجر', 'my-lessons': 'دروسي', player: 'مشاهدة درس', setup: 'اختيار الشعبة', register: 'نافذة التسجيل', login: 'نافذة الدخول', 'live-sessions': 'حصص الزوم', 'library-pdf': 'قراءة ملف من المكتبة', admin: 'الإدارة', 'zoom-videos': 'فيديوهات الزوم', 'zoom-video': 'مشاهدة فيديو زوم', other: 'أخرى' };
 async function loadVisitStats(days) {
   days = days || 7; window._visDays = days;
   document.querySelectorAll('#visits-card [data-vdays]').forEach(b => b.classList.toggle('active', +b.dataset.vdays === days));
@@ -2973,6 +3015,60 @@ async function loadVisitStats(days) {
 }
 function escapeHtmlSafe(t) { return String(t).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
 
+// ===== Zoom recordings (free for registered students; filtered by level) =====
+let _zoomVideos = null;
+async function loadZoomVideos() {
+  if (!_zoomVideos) {
+    try { const r = await fetch('/videos/zoom.json?v=' + Math.floor(Date.now() / 3600000)); _zoomVideos = r.ok ? await r.json() : []; } catch (e) { _zoomVideos = []; }
+  }
+  renderZoomVideos();
+}
+function zvVisible(v) {
+  if (!currentUser) return false;
+  if (currentUser.isTeacher) return true;
+  return !v.level || v.level === 'all' || v.level === currentUser.level;
+}
+function zvFmt(t) { t = Math.round(t); const h = Math.floor(t / 3600), m = Math.floor(t % 3600 / 60), s = t % 60; return (h ? h + ':' + String(m).padStart(2, '0') : m) + ':' + String(s).padStart(2, '0'); }
+function renderZoomVideos() {
+  const grid = document.getElementById('zv-grid');
+  if (!grid || !_zoomVideos) return;
+  if (!currentUser) {
+    grid.innerHTML = `<div class="lib-lock" style="grid-column:1/-1"><div class="lib-lock-ico">🔒</div><h3 class="lib-lock-title">${_zoomVideos.length} فيديو من حصص الزوم</h3><p class="lib-lock-sub">الفيديوهات مجانية لكن خاصة بتلاميذ المنصة. أنشئ حساباً في دقيقة واحدة أو سجّل دخولك للمشاهدة.</p><div class="lib-lock-btns"><button class="btn btn-primary" onclick="showModal('register')">أنشئ حساباً مجاناً</button><button class="btn btn-secondary" onclick="showModal('login')">تسجيل الدخول</button></div></div>`;
+    return;
+  }
+  const items = _zoomVideos.filter(zvVisible);
+  grid.innerHTML = items.length ? items.map(v => `<div class="zv-card" role="button" tabindex="0" onclick="openZoomVideo('${escHtml(v.id)}')">
+    <div class="zv-thumb" style="background-image:url('${escHtml(v.poster || '')}')"><div class="play"><span>▶</span></div><div class="dur">${escHtml(v.duration || '')}</div></div>
+    <div class="zv-body"><div class="lib-badges"><span class="badge badge-info">${v.level === '2as' ? '2 ثانوي' : v.level === '3as' ? '3 ثانوي' : 'كل المستويات'}</span><span class="badge badge-success">مجاني</span>${v.chapters ? `<span class="badge">${v.chapters.length} فصلاً</span>` : ''}</div>
+    <div class="zv-title">${escHtml(v.title)}</div><div class="zv-meta">${escHtml(v.subtitle || '')}${v.date ? ' • ' + escHtml(v.date) : ''}</div></div></div>`).join('')
+    : '<div class="lib-empty" style="grid-column:1/-1">لا توجد فيديوهات لمستواك بعد — قريباً إن شاء الله</div>';
+}
+function openZoomVideo(id) {
+  const v = (_zoomVideos || []).find(x => x.id === id);
+  if (!v) return;
+  if (!currentUser) { showToast('🔒 سجّل دخولك أو أنشئ حساباً مجانياً للمشاهدة', 'info'); showModal('login'); return; }
+  if (!zvVisible(v)) { showToast('هذا الفيديو مخصص لمستوى آخر', 'info'); return; }
+  trackVisit('zoom-video');
+  const vid = document.getElementById('zv-video');
+  document.getElementById('zv-player-title').textContent = v.title;
+  vid.poster = v.poster || ''; vid.src = v.src;
+  const chs = v.chapters || [];
+  const box = document.getElementById('zv-chapters');
+  box.style.display = chs.length ? '' : 'none';
+  box.innerHTML = chs.map((c, i) => `<button class="zv-ch" data-t="${c.t}" onclick="zvSeek(${c.t})"><span class="n">${zvFmt(c.t)}</span><span>${String(i + 1).padStart(2, '0')} — ${escHtml(c.title)}</span></button>`).join('');
+  vid.ontimeupdate = () => { const t = vid.currentTime; let k = -1; chs.forEach((c, i) => { if (t >= c.t) k = i; }); box.querySelectorAll('.zv-ch').forEach((b, i) => b.classList.toggle('active', i === k)); };
+  document.getElementById('zv-player').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function zvSeek(t) { const vid = document.getElementById('zv-video'); vid.currentTime = t + 0.05; vid.play().catch(() => {}); }
+function closeZoomVideo() {
+  const vid = document.getElementById('zv-video'); try { vid.pause(); } catch (e) {}
+  vid.removeAttribute('src'); vid.load();
+  document.getElementById('zv-player').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && document.getElementById('zv-player')?.classList.contains('open')) closeZoomVideo(); });
+
 function showPage(page) {
   if (page !== 'player') stopVideoProgressTracking();
   document.querySelectorAll('#main-container > div').forEach(p => p.classList.add('hidden'));
@@ -2992,6 +3088,7 @@ function showPage(page) {
   if (page === 'store') loadStore();
   if (page === 'my-lessons') loadMyLessonsPage();
   if (page === 'courses') loadPublicCourses();
+  if (page === 'zoom-videos') loadZoomVideos();
   updateHeaderUI();
   trackVisit(page);
 }
