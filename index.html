@@ -7952,7 +7952,7 @@ function libPreviewUrl(link) {
   const lp = (link || '').match(/(\/lessons\/[^?#]+\.pdf)/i);
   if (lp) {
     const wide = window.innerWidth >= 900;
-    return '/pdfjs/web/viewer.html?file=' + encodeURIComponent(lp[1]) + '#' + (wide ? 'pagemode=bookmarks&zoom=page-width' : 'pagemode=none&zoom=page-width');
+    return '/pdfjs/web/viewer.html?file=' + encodeURIComponent(lp[1] + '?v=20261128') + '#' + (wide ? 'pagemode=bookmarks&zoom=page-width' : 'pagemode=none&zoom=page-width');
   }
   const m = (link || '').match(/\/file\/d\/([^/?#]+)/);
   return m ? 'https://drive.google.com/file/d/' + m[1] + '/preview' : link;
